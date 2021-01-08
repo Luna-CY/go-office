@@ -13,4 +13,10 @@ const (
     SectionColTag   = `w:col`
     SectionColWidth = `w:w`
     SectionColSpace = `w:space`
+
+    SectionLineNumberTag      = `w:lnNumType`
+    SectionLineNumberCountBy  = `w:countBy`
+    SectionLineNumberStart    = `w:start`
+    SectionLineNumberRestart  = `w:restart`
+    SectionLineNumberDistance = `w:distance`
 )

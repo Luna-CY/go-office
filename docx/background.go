@@ -1,7 +1,15 @@
 package docx
 
+import (
+    "fmt"
+    "github.com/Luna-CY/go-office/docx/template"
+    "strings"
+)
+
 // themeTint 文档的背景配置
 type Background struct {
+    // isSet 是否设置了背景
+    isSet bool
 
     // color 背景色，16进制颜色值
     color string
@@ -14,4 +22,80 @@ type Background struct {
 
     // themeTint 主题色调值，0-255的16进制值
     themeTint string
+}
+
+// SetBackground 设置文档背景
+func (b *Background) SetBackground(color, themeColor, themeShade, themeTint string) *Background {
+    b.isSet = true
+
+    b.color = color
+    b.themeColor = themeColor
+    b.themeShade = themeShade
+    b.themeTint = themeTint
+
+    return b
+}
+
+// SetColor 设置颜色
+func (b *Background) SetColor(color string) *Background {
+    b.isSet = true
+    b.color = color
+
+    return b
+}
+
+// SetThemeColor 设置主题颜色
+func (b *Background) SetThemeColor(themeColor string) *Background {
+    b.isSet = true
+    b.themeColor = themeColor
+
+    return b
+}
+
+// SetThemeShade 设置主题阴影
+func (b *Background) SetThemeShade(themeShade string) *Background {
+    b.isSet = true
+    b.themeShade = themeShade
+
+    return b
+}
+
+// SetThemeTint 设置主题的色调值
+// 0-255的16进制字符串
+func (b *Background) SetThemeTint(themeTint string) *Background {
+    b.isSet = true
+    b.themeTint = themeTint
+
+    return b
+}
+
+func (b *Background) GetBody() ([]byte, error) {
+    if !b.isSet {
+        return []byte{}, nil
+    }
+
+    builder := new(strings.Builder)
+
+    builder.WriteByte('<')
+    builder.WriteString(template.BackgroundTag)
+
+    if "" != b.color {
+        builder.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundColor, b.color))
+    }
+
+    if "" != b.themeColor {
+        builder.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeColor, b.themeColor))
+    }
+
+    if "" != b.themeShade {
+        builder.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeShade, b.themeShade))
+    }
+
+    if "" != b.themeTint {
+        builder.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeTint, b.themeTint))
+    }
+
+    builder.WriteString(" />")
+
+    return []byte(builder.String()), nil
 }

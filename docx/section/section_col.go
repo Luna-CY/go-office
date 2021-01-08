@@ -9,6 +9,9 @@ import (
 // Cols 分栏配置结构
 // 分栏中所有宽度的单位都是点的二十分之一
 type Cols struct {
+    // isSet 是否设置分栏
+    isSet bool
+
     // EqualWidth 是否所有分栏等宽
     EqualWidth bool
 
@@ -29,6 +32,8 @@ type Cols struct {
 // SetNum 设置分栏数量，该配置默认所有分栏等宽
 // 如果需要设置不等宽的分栏，需要通过 AddCol 进行独立的分栏配置
 func (c *Cols) SetNum(num uint) *Cols {
+    c.isSet = true
+
     c.EqualWidth = true
     c.Num = num
 
@@ -37,6 +42,7 @@ func (c *Cols) SetNum(num uint) *Cols {
 
 // SetSep 设置分栏间的分割线
 func (c *Cols) SetSep(show bool) *Cols {
+    c.isSet = true
     c.Sep = show
 
     return c
@@ -44,6 +50,7 @@ func (c *Cols) SetSep(show bool) *Cols {
 
 // SetSpace 设置分栏间距
 func (c *Cols) SetSpace(space uint) *Cols {
+    c.isSet = true
     c.Space = space
 
     return c
@@ -51,6 +58,8 @@ func (c *Cols) SetSpace(space uint) *Cols {
 
 // AddCol 添加一个独立的分栏
 func (c *Cols) AddCol(width int, space int) *Cols {
+    c.isSet = true
+
     if nil == c.cols {
         c.cols = make([]*Col, 1)
 
@@ -68,6 +77,10 @@ func (c *Cols) AddCol(width int, space int) *Cols {
 }
 
 func (c *Cols) GetBody() ([]byte, error) {
+    if !c.isSet {
+        return []byte{}, nil
+    }
+
     builder := new(strings.Builder)
 
     // 如果没有单独设置分栏，那么返回的是一个单标签

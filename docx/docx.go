@@ -10,7 +10,6 @@ import (
 // New 新建一篇文档
 func New() (*Document, error) {
     doc := new(Document)
-    doc.conformance = "strict"
 
     u, err := user.Current()
     if nil != err {
@@ -26,12 +25,6 @@ func New() (*Document, error) {
 
     doc.app.Application = "Go Office Open Xml Library V1.0.0"
     doc.app.Security = 0
-
-    // 初始一栏
-    doc.GetSection().GetCols().SetNum(1)
-
-    // 从wps文档中解析得到的默认值
-    doc.GetSection().GetCols().SetSpace(425)
 
     return doc, nil
 }
