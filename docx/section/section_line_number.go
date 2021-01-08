@@ -6,6 +6,7 @@ import (
     "strings"
 )
 
+// LineNumber 行号配置结构
 type LineNumber struct {
     // isSet 是否设置行号
     isSet bool

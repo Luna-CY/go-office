@@ -12,6 +12,9 @@ type Section struct {
 
     // lineNumber 行号设置
     lineNumber *LineNumber
+
+    // pageMargin 页边距配置
+    pageMargin *PageMargin
 }
 
 // GetCols 获取分栏配置结构指针
@@ -38,6 +41,22 @@ func (s *Section) GetLineNumber() *LineNumber {
     return s.lineNumber
 }
 
+// GetPageMargin 获取页边距配置结构指针
+func (s *Section) GetPageMargin() *PageMargin {
+    if nil == s.pageMargin {
+        s.pageMargin = new(PageMargin)
+        s.pageMargin.isSet = true
+
+        // 从wps文档中解析得到的默认值
+        s.pageMargin.SetMarginGroup(1440, 1800)
+        s.pageMargin.SetHeader(851)
+        s.pageMargin.SetFooter(992)
+        s.pageMargin.SetGutter(0)
+    }
+
+    return s.pageMargin
+}
+
 func (s *Section) GetBody() ([]byte, error) {
     builder := new(strings.Builder)
 
@@ -59,6 +78,15 @@ func (s *Section) GetBody() ([]byte, error) {
         }
 
         builder.Write(lineNumberBody)
+    }
+
+    if nil != s.pageMargin {
+        pageMarginBody, err := s.pageMargin.GetBody()
+        if nil != err {
+            return nil, err
+        }
+
+        builder.Write(pageMarginBody)
     }
 
     builder.WriteString(template.SectionEnd)

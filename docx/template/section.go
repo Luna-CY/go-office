@@ -19,4 +19,13 @@ const (
     SectionLineNumberStart    = `w:start`
     SectionLineNumberRestart  = `w:restart`
     SectionLineNumberDistance = `w:distance`
+
+    SectionPageMarginTag    = `w:pgMar`
+    SectionPageMarginHeader = `w:header`
+    SectionPageMarginFooter = `w:footer`
+    SectionPageMarginTop    = `w:top`
+    SectionPageMarginBottom = `w:bottom`
+    SectionPageMarginLeft   = `w:left`
+    SectionPageMarginRight  = `w:right`
+    SectionPageMarginGutter = `w:gutter`
 )
