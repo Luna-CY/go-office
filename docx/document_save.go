@@ -4,8 +4,8 @@ import (
     "archive/zip"
     "errors"
     "fmt"
-    "os"
     "github.com/Luna-CY/go-office/docx/template"
+    "os"
     "strings"
 )
 
