@@ -4,8 +4,12 @@ const (
     ParagraphStart = `<w:p>`
     ParagraphEnd   = `</w:p>`
 
-    ParagraphPPrStart               = `<w:pPr>`
-    ParagraphPPrEnd                 = `</w:pPr>`
+    ParagraphPPrStart = `<w:pPr>`
+    ParagraphPPrEnd   = `</w:pPr>`
+
+    ParagraphPPrStyleTag = `w:pStyle`
+    ParagraphPPrStyleVal = `w:val`
+
     ParagraphPPrHorizontalAlignment = `<w:jc w:val="{{TYPE}}"/>`
     ParagraphPPrBorderStart         = `<w:pBdr>`
     ParagraphPPrBorderEnd           = `</w:pBdr>`

@@ -2,12 +2,16 @@ package paragraph
 
 import (
     "bytes"
+    "fmt"
     "github.com/Luna-CY/go-office/docx/template"
     "strings"
 )
 
 // PPr 段落的样式属性定义
 type PPr struct {
+    // id Style样式ID
+    id string
+
     // horizontalAlignment 水平对齐方式
     horizontalAlignment *HorizontalAlignment
 
@@ -28,6 +32,11 @@ type PPr struct {
 
     // spacing 段落间距配置
     spacing *Spacing
+}
+
+// GetId 获取ID
+func (p *PPr) GetId() string {
+    return p.id
 }
 
 // GetBorderManager 获取边框管理器
@@ -84,8 +93,21 @@ func (p *PPr) SetKeepNext(keepNext bool) *PPr {
     return p
 }
 
+func (p *PPr) GetStyleXmlBytes() ([]byte, error) {
+    buffer := new(bytes.Buffer)
+
+    buffer.WriteByte('<')
+    buffer.WriteString(template.ParagraphPPrStyleTag)
+    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrStyleVal, p.id))
+    buffer.WriteString("/>")
+
+    return buffer.Bytes(), nil
+}
+
 func (p *PPr) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
+
+    buffer.WriteString(template.ParagraphPPrStart)
 
     if nil != p.horizontalAlignment {
         buffer.WriteString(strings.Replace(template.ParagraphPPrHorizontalAlignment, "{{TYPE}}", string(*p.horizontalAlignment), 1))
@@ -134,6 +156,8 @@ func (p *PPr) GetXmlBytes() ([]byte, error) {
     if p.keepNext {
         buffer.WriteString(template.ParagraphPPrKeepNext)
     }
+
+    buffer.WriteString(template.ParagraphPPrEnd)
 
     return buffer.Bytes(), nil
 }

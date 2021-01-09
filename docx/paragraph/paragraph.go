@@ -2,6 +2,7 @@ package paragraph
 
 import (
     "bytes"
+    "fmt"
     "github.com/Luna-CY/go-office/docx/template"
     "strings"
 )
@@ -20,6 +21,9 @@ type Paragraph struct {
 func (p *Paragraph) GetPPr() *PPr {
     if nil == p.ppr {
         p.ppr = new(PPr)
+
+        // 取ppr结构的指针地址做ID
+        p.ppr.id = fmt.Sprintf("%p", p.ppr)
     }
 
     return p.ppr
@@ -42,7 +46,7 @@ func (p *Paragraph) GetXmlBytes() ([]byte, error) {
 
     if nil != p.ppr {
         bodyBuffer.WriteString(template.ParagraphPPrStart)
-        body, err := p.ppr.GetXmlBytes()
+        body, err := p.ppr.GetStyleXmlBytes()
         if nil != err {
             return nil, err
         }

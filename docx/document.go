@@ -15,6 +15,9 @@ type Document struct {
     // app app.xml
     app App
 
+    // style style.xml
+    style StyleConfig
+
     // background 文档的背景配置
     background Background
 

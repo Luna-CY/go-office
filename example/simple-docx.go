@@ -13,11 +13,11 @@ func main() {
         log.Fatal(err)
     }
 
-    doc.GetSection().GetPageBorder().SetDisplay(section.PageBorderDisplayAll)
     doc.GetSection().GetPageNumber().SetPageNumber(section.PageNumberFmtLowerLetter).SetStart(10)
 
     p1 := doc.AddParagraph()
     p1.GetPPr().SetHorizontalAlignment(paragraph.HorizontalAlignmentCenter)
+    p1.GetPPr().GetBackground().SetBackgroundColor("FF0000")
 
     r1 := p1.AddRun()
     r1.SetText("hi")

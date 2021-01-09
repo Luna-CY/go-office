@@ -1,8 +1,11 @@
 package template
 
 const (
-    DocumentStart = `<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" w:conformance="strict"><w:body>`
-    DocumentEnd   = `</w:body></w:document>`
+    DocumentStart = `<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" w:conformance="strict">`
+    DocumentEnd   = `</w:document>`
+
+    DocumentBodyStart = `<w:body>`
+    DocumentBodyEnd   = `</w:body>`
 
     BackgroundTag        = `w:background`
     BackgroundColor      = `w:color`

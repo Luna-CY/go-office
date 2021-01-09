@@ -12,6 +12,10 @@ import (
 // Save 保存文件到路径
 // path 为一个完整的包含文件后缀名的路径地址
 func (d *Document) Save(path string) error {
+    for _, paragraph := range d.paragraphs {
+        d.style.AddStyle(paragraph.GetPPr().GetId(), StyleTypeParagraph, paragraph.GetPPr())
+    }
+
     file, err := os.Create(path)
     if nil != err {
         return errors.New(fmt.Sprintf("创建文件失败: %v %v", path, err))
@@ -38,6 +42,10 @@ func (d *Document) Save(path string) error {
     }
 
     if err := d.addDocumentXml(word); nil != err {
+        return err
+    }
+
+    if err := d.addWordRelXml(word); nil != err {
         return err
     }
 
@@ -136,7 +144,18 @@ func (d *Document) addCoreXml(word *zip.Writer) error {
 }
 
 func (d *Document) addDocumentXml(word *zip.Writer) error {
-    bodyBuffer := new(bytes.Buffer)
+    buffer := new(bytes.Buffer)
+
+    buffer.WriteString(template.Xml)
+    buffer.WriteString(template.DocumentStart)
+
+    body, err := d.background.GetXmlBytes()
+    if nil != err {
+        return err
+    }
+    buffer.Write(body)
+
+    buffer.WriteString(template.DocumentBodyStart)
 
     for _, paragraph := range d.paragraphs {
         body, err := paragraph.GetXmlBytes()
@@ -144,53 +163,85 @@ func (d *Document) addDocumentXml(word *zip.Writer) error {
             return err
         }
 
-        bodyBuffer.Write(body)
+        buffer.Write(body)
     }
+
+    sectionBody, err := d.GetSection().GetXmlBytes()
+    if nil != err {
+        return err
+    }
+    buffer.Write(sectionBody)
+
+    buffer.WriteString(template.DocumentBodyEnd)
+    buffer.WriteString(template.DocumentEnd)
 
     ct, err := word.Create("word/document.xml")
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    documentBuffer := new(bytes.Buffer)
-
-    documentBuffer.WriteString(template.Xml)
-    documentBuffer.WriteString(template.DocumentStart)
-
-    documentBuffer.Write(bodyBuffer.Bytes())
-    sectionBody, err := d.GetSection().GetXmlBytes()
-    if nil != err {
-        return err
-    }
-    documentBuffer.Write(sectionBody)
-
-    documentBuffer.WriteString(template.DocumentEnd)
-
-    n, err := ct.Write(documentBuffer.Bytes())
+    n, err := ct.Write(buffer.Bytes())
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    if n != documentBuffer.Len() {
-        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", documentBuffer.Len(), n))
+    if n != buffer.Len() {
+        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", buffer.Len(), n))
+    }
+
+    return nil
+}
+
+func (d *Document) addWordRelXml(word *zip.Writer) error {
+    buffer := new(bytes.Buffer)
+
+    buffer.WriteString(template.Xml)
+    buffer.WriteString(template.RelationshipXmlStart)
+    buffer.WriteString(template.RelationshipStyle)
+    buffer.WriteString(template.RelationshipXmlEnd)
+
+    ct, err := word.Create("word/_rels/document.xml.rels")
+    if nil != err {
+        return errors.New(fmt.Sprintf("保存文档失败: %v", err))
+    }
+
+    n, err := ct.Write(buffer.Bytes())
+    if nil != err {
+        return errors.New(fmt.Sprintf("保存文档失败: %v", err))
+    }
+
+    if n != buffer.Len() {
+        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", buffer.Len(), n))
     }
 
     return nil
 }
 
 func (d *Document) addStylesXml(word *zip.Writer) error {
+    buffer := new(bytes.Buffer)
+
+    buffer.WriteString(template.Xml)
+    buffer.WriteString(template.StyleXmlStart)
+
+    body, err := d.style.GetXmlBytes()
+    if nil != err {
+        return err
+    }
+    buffer.Write(body)
+
+    buffer.WriteString(template.StyleXmlEnd)
     ct, err := word.Create("word/styles.xml")
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    n, err := ct.Write([]byte(template.Styles))
+    n, err := ct.Write(buffer.Bytes())
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    if n != len(template.Styles) {
-        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", len(template.Styles), n))
+    if n != buffer.Len() {
+        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", buffer.Len(), n))
     }
 
     return nil
