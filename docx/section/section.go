@@ -6,6 +6,7 @@ import (
 )
 
 // Section 节属性配置结构
+// TODO: 未支持Header/Footer/VAlign/Type/TitlePg/PaperSrc/FormPort等配置
 type Section struct {
     // cols 分栏设置
     cols *Cols
