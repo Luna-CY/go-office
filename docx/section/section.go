@@ -15,6 +15,9 @@ type Section struct {
 
     // pageMargin 页边距配置
     pageMargin *PageMargin
+
+    // PageBorder 页边框配置
+    pageBorder *PageBorder
 }
 
 // GetCols 获取分栏配置结构指针
@@ -57,36 +60,54 @@ func (s *Section) GetPageMargin() *PageMargin {
     return s.pageMargin
 }
 
+// GetPageBorder 获取页边框配置结构指针
+func (s *Section) GetPageBorder() *PageBorder {
+    if nil == s.pageBorder {
+        s.pageBorder = new(PageBorder)
+    }
+
+    return s.pageBorder
+}
+
 func (s *Section) GetBody() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
     buffer.WriteString(template.SectionStart)
 
     if nil != s.cols {
-        colsBody, err := s.cols.GetBody()
+        body, err := s.cols.GetBody()
         if nil != err {
             return nil, err
         }
 
-        buffer.Write(colsBody)
+        buffer.Write(body)
     }
 
     if nil != s.lineNumber {
-        lineNumberBody, err := s.lineNumber.GetBody()
+        body, err := s.lineNumber.GetBody()
         if nil != err {
             return nil, err
         }
 
-        buffer.Write(lineNumberBody)
+        buffer.Write(body)
     }
 
     if nil != s.pageMargin {
-        pageMarginBody, err := s.pageMargin.GetBody()
+        body, err := s.pageMargin.GetBody()
         if nil != err {
             return nil, err
         }
 
-        buffer.Write(pageMarginBody)
+        buffer.Write(body)
+    }
+
+    if nil != s.pageBorder {
+        body, err := s.pageBorder.GetBody()
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
     }
 
     buffer.WriteString(template.SectionEnd)

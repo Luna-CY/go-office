@@ -28,4 +28,13 @@ const (
     SectionPageMarginLeft   = `w:left`
     SectionPageMarginRight  = `w:right`
     SectionPageMarginGutter = `w:gutter`
+
+    SectionPageBorderTag        = `w:pgBorders`
+    SectionPageBorderOffsetFrom = `w:offsetFrom`
+    SectionPageBorderDisplay    = `w:display`
+    SectionPageBorderZOrder     = `w:zOrder`
+    SectionPageBorderTop        = `w:top`
+    SectionPageBorderRight      = `w:right`
+    SectionPageBorderBottom     = `w:bottom`
+    SectionPageBorderLeft       = `w:left`
 )

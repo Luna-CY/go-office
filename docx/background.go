@@ -80,19 +80,19 @@ func (b *Background) GetBody() ([]byte, error) {
     buffer.WriteString(template.BackgroundTag)
 
     if "" != b.color {
-        buffer.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundColor, b.color))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.BackgroundColor, b.color))
     }
 
     if "" != b.themeColor {
-        buffer.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeColor, b.themeColor))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.BackgroundThemeColor, b.themeColor))
     }
 
     if "" != b.themeShade {
-        buffer.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeShade, b.themeShade))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.BackgroundThemeShade, b.themeShade))
     }
 
     if "" != b.themeTint {
-        buffer.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeTint, b.themeTint))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.BackgroundThemeTint, b.themeTint))
     }
 
     buffer.WriteString(" />")

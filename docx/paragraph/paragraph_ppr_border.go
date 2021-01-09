@@ -28,7 +28,7 @@ type BorderManager struct {
 }
 
 // SetBorder 统一设置边框样式
-func (b *BorderManager) SetBorder(style BorderStyle, color string, size, space uint8, shadow bool) *BorderManager {
+func (b *BorderManager) SetBorder(style BorderStyle, color string, size uint8, space uint, shadow bool) *BorderManager {
     border := &Border{Style: style, Color: color, Size: size, Space: space, Shadow: shadow}
 
     b.isSet = true
@@ -42,7 +42,7 @@ func (b *BorderManager) SetBorder(style BorderStyle, color string, size, space u
 }
 
 // SetTop 设置顶部边框
-func (b *BorderManager) SetTop(style BorderStyle, color string, size, space uint8, shadow bool) *BorderManager {
+func (b *BorderManager) SetTop(style BorderStyle, color string, size uint8, space uint, shadow bool) *BorderManager {
     border := &Border{Style: style, Color: color, Size: size, Space: space, Shadow: shadow}
 
     b.isSet = true
@@ -52,7 +52,7 @@ func (b *BorderManager) SetTop(style BorderStyle, color string, size, space uint
 }
 
 // SetRight 设置右侧边框
-func (b *BorderManager) SetRight(style BorderStyle, color string, size, space uint8, shadow bool) *BorderManager {
+func (b *BorderManager) SetRight(style BorderStyle, color string, size uint8, space uint, shadow bool) *BorderManager {
     border := &Border{Style: style, Color: color, Size: size, Space: space, Shadow: shadow}
 
     b.isSet = true
@@ -62,7 +62,7 @@ func (b *BorderManager) SetRight(style BorderStyle, color string, size, space ui
 }
 
 // SetBottom 设置底部边框
-func (b *BorderManager) SetBottom(style BorderStyle, color string, size, space uint8, shadow bool) *BorderManager {
+func (b *BorderManager) SetBottom(style BorderStyle, color string, size uint8, space uint, shadow bool) *BorderManager {
     border := &Border{Style: style, Color: color, Size: size, Space: space, Shadow: shadow}
 
     b.isSet = true
@@ -72,7 +72,7 @@ func (b *BorderManager) SetBottom(style BorderStyle, color string, size, space u
 }
 
 // SetLeft 设置左侧边框
-func (b *BorderManager) SetLeft(style BorderStyle, color string, size, space uint8, shadow bool) *BorderManager {
+func (b *BorderManager) SetLeft(style BorderStyle, color string, size uint8, space uint, shadow bool) *BorderManager {
     border := &Border{Style: style, Color: color, Size: size, Space: space, Shadow: shadow}
 
     b.isSet = true
@@ -82,7 +82,7 @@ func (b *BorderManager) SetLeft(style BorderStyle, color string, size, space uin
 }
 
 // SetBetween 设置重合边框
-func (b *BorderManager) SetBetween(style BorderStyle, color string, size, space uint8, shadow bool) *BorderManager {
+func (b *BorderManager) SetBetween(style BorderStyle, color string, size uint8, space uint, shadow bool) *BorderManager {
     border := &Border{Style: style, Color: color, Size: size, Space: space, Shadow: shadow}
 
     b.isSet = true
@@ -184,9 +184,8 @@ type Border struct {
     // Shadow 是否显示阴影
     Shadow bool
 
-    // Space 间距偏移量，为1-72的值
-    // 大于72的值将被设置为72
-    Space uint8
+    // Space 间距偏移量，以磅（1/72英寸）为单位
+    Space uint
 
     // Size 边框宽度
     // 最小值是2，最大值是96

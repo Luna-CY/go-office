@@ -3,6 +3,7 @@ package main
 import (
     "github.com/Luna-CY/go-office/docx"
     "github.com/Luna-CY/go-office/docx/paragraph"
+    "github.com/Luna-CY/go-office/docx/section"
     "log"
 )
 
@@ -11,6 +12,9 @@ func main() {
     if nil != err {
         log.Fatal(err)
     }
+
+    doc.GetSection().GetPageBorder().SetDisplay(section.PageBorderDisplayAll)
+    doc.GetSection().GetPageBorder().SetTop(section.PageBorderStyleSingle, "000000", 10, 24, false)
 
     p1 := doc.AddParagraph()
     p1.GetPPr().SetHorizontalAlignment(paragraph.HorizontalAlignmentCenter)
