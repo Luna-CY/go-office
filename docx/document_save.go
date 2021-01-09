@@ -230,6 +230,7 @@ func (d *Document) addStylesXml(word *zip.Writer) error {
     buffer.Write(body)
 
     buffer.WriteString(template.StyleXmlEnd)
+
     ct, err := word.Create("word/styles.xml")
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))

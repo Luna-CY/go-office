@@ -20,7 +20,7 @@ func main() {
     p1.GetPPr().GetBackground().SetBackgroundColor("FF0000")
 
     r1 := p1.AddRun()
-    r1.SetText("hi")
+    r1.AddText("hi")
 
     if err := doc.Save("example.docx"); nil != err {
         log.Fatal(err)

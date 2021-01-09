@@ -13,8 +13,11 @@ const (
     BackgroundThemeShade = `w:themeShade`
     BackgroundThemeTint  = `w:themeTint`
 
-    RunStart = `<w:r><w:t>`
-    RunEnd   = `</w:t></w:r>`
+    RunStart = `<w:r>`
+    RunEnd   = `</w:r>`
 
-    BreakLine = `<w:br w:type="{{TYPE}}" w:clear=""/>`
+    RunTextStart = `<w:t>`
+    RunTextEnd = `</w:t>`
+
+    BreakLine = `<w:br w:type="{{TYPE}}" w:clear="{{CLEAR}}"/>`
 )

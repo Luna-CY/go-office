@@ -3,6 +3,7 @@ package paragraph
 import (
     "bytes"
     "fmt"
+    "github.com/Luna-CY/go-office/docx/run"
     "github.com/Luna-CY/go-office/docx/template"
     "strings"
 )
@@ -15,7 +16,7 @@ type Paragraph struct {
     ppr *PPr
 
     // runs Run 结构列表
-    runs []*Run
+    runs []*run.Run
 }
 
 func (p *Paragraph) GetPPr() *PPr {
@@ -32,8 +33,8 @@ func (p *Paragraph) GetPPr() *PPr {
 func (p *Paragraph) GetXmlBytes() ([]byte, error) {
     runBuffer := new(bytes.Buffer)
 
-    for _, run := range p.runs {
-        body, err := run.GetXmlBytes()
+    for _, r := range p.runs {
+        body, err := r.GetXmlBytes()
         if nil != err {
             return nil, err
         }
@@ -62,8 +63,8 @@ func (p *Paragraph) GetXmlBytes() ([]byte, error) {
 }
 
 // AddRun 新增一个内容结构
-func (p *Paragraph) AddRun() *Run {
-    r := new(Run)
+func (p *Paragraph) AddRun() *run.Run {
+    r := new(run.Run)
     p.runs = append(p.runs, r)
 
     return r
@@ -71,7 +72,7 @@ func (p *Paragraph) AddRun() *Run {
 
 // AddBreakLine 添加换行符
 func (p *Paragraph) AddBreakLine(breakLineType BreakLineType, breakLineClearType BreakLineClearType) {
-    r := new(Run)
+    r := new(run.Run)
     p.runs = append(p.runs, r)
 
     r.Text = strings.Replace(template.BreakLine, "{{TYPE}}", string(breakLineType), 1)
