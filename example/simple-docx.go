@@ -14,7 +14,7 @@ func main() {
     }
 
     doc.GetSection().GetPageBorder().SetDisplay(section.PageBorderDisplayAll)
-    doc.GetSection().GetPageBorder().SetTop(section.PageBorderStyleSingle, "000000", 10, 24, false)
+    doc.GetSection().GetPageNumber().SetPageNumber(section.PageNumberFmtLowerLetter).SetStart(10)
 
     p1 := doc.AddParagraph()
     p1.GetPPr().SetHorizontalAlignment(paragraph.HorizontalAlignmentCenter)

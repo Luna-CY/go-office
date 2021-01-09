@@ -152,7 +152,7 @@ func (p *PageMargin) GetBody() ([]byte, error) {
         buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginGutter, *p.Gutter))
     }
 
-    buffer.WriteString(" />")
+    buffer.WriteString("/>")
 
     return buffer.Bytes(), nil
 }

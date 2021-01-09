@@ -18,6 +18,12 @@ type Section struct {
 
     // PageBorder 页边框配置
     pageBorder *PageBorder
+
+    // pageNumber 页码配置
+    pageNumber *PageNumber
+
+    // 页面尺寸配置
+    pageSize *PageSize
 }
 
 // GetCols 获取分栏配置结构指针
@@ -64,9 +70,30 @@ func (s *Section) GetPageMargin() *PageMargin {
 func (s *Section) GetPageBorder() *PageBorder {
     if nil == s.pageBorder {
         s.pageBorder = new(PageBorder)
+        s.pageBorder.isSet = false
     }
 
     return s.pageBorder
+}
+
+// GetPageNumber 获取页码配置结构指针
+func (s *Section) GetPageNumber() *PageNumber {
+    if nil == s.pageNumber {
+        s.pageNumber = new(PageNumber)
+        s.pageNumber.isSet = false
+    }
+
+    return s.pageNumber
+}
+
+// GetPageSize 获取页面尺寸配置结构指针
+func (s *Section) GetPageSize() *PageSize {
+    if nil == s.pageSize {
+        s.pageSize = new(PageSize)
+        s.pageSize.isSet = false
+    }
+
+    return s.pageSize
 }
 
 func (s *Section) GetBody() ([]byte, error) {
@@ -103,6 +130,24 @@ func (s *Section) GetBody() ([]byte, error) {
 
     if nil != s.pageBorder {
         body, err := s.pageBorder.GetBody()
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
+    }
+
+    if nil != s.pageNumber {
+        body, err := s.pageNumber.GetBody()
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
+    }
+
+    if nil != s.pageSize {
+        body, err := s.pageSize.GetBody()
         if nil != err {
             return nil, err
         }

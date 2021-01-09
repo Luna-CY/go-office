@@ -95,7 +95,7 @@ func (b *Background) GetBody() ([]byte, error) {
         buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.BackgroundThemeTint, b.themeTint))
     }
 
-    buffer.WriteString(" />")
+    buffer.WriteString("/>")
 
     return buffer.Bytes(), nil
 }

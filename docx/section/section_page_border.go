@@ -219,7 +219,7 @@ func (p *PageBorder) getBorderBody(tag string, border *Border) ([]byte, error) {
     buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrBorderSpace, border.Space))
     buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrBorderShadow, border.Shadow))
 
-    buffer.WriteString(" />")
+    buffer.WriteString("/>")
 
     return buffer.Bytes(), nil
 }

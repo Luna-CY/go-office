@@ -83,7 +83,7 @@ func (l *LineNumber) GetBody() ([]byte, error) {
         buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionLineNumberRestart, l.Restart))
     }
 
-    buffer.WriteString(" />")
+    buffer.WriteString("/>")
 
     return buffer.Bytes(), nil
 }

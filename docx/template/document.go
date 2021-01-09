@@ -31,5 +31,5 @@ const (
     RunStart = `<w:r><w:t>`
     RunEnd   = `</w:t></w:r>`
 
-    BreakLine = `<w:br w:type="{{TYPE}}" w:clear="" />`
+    BreakLine = `<w:br w:type="{{TYPE}}" w:clear=""/>`
 )

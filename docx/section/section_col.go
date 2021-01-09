@@ -99,7 +99,7 @@ func (c *Cols) GetBody() ([]byte, error) {
             buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsSpace, c.Space))
         }
 
-        buffer.WriteString(" />")
+        buffer.WriteString("/>")
 
         return buffer.Bytes(), nil
     }
@@ -164,7 +164,7 @@ func (c *Col) GetBody() ([]byte, error) {
     buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColWidth, c.Width))
     buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColSpace, c.Space))
 
-    buffer.WriteString(" />")
+    buffer.WriteString("/>")
 
     return buffer.Bytes(), nil
 }

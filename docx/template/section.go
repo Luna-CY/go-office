@@ -37,4 +37,15 @@ const (
     SectionPageBorderRight      = `w:right`
     SectionPageBorderBottom     = `w:bottom`
     SectionPageBorderLeft       = `w:left`
+
+    SectionPageNumberTag       = `w:pgNumType`
+    SectionPageNumberFmt       = `w:fmt`
+    SectionPageNumberStart     = `w:start`
+    SectionPageNumberChapStyle = `w:chapStyle`
+    SectionPageNumberChapSep   = `w:chapSep`
+
+    SectionPageSizeTag    = `w:pgSz`
+    SectionPageSizeWidth  = `w:w`
+    SectionPageSizeHeight = `w:h`
+    SectionPageSizeOrient = `w:orient`
 )
