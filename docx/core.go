@@ -26,7 +26,7 @@ type Core struct {
 }
 
 // GetBody 获取core.xml文件的内容
-func (c *Core) GetBody() ([]byte, error) {
+func (c *Core) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
     buffer.WriteString(template.Xml)

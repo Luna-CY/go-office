@@ -97,13 +97,13 @@ func (s *Section) GetPageSize() *PageSize {
     return s.pageSize
 }
 
-func (s *Section) GetBody() ([]byte, error) {
+func (s *Section) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
     buffer.WriteString(template.SectionStart)
 
     if nil != s.cols {
-        body, err := s.cols.GetBody()
+        body, err := s.cols.GetXmlBytes()
         if nil != err {
             return nil, err
         }
@@ -112,7 +112,7 @@ func (s *Section) GetBody() ([]byte, error) {
     }
 
     if nil != s.lineNumber {
-        body, err := s.lineNumber.GetBody()
+        body, err := s.lineNumber.GetXmlBytes()
         if nil != err {
             return nil, err
         }
@@ -121,7 +121,7 @@ func (s *Section) GetBody() ([]byte, error) {
     }
 
     if nil != s.pageMargin {
-        body, err := s.pageMargin.GetBody()
+        body, err := s.pageMargin.GetXmlBytes()
         if nil != err {
             return nil, err
         }
@@ -130,7 +130,7 @@ func (s *Section) GetBody() ([]byte, error) {
     }
 
     if nil != s.pageBorder {
-        body, err := s.pageBorder.GetBody()
+        body, err := s.pageBorder.GetXmlBytes()
         if nil != err {
             return nil, err
         }
@@ -139,7 +139,7 @@ func (s *Section) GetBody() ([]byte, error) {
     }
 
     if nil != s.pageNumber {
-        body, err := s.pageNumber.GetBody()
+        body, err := s.pageNumber.GetXmlBytes()
         if nil != err {
             return nil, err
         }
@@ -148,7 +148,7 @@ func (s *Section) GetBody() ([]byte, error) {
     }
 
     if nil != s.pageSize {
-        body, err := s.pageSize.GetBody()
+        body, err := s.pageSize.GetXmlBytes()
         if nil != err {
             return nil, err
         }

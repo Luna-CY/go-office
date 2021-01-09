@@ -25,11 +25,11 @@ func (p *Paragraph) GetPPr() *PPr {
     return p.ppr
 }
 
-func (p *Paragraph) GetBody() ([]byte, error) {
+func (p *Paragraph) GetXmlBytes() ([]byte, error) {
     runBuffer := new(bytes.Buffer)
 
     for _, run := range p.runs {
-        body, err := run.GetBody()
+        body, err := run.GetXmlBytes()
         if nil != err {
             return nil, err
         }
@@ -42,7 +42,7 @@ func (p *Paragraph) GetBody() ([]byte, error) {
 
     if nil != p.ppr {
         bodyBuffer.WriteString(template.ParagraphPPrStart)
-        body, err := p.ppr.GetBody()
+        body, err := p.ppr.GetXmlBytes()
         if nil != err {
             return nil, err
         }

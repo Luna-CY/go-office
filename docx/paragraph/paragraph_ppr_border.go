@@ -91,7 +91,7 @@ func (b *BorderManager) SetBetween(style BorderStyle, color string, size uint8, 
     return b
 }
 
-func (b *BorderManager) GetBody() ([]byte, error) {
+func (b *BorderManager) GetXmlBytes() ([]byte, error) {
     if !b.isSet {
         return []byte{}, nil
     }

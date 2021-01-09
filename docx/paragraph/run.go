@@ -17,7 +17,7 @@ func (r *Run) SetText(text string) *Run {
     return r
 }
 
-func (r *Run) GetBody() ([]byte, error) {
+func (r *Run) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
     buffer.WriteString(template.RunStart)
     buffer.WriteString(r.Text)

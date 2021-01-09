@@ -55,7 +55,7 @@ func (i *Identity) SetFirstLine(firstLine int) *Identity {
     return i
 }
 
-func (i *Identity) GetBody() ([]byte, error) {
+func (i *Identity) GetXmlBytes() ([]byte, error) {
     if !i.isSet {
         return []byte{}, nil
     }

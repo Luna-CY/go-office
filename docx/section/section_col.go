@@ -76,7 +76,7 @@ func (c *Cols) AddCol(width int, space int) *Cols {
     return c
 }
 
-func (c *Cols) GetBody() ([]byte, error) {
+func (c *Cols) GetXmlBytes() ([]byte, error) {
     if !c.isSet {
         return []byte{}, nil
     }
@@ -117,7 +117,7 @@ func (c *Cols) GetBody() ([]byte, error) {
 
     // 输出所有分栏的内容
     for _, col := range c.cols {
-        body, err := col.GetBody()
+        body, err := col.GetXmlBytes()
         if nil != err {
             return nil, err
         }
@@ -155,7 +155,7 @@ func (c *Col) SetSpace(space int) *Col {
     return c
 }
 
-func (c *Col) GetBody() ([]byte, error) {
+func (c *Col) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
     buffer.WriteByte('<')

@@ -15,7 +15,7 @@ type App struct {
     Security int
 }
 
-func (a *App) GetBody() ([]byte, error) {
+func (a *App) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
     buffer.WriteString(template.Xml)

@@ -57,7 +57,7 @@ func (l *LineNumber) SetRestart(restart LineNumberRestart) *LineNumber {
     return l
 }
 
-func (l *LineNumber) GetBody() ([]byte, error) {
+func (l *LineNumber) GetXmlBytes() ([]byte, error) {
     if !l.isSet {
         return []byte{}, nil
     }

@@ -33,4 +33,12 @@ const (
     ParagraphPPrBackgroundFill  = `w:fill`
     ParagraphPPrBackgroundColor = `w:color`
     ParagraphPPrBackgroundVal   = `w:val`
+
+    ParagraphPPrSpacingTag               = `w:spacing`
+    ParagraphPPrSpacingAfter             = `w:after`
+    ParagraphPPrSpacingBefore            = `w:before`
+    ParagraphPPrSpacingLine              = `w:line`
+    ParagraphPPrSpacingLineRule          = `w:lineRule`
+    ParagraphPPrSpacingBeforeAutoSpacing = `w:beforeAutospacing`
+    ParagraphPPrSpacingAfterAutoSpacing  = `w:afterAutospacing`
 )

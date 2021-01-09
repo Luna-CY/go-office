@@ -56,7 +56,7 @@ func (b *Background) SetVal(val string) *Background {
     return b
 }
 
-func (b *Background) GetBody() ([]byte, error) {
+func (b *Background) GetXmlBytes() ([]byte, error) {
     if !b.isSet {
         return []byte{}, nil
     }

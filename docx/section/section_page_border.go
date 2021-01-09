@@ -141,7 +141,7 @@ func (p *PageBorder) SetLeft(style PageBorderStyle, color string, size uint8, sp
     return p
 }
 
-func (p *PageBorder) GetBody() ([]byte, error) {
+func (p *PageBorder) GetXmlBytes() ([]byte, error) {
     if !p.isSet {
         return []byte{}, nil
     }

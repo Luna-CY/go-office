@@ -95,7 +95,7 @@ func (d *Document) addAppXml(word *zip.Writer) error {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    body, err := d.app.GetBody()
+    body, err := d.app.GetXmlBytes()
     if nil != err {
         return err
     }
@@ -118,7 +118,7 @@ func (d *Document) addCoreXml(word *zip.Writer) error {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    body, err := d.core.GetBody()
+    body, err := d.core.GetXmlBytes()
     if nil != err {
         return err
     }
@@ -139,7 +139,7 @@ func (d *Document) addDocumentXml(word *zip.Writer) error {
     bodyBuffer := new(bytes.Buffer)
 
     for _, paragraph := range d.paragraphs {
-        body, err := paragraph.GetBody()
+        body, err := paragraph.GetXmlBytes()
         if nil != err {
             return err
         }
@@ -158,7 +158,7 @@ func (d *Document) addDocumentXml(word *zip.Writer) error {
     documentBuffer.WriteString(template.DocumentStart)
 
     documentBuffer.Write(bodyBuffer.Bytes())
-    sectionBody, err := d.GetSection().GetBody()
+    sectionBody, err := d.GetSection().GetXmlBytes()
     if nil != err {
         return err
     }

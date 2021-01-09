@@ -69,7 +69,7 @@ func (b *Background) SetThemeTint(themeTint string) *Background {
     return b
 }
 
-func (b *Background) GetBody() ([]byte, error) {
+func (b *Background) GetXmlBytes() ([]byte, error) {
     if !b.isSet {
         return []byte{}, nil
     }

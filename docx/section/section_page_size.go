@@ -57,7 +57,7 @@ func (p *PageSize) SetOrient(orient PageSizeOrient) *PageSize {
     return p
 }
 
-func (p *PageSize) GetBody() ([]byte, error) {
+func (p *PageSize) GetXmlBytes() ([]byte, error) {
     if !p.isSet {
         return []byte{}, nil
     }

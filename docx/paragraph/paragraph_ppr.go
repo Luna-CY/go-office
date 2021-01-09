@@ -8,7 +8,6 @@ import (
 
 // PPr 段落的样式属性定义
 type PPr struct {
-
     // horizontalAlignment 水平对齐方式
     horizontalAlignment *HorizontalAlignment
 
@@ -26,6 +25,9 @@ type PPr struct {
 
     // background 背景配置结构
     background *Background
+
+    // spacing 段落间距配置
+    spacing *Spacing
 }
 
 // GetBorderManager 获取边框管理器
@@ -58,6 +60,16 @@ func (p *PPr) GetBackground() *Background {
     return p.background
 }
 
+// GetSpacing 获取段落间距配置结构指针
+func (p *PPr) GetSpacing() *Spacing {
+    if nil == p.spacing {
+        p.spacing = new(Spacing)
+        p.spacing.isSet = false
+    }
+
+    return p.spacing
+}
+
 // SetKeepLines
 func (p *PPr) SetKeepLines(keepLines bool) *PPr {
     p.keepLines = keepLines
@@ -72,7 +84,7 @@ func (p *PPr) SetKeepNext(keepNext bool) *PPr {
     return p
 }
 
-func (p *PPr) GetBody() ([]byte, error) {
+func (p *PPr) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
     if nil != p.horizontalAlignment {
@@ -80,7 +92,7 @@ func (p *PPr) GetBody() ([]byte, error) {
     }
 
     if nil != p.borderManager {
-        body, err := p.borderManager.GetBody()
+        body, err := p.borderManager.GetXmlBytes()
         if nil != err {
             return nil, nil
         }
@@ -89,7 +101,7 @@ func (p *PPr) GetBody() ([]byte, error) {
     }
 
     if nil != p.identity {
-        body, err := p.identity.GetBody()
+        body, err := p.identity.GetXmlBytes()
         if nil != err {
             return nil, nil
         }
@@ -98,7 +110,16 @@ func (p *PPr) GetBody() ([]byte, error) {
     }
 
     if nil != p.background {
-        body, err := p.background.GetBody()
+        body, err := p.background.GetXmlBytes()
+        if nil != err {
+            return nil, nil
+        }
+
+        buffer.Write(body)
+    }
+
+    if nil != p.spacing {
+        body, err := p.spacing.GetXmlBytes()
         if nil != err {
             return nil, nil
         }

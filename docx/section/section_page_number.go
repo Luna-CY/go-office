@@ -53,7 +53,7 @@ func (p *PageNumber) SetChapSep(chapSep PageNumberChapSep) *PageNumber {
     return p
 }
 
-func (p *PageNumber) GetBody() ([]byte, error) {
+func (p *PageNumber) GetXmlBytes() ([]byte, error) {
     if !p.isSet {
         return []byte{}, nil
     }

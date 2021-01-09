@@ -114,7 +114,7 @@ func (p *PageMargin) SetGutter(gutter int) *PageMargin {
     return p
 }
 
-func (p *PageMargin) GetBody() ([]byte, error) {
+func (p *PageMargin) GetXmlBytes() ([]byte, error) {
     if !p.isSet {
         return []byte{}, nil
     }
