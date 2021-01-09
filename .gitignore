@@ -16,3 +16,6 @@
 
 # GoLand
 .idea/
+
+# docx
+*.docx

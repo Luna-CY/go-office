@@ -1,9 +1,9 @@
 package section
 
 import (
+    "bytes"
     "fmt"
     "github.com/Luna-CY/go-office/docx/template"
-    "strings"
 )
 
 // LineNumber 行号配置结构
@@ -62,30 +62,30 @@ func (l *LineNumber) GetBody() ([]byte, error) {
         return []byte{}, nil
     }
 
-    builder := new(strings.Builder)
+    buffer := new(bytes.Buffer)
 
-    builder.WriteByte('<')
-    builder.WriteString(template.SectionLineNumberTag)
+    buffer.WriteByte('<')
+    buffer.WriteString(template.SectionLineNumberTag)
 
     if 0 != l.Start {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionLineNumberStart, l.Start))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionLineNumberStart, l.Start))
     }
 
     if 0 != l.CountBy {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionLineNumberCountBy, l.CountBy))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionLineNumberCountBy, l.CountBy))
     }
 
     if 0 != l.Distance {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionLineNumberDistance, l.Distance))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionLineNumberDistance, l.Distance))
     }
 
     if nil != l.Restart {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionLineNumberRestart, l.Restart))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionLineNumberRestart, l.Restart))
     }
 
-    builder.WriteString(" />")
+    buffer.WriteString(" />")
 
-    return []byte(builder.String()), nil
+    return buffer.Bytes(), nil
 }
 
 type LineNumberRestart string

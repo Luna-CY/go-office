@@ -1,9 +1,9 @@
 package docx
 
 import (
+    "bytes"
     "github.com/Luna-CY/go-office/docx/template"
     "strconv"
-    "strings"
     "time"
 )
 
@@ -27,32 +27,32 @@ type Core struct {
 
 // GetBody 获取core.xml文件的内容
 func (c *Core) GetBody() ([]byte, error) {
-    builder := new(strings.Builder)
+    buffer := new(bytes.Buffer)
 
-    builder.WriteString(template.Xml)
-    builder.WriteString(template.CoreXmlStart)
+    buffer.WriteString(template.Xml)
+    buffer.WriteString(template.CoreXmlStart)
 
-    builder.WriteString(template.CoreCreateUserStart)
-    builder.WriteString(c.CreateUser)
-    builder.WriteString(template.CoreCreateUserEnd)
+    buffer.WriteString(template.CoreCreateUserStart)
+    buffer.WriteString(c.CreateUser)
+    buffer.WriteString(template.CoreCreateUserEnd)
 
-    builder.WriteString(template.CoreCreateTimeStart)
-    builder.WriteString(c.CreateTime.UTC().String())
-    builder.WriteString(template.CoreCreateTimeEnd)
+    buffer.WriteString(template.CoreCreateTimeStart)
+    buffer.WriteString(c.CreateTime.UTC().String())
+    buffer.WriteString(template.CoreCreateTimeEnd)
 
-    builder.WriteString(template.CoreModifyUserStart)
-    builder.WriteString(c.LastModifyUser)
-    builder.WriteString(template.CoreModifyUserEnd)
+    buffer.WriteString(template.CoreModifyUserStart)
+    buffer.WriteString(c.LastModifyUser)
+    buffer.WriteString(template.CoreModifyUserEnd)
 
-    builder.WriteString(template.CoreModifyTimeStart)
-    builder.WriteString(c.LastModifyTime.UTC().String())
-    builder.WriteString(template.CoreModifyTimeEnd)
+    buffer.WriteString(template.CoreModifyTimeStart)
+    buffer.WriteString(c.LastModifyTime.UTC().String())
+    buffer.WriteString(template.CoreModifyTimeEnd)
 
-    builder.WriteString(template.CoreVersionStart)
-    builder.WriteString(strconv.Itoa(c.Version + 1))
-    builder.WriteString(template.CoreVersionEnd)
+    buffer.WriteString(template.CoreVersionStart)
+    buffer.WriteString(strconv.Itoa(c.Version + 1))
+    buffer.WriteString(template.CoreVersionEnd)
 
-    builder.WriteString(template.CoreXmlEnd)
+    buffer.WriteString(template.CoreXmlEnd)
 
-    return []byte(builder.String()), nil
+    return buffer.Bytes(), nil
 }

@@ -1,9 +1,9 @@
 package docx
 
 import (
+    "bytes"
     "github.com/Luna-CY/go-office/docx/template"
     "strconv"
-    "strings"
 )
 
 // App app.xml
@@ -16,20 +16,20 @@ type App struct {
 }
 
 func (a *App) GetBody() ([]byte, error) {
-    builder := new(strings.Builder)
+    buffer := new(bytes.Buffer)
 
-    builder.WriteString(template.Xml)
-    builder.WriteString(template.AppXmlStart)
+    buffer.WriteString(template.Xml)
+    buffer.WriteString(template.AppXmlStart)
 
-    builder.WriteString(template.AppApplicationStart)
-    builder.WriteString(a.Application)
-    builder.WriteString(template.AppApplicationEnd)
+    buffer.WriteString(template.AppApplicationStart)
+    buffer.WriteString(a.Application)
+    buffer.WriteString(template.AppApplicationEnd)
 
-    builder.WriteString(template.AppSecurityStart)
-    builder.WriteString(strconv.Itoa(a.Security))
-    builder.WriteString(template.AppSecurityEnd)
+    buffer.WriteString(template.AppSecurityStart)
+    buffer.WriteString(strconv.Itoa(a.Security))
+    buffer.WriteString(template.AppSecurityEnd)
 
-    builder.WriteString(template.AppXmlEnd)
+    buffer.WriteString(template.AppXmlEnd)
 
-    return []byte(builder.String()), nil
+    return buffer.Bytes(), nil
 }

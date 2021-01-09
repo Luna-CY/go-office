@@ -1,6 +1,9 @@
 package docx
 
-import "github.com/Luna-CY/go-office/docx/section"
+import (
+    "github.com/Luna-CY/go-office/docx/paragraph"
+    "github.com/Luna-CY/go-office/docx/section"
+)
 
 // Document 文档结构定义
 // 该结构统一对.docx格式文档进行操作
@@ -17,15 +20,15 @@ type Document struct {
 
     // paragraphs 文档的分段列表
     // 文档的全部内容都保存在这里
-    paragraphs []*Paragraph
+    paragraphs []*paragraph.Paragraph
 
     // section 文档的节属性配置
     section section.Section
 }
 
 // AddParagraph 添加一个段落
-func (d *Document) AddParagraph() *Paragraph {
-    p := new(Paragraph)
+func (d *Document) AddParagraph() *paragraph.Paragraph {
+    p := new(paragraph.Paragraph)
     d.paragraphs = append(d.paragraphs, p)
 
     return p

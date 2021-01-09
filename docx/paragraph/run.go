@@ -1,8 +1,8 @@
-package docx
+package paragraph
 
 import (
+    "bytes"
     "github.com/Luna-CY/go-office/docx/template"
-    "strings"
 )
 
 // Run 内容的结构定义
@@ -18,12 +18,12 @@ func (r *Run) SetText(text string) *Run {
 }
 
 func (r *Run) GetBody() ([]byte, error) {
-    bodyBuilder := new(strings.Builder)
-    bodyBuilder.WriteString(template.RunStart)
-    bodyBuilder.WriteString(r.Text)
-    bodyBuilder.WriteString(template.RunEnd)
+    buffer := new(bytes.Buffer)
+    buffer.WriteString(template.RunStart)
+    buffer.WriteString(r.Text)
+    buffer.WriteString(template.RunEnd)
 
-    return []byte(bodyBuilder.String()), nil
+    return buffer.Bytes(), nil
 }
 
 // RPr 内容样式定义

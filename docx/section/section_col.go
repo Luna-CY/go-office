@@ -1,9 +1,9 @@
 package section
 
 import (
+    "bytes"
     "fmt"
     "github.com/Luna-CY/go-office/docx/template"
-    "strings"
 )
 
 // Cols 分栏配置结构
@@ -81,39 +81,39 @@ func (c *Cols) GetBody() ([]byte, error) {
         return []byte{}, nil
     }
 
-    builder := new(strings.Builder)
+    buffer := new(bytes.Buffer)
 
     // 如果没有单独设置分栏，那么返回的是一个单标签
     if nil == c.cols {
-        builder.WriteByte('<')
-        builder.WriteString(template.SectionColsTag)
+        buffer.WriteByte('<')
+        buffer.WriteString(template.SectionColsTag)
 
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsNum, c.Num))
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsEqualWidth, c.EqualWidth))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsNum, c.Num))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsEqualWidth, c.EqualWidth))
 
         if c.Sep {
-            builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsSep, c.Sep))
+            buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsSep, c.Sep))
         }
 
         if 0 < c.Space {
-            builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsSpace, c.Space))
+            buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsSpace, c.Space))
         }
 
-        builder.WriteString(" />")
+        buffer.WriteString(" />")
 
-        return []byte(builder.String()), nil
+        return buffer.Bytes(), nil
     }
 
-    builder.WriteByte('<')
-    builder.WriteString(template.SectionColsTag)
+    buffer.WriteByte('<')
+    buffer.WriteString(template.SectionColsTag)
 
     // Microsoft Word 2007在分栏宽度不相等时也要求设置num属性
-    builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsNum, c.Num))
+    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsNum, c.Num))
 
     if c.Sep {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsSep, c.Sep))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColsSep, c.Sep))
     }
-    builder.WriteByte('>')
+    buffer.WriteByte('>')
 
     // 输出所有分栏的内容
     for _, col := range c.cols {
@@ -122,14 +122,14 @@ func (c *Cols) GetBody() ([]byte, error) {
             return nil, err
         }
 
-        builder.Write(body)
+        buffer.Write(body)
     }
 
-    builder.WriteString("</")
-    builder.WriteString(template.SectionColsTag)
-    builder.WriteByte('>')
+    buffer.WriteString("</")
+    buffer.WriteString(template.SectionColsTag)
+    buffer.WriteByte('>')
 
-    return []byte(builder.String()), nil
+    return buffer.Bytes(), nil
 }
 
 // Col 独立的分栏配置
@@ -156,15 +156,15 @@ func (c *Col) SetSpace(space int) *Col {
 }
 
 func (c *Col) GetBody() ([]byte, error) {
-    builder := new(strings.Builder)
+    buffer := new(bytes.Buffer)
 
-    builder.WriteByte('<')
-    builder.WriteString(template.SectionColTag)
+    buffer.WriteByte('<')
+    buffer.WriteString(template.SectionColTag)
 
-    builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColWidth, c.Width))
-    builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColSpace, c.Space))
+    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColWidth, c.Width))
+    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionColSpace, c.Space))
 
-    builder.WriteString(" />")
+    buffer.WriteString(" />")
 
-    return []byte(builder.String()), nil
+    return buffer.Bytes(), nil
 }

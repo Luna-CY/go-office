@@ -1,8 +1,8 @@
 package section
 
 import (
+    "bytes"
     "github.com/Luna-CY/go-office/docx/template"
-    "strings"
 )
 
 // Section 节属性配置结构
@@ -58,9 +58,9 @@ func (s *Section) GetPageMargin() *PageMargin {
 }
 
 func (s *Section) GetBody() ([]byte, error) {
-    builder := new(strings.Builder)
+    buffer := new(bytes.Buffer)
 
-    builder.WriteString(template.SectionStart)
+    buffer.WriteString(template.SectionStart)
 
     if nil != s.cols {
         colsBody, err := s.cols.GetBody()
@@ -68,7 +68,7 @@ func (s *Section) GetBody() ([]byte, error) {
             return nil, err
         }
 
-        builder.Write(colsBody)
+        buffer.Write(colsBody)
     }
 
     if nil != s.lineNumber {
@@ -77,7 +77,7 @@ func (s *Section) GetBody() ([]byte, error) {
             return nil, err
         }
 
-        builder.Write(lineNumberBody)
+        buffer.Write(lineNumberBody)
     }
 
     if nil != s.pageMargin {
@@ -86,10 +86,10 @@ func (s *Section) GetBody() ([]byte, error) {
             return nil, err
         }
 
-        builder.Write(pageMarginBody)
+        buffer.Write(pageMarginBody)
     }
 
-    builder.WriteString(template.SectionEnd)
+    buffer.WriteString(template.SectionEnd)
 
-    return []byte(builder.String()), nil
+    return buffer.Bytes(), nil
 }

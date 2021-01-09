@@ -1,9 +1,9 @@
 package section
 
 import (
+    "bytes"
     "fmt"
     "github.com/Luna-CY/go-office/docx/template"
-    "strings"
 )
 
 // PageMargin 页面边距配置结构
@@ -119,40 +119,40 @@ func (p *PageMargin) GetBody() ([]byte, error) {
         return []byte{}, nil
     }
 
-    builder := new(strings.Builder)
+    buffer := new(bytes.Buffer)
 
-    builder.WriteByte('<')
-    builder.WriteString(template.SectionPageMarginTag)
+    buffer.WriteByte('<')
+    buffer.WriteString(template.SectionPageMarginTag)
 
     if nil != p.Header {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginHeader, *p.Header))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginHeader, *p.Header))
     }
 
     if nil != p.Footer {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginFooter, *p.Footer))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginFooter, *p.Footer))
     }
 
     if nil != p.Bottom {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginBottom, *p.Bottom))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginBottom, *p.Bottom))
     }
 
     if nil != p.Top {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginTop, *p.Top))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginTop, *p.Top))
     }
 
     if nil != p.Left {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginLeft, *p.Left))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginLeft, *p.Left))
     }
 
     if nil != p.Right {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginRight, *p.Right))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginRight, *p.Right))
     }
 
     if nil != p.Gutter {
-        builder.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginGutter, *p.Gutter))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.SectionPageMarginGutter, *p.Gutter))
     }
 
-    builder.WriteString(" />")
+    buffer.WriteString(" />")
 
-    return []byte(builder.String()), nil
+    return buffer.Bytes(), nil
 }

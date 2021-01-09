@@ -2,11 +2,11 @@ package docx
 
 import (
     "archive/zip"
+    "bytes"
     "errors"
     "fmt"
     "github.com/Luna-CY/go-office/docx/template"
     "os"
-    "strings"
 )
 
 // Save 保存文件到路径
@@ -136,7 +136,7 @@ func (d *Document) addCoreXml(word *zip.Writer) error {
 }
 
 func (d *Document) addDocumentXml(word *zip.Writer) error {
-    bodyBuilder := new(strings.Builder)
+    bodyBuffer := new(bytes.Buffer)
 
     for _, paragraph := range d.paragraphs {
         body, err := paragraph.GetBody()
@@ -144,7 +144,7 @@ func (d *Document) addDocumentXml(word *zip.Writer) error {
             return err
         }
 
-        bodyBuilder.Write(body)
+        bodyBuffer.Write(body)
     }
 
     ct, err := word.Create("word/document.xml")
@@ -152,28 +152,27 @@ func (d *Document) addDocumentXml(word *zip.Writer) error {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    documentBuilder := new(strings.Builder)
+    documentBuffer := new(bytes.Buffer)
 
-    documentBuilder.WriteString(template.Xml)
-    documentBuilder.WriteString(template.DocumentStart)
+    documentBuffer.WriteString(template.Xml)
+    documentBuffer.WriteString(template.DocumentStart)
 
-    documentBuilder.WriteString(bodyBuilder.String())
+    documentBuffer.Write(bodyBuffer.Bytes())
     sectionBody, err := d.GetSection().GetBody()
     if nil != err {
         return err
     }
-    documentBuilder.Write(sectionBody)
+    documentBuffer.Write(sectionBody)
 
-    documentBuilder.WriteString(template.DocumentEnd)
+    documentBuffer.WriteString(template.DocumentEnd)
 
-    body := documentBuilder.String()
-    n, err := ct.Write([]byte(body))
+    n, err := ct.Write(documentBuffer.Bytes())
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    if n != len(body) {
-        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", len(body), n))
+    if n != documentBuffer.Len() {
+        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", documentBuffer.Len(), n))
     }
 
     return nil

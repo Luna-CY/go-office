@@ -1,9 +1,9 @@
 package docx
 
 import (
+    "bytes"
     "fmt"
     "github.com/Luna-CY/go-office/docx/template"
-    "strings"
 )
 
 // themeTint 文档的背景配置
@@ -74,28 +74,28 @@ func (b *Background) GetBody() ([]byte, error) {
         return []byte{}, nil
     }
 
-    builder := new(strings.Builder)
+    buffer := new(bytes.Buffer)
 
-    builder.WriteByte('<')
-    builder.WriteString(template.BackgroundTag)
+    buffer.WriteByte('<')
+    buffer.WriteString(template.BackgroundTag)
 
     if "" != b.color {
-        builder.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundColor, b.color))
+        buffer.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundColor, b.color))
     }
 
     if "" != b.themeColor {
-        builder.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeColor, b.themeColor))
+        buffer.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeColor, b.themeColor))
     }
 
     if "" != b.themeShade {
-        builder.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeShade, b.themeShade))
+        buffer.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeShade, b.themeShade))
     }
 
     if "" != b.themeTint {
-        builder.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeTint, b.themeTint))
+        buffer.WriteString(fmt.Sprintf(` %v=%v`, template.BackgroundThemeTint, b.themeTint))
     }
 
-    builder.WriteString(" />")
+    buffer.WriteString(" />")
 
-    return []byte(builder.String()), nil
+    return buffer.Bytes(), nil
 }
