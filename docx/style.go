@@ -10,7 +10,29 @@ import (
 
 // StyleConfig 样式配置结构
 type StyleConfig struct {
+    // pPrDefault 段落的默认样式
+    pPrDefault *paragraph.PPr
+
+    // rPrDefault 文本的默认样式
+    rPrDefault *run.RPr
+
     styleList []*Style
+}
+
+func (s *StyleConfig) GetDefaultParagraphProperties() *paragraph.PPr {
+    if nil == s.pPrDefault {
+        s.pPrDefault = new(paragraph.PPr)
+    }
+
+    return s.pPrDefault
+}
+
+func (s *StyleConfig) GetDefaultRunProperties() *run.RPr {
+    if nil == s.rPrDefault {
+        s.rPrDefault = new(run.RPr)
+    }
+
+    return s.rPrDefault
 }
 
 // AddStyle 添加一个样式结构
@@ -23,6 +45,42 @@ func (s *StyleConfig) AddStyle(styleId string, styleType StyleType, pPr *paragra
 func (s *StyleConfig) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
+    buffer.WriteString(template.Xml)
+    buffer.WriteString(template.StyleXmlStart)
+
+    // 输出全局默认样式docDefaults
+    if nil != s.pPrDefault || nil != s.rPrDefault {
+        buffer.WriteString(template.StyleDocDefaultStart)
+
+        // 段落默认样式
+        if nil != s.pPrDefault {
+            buffer.WriteString(template.StyleDefaultParagraphStart)
+
+            body, err := s.pPrDefault.GetXmlBytes()
+            if nil != err {
+                return nil, err
+            }
+            buffer.Write(body)
+
+            buffer.WriteString(template.StyleDefaultParagraphEnd)
+        }
+
+        // 文本默认样式
+        if nil != s.rPrDefault {
+            buffer.WriteString(template.StyleDefaultRunStart)
+
+            body, err := s.rPrDefault.GetXmlBytes()
+            if nil != err {
+                return nil, err
+            }
+            buffer.Write(body)
+
+            buffer.WriteString(template.StyleDefaultRunEnd)
+        }
+
+        buffer.WriteString(template.StyleDocDefaultEnd)
+    }
+
     for _, style := range s.styleList {
         body, err := style.GetXmlBytes()
         if nil != err {
@@ -31,6 +89,8 @@ func (s *StyleConfig) GetXmlBytes() ([]byte, error) {
 
         buffer.Write(body)
     }
+
+    buffer.WriteString(template.StyleXmlEnd)
 
     return buffer.Bytes(), nil
 }

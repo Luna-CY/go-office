@@ -222,31 +222,23 @@ func (d *Document) addWordRelXml(word *zip.Writer) error {
 }
 
 func (d *Document) addStylesXml(word *zip.Writer) error {
-    buffer := new(bytes.Buffer)
-
-    buffer.WriteString(template.Xml)
-    buffer.WriteString(template.StyleXmlStart)
-
     body, err := d.style.GetXmlBytes()
     if nil != err {
         return err
     }
-    buffer.Write(body)
-
-    buffer.WriteString(template.StyleXmlEnd)
 
     ct, err := word.Create("word/styles.xml")
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    n, err := ct.Write(buffer.Bytes())
+    n, err := ct.Write(body)
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    if n != buffer.Len() {
-        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", buffer.Len(), n))
+    if n != len(body) {
+        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", len(body), n))
     }
 
     return nil

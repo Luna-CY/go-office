@@ -32,6 +32,16 @@ type Spacing struct {
     afterAutoSpacing bool
 }
 
+// SetSpace 同时设置 before 与 after
+func (s *Spacing) SetSpace(space int) *Spacing {
+    s.isSet = true
+
+    s.before = &space
+    s.after = &space
+
+    return s
+}
+
 // SetBefore 设置段落前间距
 func (s *Spacing) SetBefore(before int) *Spacing {
     s.isSet = true

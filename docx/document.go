@@ -28,6 +28,10 @@ type Document struct {
     section section.Section
 }
 
+func (d *Document) GetStyle() *StyleConfig {
+    return &d.style
+}
+
 func (d *Document) GetParagraphs() []*paragraph.Paragraph {
     return d.paragraphs
 }
