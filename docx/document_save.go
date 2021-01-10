@@ -12,8 +12,12 @@ import (
 // Save 保存文件到路径
 // path 为一个完整的包含文件后缀名的路径地址
 func (d *Document) Save(path string) error {
-    for _, paragraph := range d.paragraphs {
-        d.style.AddStyle(paragraph.GetPPr().GetId(), StyleTypeParagraph, paragraph.GetPPr())
+    for _, paragraph := range d.GetParagraphs() {
+        d.style.AddStyle(paragraph.GetParagraphProperties().GetId(), StyleTypeParagraph, paragraph.GetParagraphProperties(), paragraph.GetRunProperties())
+
+        for _, run := range paragraph.GetRuns() {
+            d.style.AddStyle(run.GetRunProperties().GetId(), StyleTypeCharacter, nil, run.GetRunProperties())
+        }
     }
 
     file, err := os.Create(path)

@@ -7,7 +7,6 @@ import (
 
 // Document 文档结构定义
 // 该结构统一对.docx格式文档进行操作
-// 生成的文档严格符合Office Open XML格式定义
 type Document struct {
     // core core.xml
     core Core
@@ -27,6 +26,10 @@ type Document struct {
 
     // section 文档的节属性配置
     section section.Section
+}
+
+func (d *Document) GetParagraphs() []*paragraph.Paragraph {
+    return d.paragraphs
 }
 
 // AddParagraph 添加一个段落

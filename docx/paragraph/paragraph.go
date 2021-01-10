@@ -1,65 +1,41 @@
 package paragraph
 
 import (
-    "bytes"
-    "fmt"
     "github.com/Luna-CY/go-office/docx/run"
-    "github.com/Luna-CY/go-office/docx/template"
-    "strings"
 )
 
 // Paragraph 段落结构
 // 每个段落都包含自己的样式属性定义以及任意个 Run 结构
 type Paragraph struct {
 
-    // ppr 样式属性定义
+    // ppr 段落样式属性定义
     ppr *PPr
+
+    // rpr 段落内容统一样式
+    rpr *run.RPr
 
     // runs Run 结构列表
     runs []*run.Run
 }
 
-func (p *Paragraph) GetPPr() *PPr {
+func (p *Paragraph) GetParagraphProperties() *PPr {
     if nil == p.ppr {
         p.ppr = new(PPr)
-
-        // 取ppr结构的指针地址做ID
-        p.ppr.id = fmt.Sprintf("%p", p.ppr)
     }
 
     return p.ppr
 }
 
-func (p *Paragraph) GetXmlBytes() ([]byte, error) {
-    runBuffer := new(bytes.Buffer)
-
-    for _, r := range p.runs {
-        body, err := r.GetXmlBytes()
-        if nil != err {
-            return nil, err
-        }
-
-        runBuffer.Write(body)
+func (p *Paragraph) GetRunProperties() *run.RPr {
+    if nil == p.rpr {
+        p.rpr = new(run.RPr)
     }
 
-    bodyBuffer := new(bytes.Buffer)
-    bodyBuffer.WriteString(template.ParagraphStart)
+    return p.rpr
+}
 
-    if nil != p.ppr {
-        bodyBuffer.WriteString(template.ParagraphPPrStart)
-        body, err := p.ppr.GetStyleXmlBytes()
-        if nil != err {
-            return nil, err
-        }
-
-        bodyBuffer.Write(body)
-        bodyBuffer.WriteString(template.ParagraphPPrEnd)
-    }
-
-    bodyBuffer.Write(runBuffer.Bytes())
-    bodyBuffer.WriteString(template.ParagraphEnd)
-
-    return bodyBuffer.Bytes(), nil
+func (p *Paragraph) GetRuns() []*run.Run {
+    return p.runs
 }
 
 // AddRun 新增一个内容结构
@@ -71,42 +47,9 @@ func (p *Paragraph) AddRun() *run.Run {
 }
 
 // AddBreakLine 添加换行符
-func (p *Paragraph) AddBreakLine(breakLineType BreakLineType, breakLineClearType BreakLineClearType) {
+func (p *Paragraph) AddBreakLine(breakLineType run.BreakLineType, breakLineClearType run.BreakLineClearType) {
     r := new(run.Run)
     p.runs = append(p.runs, r)
 
-    r.Text = strings.Replace(template.BreakLine, "{{TYPE}}", string(breakLineType), 1)
-    r.Text = strings.Replace(template.BreakLine, "{{TYPE}}", string(breakLineClearType), 1)
+    r.AddBreakLine(breakLineType, breakLineClearType)
 }
-
-type BreakLineType string
-
-const (
-    // BreakLineTypeDefault 下一行开始
-    // 此类型为默认类型
-    BreakLineTypeDefault = BreakLineType("textWrapping")
-
-    // BreakLineTypePage 从下一页开始
-    // 设置为此类型时，新的内容将从下一页开始
-    BreakLineTypePage = BreakLineType("page")
-
-    // BreakLineTypePage 从下一列开始
-    BreakLineTypeColumn = BreakLineType("column")
-)
-
-type BreakLineClearType string
-
-const (
-    // BreakLineClearTypeDefault 不设置clear
-    // 这是默认值
-    BreakLineClearTypeDefault = BreakLineClearType("none")
-
-    // BreakLineClearTypeLeft 从左侧开始
-    BreakLineClearTypeLeft = BreakLineClearType("left")
-
-    // BreakLineClearTypeRight 从右侧开始
-    BreakLineClearTypeRight = BreakLineClearType("right")
-
-    // BreakLineClearTypeAll
-    BreakLineClearTypeAll = BreakLineClearType("all")
-)

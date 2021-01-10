@@ -1,17 +1,12 @@
 package paragraph
 
 import (
-    "bytes"
     "fmt"
-    "github.com/Luna-CY/go-office/docx/template"
-    "strings"
+    "github.com/Luna-CY/go-office/docx/section"
 )
 
 // PPr 段落的样式属性定义
 type PPr struct {
-    // id Style样式ID
-    id string
-
     // horizontalAlignment 水平对齐方式
     horizontalAlignment *HorizontalAlignment
 
@@ -32,15 +27,18 @@ type PPr struct {
 
     // spacing 段落间距配置
     spacing *Spacing
+
+    // sect 段落内的章节属性配置
+    sect *section.Section
 }
 
 // GetId 获取ID
 func (p *PPr) GetId() string {
-    return p.id
+    return fmt.Sprintf("%p", p)
 }
 
-// GetBorderManager 获取边框管理器
-func (p *PPr) GetBorderManager() *BorderManager {
+// GetBorder 获取边框管理器
+func (p *PPr) GetBorder() *BorderManager {
     if nil == p.borderManager {
         p.borderManager = new(BorderManager)
         p.borderManager.isSet = false
@@ -79,6 +77,15 @@ func (p *PPr) GetSpacing() *Spacing {
     return p.spacing
 }
 
+// GetSection 获取节属性配置
+func (p *PPr) GetSection() *section.Section {
+    if nil == p.sect {
+        p.sect = new(section.Section)
+    }
+
+    return p.sect
+}
+
 // SetKeepLines
 func (p *PPr) SetKeepLines(keepLines bool) *PPr {
     p.keepLines = keepLines
@@ -91,75 +98,6 @@ func (p *PPr) SetKeepNext(keepNext bool) *PPr {
     p.keepNext = keepNext
 
     return p
-}
-
-func (p *PPr) GetStyleXmlBytes() ([]byte, error) {
-    buffer := new(bytes.Buffer)
-
-    buffer.WriteByte('<')
-    buffer.WriteString(template.ParagraphPPrStyleTag)
-    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrStyleVal, p.id))
-    buffer.WriteString("/>")
-
-    return buffer.Bytes(), nil
-}
-
-func (p *PPr) GetXmlBytes() ([]byte, error) {
-    buffer := new(bytes.Buffer)
-
-    buffer.WriteString(template.ParagraphPPrStart)
-
-    if nil != p.horizontalAlignment {
-        buffer.WriteString(strings.Replace(template.ParagraphPPrHorizontalAlignment, "{{TYPE}}", string(*p.horizontalAlignment), 1))
-    }
-
-    if nil != p.borderManager {
-        body, err := p.borderManager.GetXmlBytes()
-        if nil != err {
-            return nil, nil
-        }
-
-        buffer.Write(body)
-    }
-
-    if nil != p.identity {
-        body, err := p.identity.GetXmlBytes()
-        if nil != err {
-            return nil, nil
-        }
-
-        buffer.Write(body)
-    }
-
-    if nil != p.background {
-        body, err := p.background.GetXmlBytes()
-        if nil != err {
-            return nil, nil
-        }
-
-        buffer.Write(body)
-    }
-
-    if nil != p.spacing {
-        body, err := p.spacing.GetXmlBytes()
-        if nil != err {
-            return nil, nil
-        }
-
-        buffer.Write(body)
-    }
-
-    if p.keepLines {
-        buffer.WriteString(template.ParagraphPPrKeepLines)
-    }
-
-    if p.keepNext {
-        buffer.WriteString(template.ParagraphPPrKeepNext)
-    }
-
-    buffer.WriteString(template.ParagraphPPrEnd)
-
-    return buffer.Bytes(), nil
 }
 
 // SetHorizontalAlignment 设置水平对齐方式
