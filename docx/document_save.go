@@ -12,11 +12,15 @@ import (
 // Save 保存文件到路径
 // path 为一个完整的包含文件后缀名的路径地址
 func (d *Document) Save(path string) error {
-    for _, paragraph := range d.GetParagraphs() {
-        d.style.AddStyle(paragraph.GetParagraphProperties().GetId(), StyleTypeParagraph, paragraph.GetParagraphProperties(), paragraph.GetRunProperties())
+    for _, content := range d.GetContents() {
+        if DocumentContentTypeParagraph == content.ct {
+            p := content.paragraph
 
-        for _, run := range paragraph.GetRuns() {
-            d.style.AddStyle(run.GetRunProperties().GetId(), StyleTypeCharacter, nil, run.GetRunProperties())
+            d.style.AddStyle(p.GetParagraphProperties().GetId(), StyleTypeParagraph, p.GetParagraphProperties(), p.GetRunProperties())
+
+            for _, run := range p.GetRuns() {
+                d.style.AddStyle(run.GetRunProperties().GetId(), StyleTypeCharacter, nil, run.GetRunProperties())
+            }
         }
     }
 
@@ -161,13 +165,24 @@ func (d *Document) addDocumentXml(word *zip.Writer) error {
 
     buffer.WriteString(template.DocumentBodyStart)
 
-    for _, paragraph := range d.paragraphs {
-        body, err := paragraph.GetXmlBytes()
-        if nil != err {
-            return err
+    for _, content := range d.contents {
+        if DocumentContentTypeParagraph == content.ct {
+            body, err := content.paragraph.GetXmlBytes()
+            if nil != err {
+                return err
+            }
+
+            buffer.Write(body)
         }
 
-        buffer.Write(body)
+        if DocumentContentTypeTable == content.ct {
+            body, err := content.table.GetXmlBytes()
+            if nil != err {
+                return err
+            }
+
+            buffer.Write(body)
+        }
     }
 
     sectionBody, err := d.GetSection().GetXmlBytes()

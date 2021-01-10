@@ -13,7 +13,8 @@ type Background struct {
     // fill 16进制颜色值，指定背景色
     fill *string
 
-    // color 16进制颜色值，指定前景色
+    // color 16进制颜色值，指定前景色(文字颜色)
+    // 可选值: auto
     color *string
 
     // val 前景色蒙版的值
@@ -34,13 +35,13 @@ func (b *Background) SetBackgroundColor(color string) *Background {
     return b
 }
 
-// GetFrontColor 获取前景色
-func (b *Background) GetFrontColor() string {
+// GetColor 获取前景色
+func (b *Background) GetColor() string {
     return *b.color
 }
 
-// SetFrontColor 设置前景色，不包含#号
-func (b *Background) SetFrontColor(color string) *Background {
+// SetColor 设置前景色，不包含#号
+func (b *Background) SetColor(color string) *Background {
     b.isSet = true
     b.color = &color
 
@@ -67,9 +68,12 @@ func (b *Background) GetXmlBytes() ([]byte, error) {
 
     if nil != b.fill {
         buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.RunPPrBackgroundFill, *b.fill))
-    }
 
-    if nil != b.color {
+        if nil == b.color {
+            color := "auto"
+            b.color = &color
+        }
+
         buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.RunPPrBackgroundColor, *b.color))
     }
 
