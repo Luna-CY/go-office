@@ -25,13 +25,13 @@ const (
     ParagraphPPrKeepLines           = `<w:keeplines/>`
     ParagraphPPrKeepNext            = `<w:keepNext/>`
 
-    ParagraphPPrIdentityTag       = `w:ind`
-    ParagraphPPrIdentityLeft      = `w:left`
-    ParagraphPPrIdentityStart     = `w:start`
-    ParagraphPPrIdentityRight     = `w:right`
-    ParagraphPPrIdentityEnd       = `w:end`
-    ParagraphPPrIdentityHanging   = `w:hanging`
-    ParagraphPPrIdentityFirstLine = `w:firstLine`
+    ParagraphPPrIndentationTag       = `w:ind`
+    ParagraphPPrIndentationLeft      = `w:left`
+    ParagraphPPrIndentationStart     = `w:start`
+    ParagraphPPrIndentationRight     = `w:right`
+    ParagraphPPrIndentationEnd       = `w:end`
+    ParagraphPPrIndentationHanging   = `w:hanging`
+    ParagraphPPrIndentationFirstLine = `w:firstLine`
 
     ParagraphPPrBackgroundTag   = `w:shd`
     ParagraphPPrBackgroundFill  = `w:fill`

@@ -12,6 +12,15 @@ func (t *Table) GetXmlBytes() ([]byte, error) {
     buffer.WriteString(template.TableTag)
     buffer.WriteByte('>')
 
+    // w:tblPr
+    if nil != t.tblPr {
+        body, err := t.tblPr.GetXmlBytes()
+        if nil != err {
+            return nil, err
+        }
+        buffer.Write(body)
+    }
+
     // w:tblGrid
     buffer.WriteByte('<')
     buffer.WriteString(template.TableGridTag)

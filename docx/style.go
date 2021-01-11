@@ -5,6 +5,7 @@ import (
     "fmt"
     "github.com/Luna-CY/go-office/docx/paragraph"
     "github.com/Luna-CY/go-office/docx/run"
+    "github.com/Luna-CY/go-office/docx/table"
     "github.com/Luna-CY/go-office/docx/template"
 )
 
@@ -35,9 +36,23 @@ func (s *StyleConfig) GetDefaultRunProperties() *run.RPr {
     return s.rPrDefault
 }
 
-// AddStyle 添加一个样式结构
-func (s *StyleConfig) AddStyle(styleId string, styleType StyleType, pPr *paragraph.PPr, rPr *run.RPr) {
-    style := &Style{styleId: styleId, styleType: styleType, pPr: pPr, rPr: rPr}
+// AddParagraphStyle 添加一个段落的样式结构
+func (s *StyleConfig) AddParagraphStyle(styleId string, pPr *paragraph.PPr, rPr *run.RPr) {
+    style := &Style{styleId: styleId, styleType: StyleTypeParagraph, pPr: pPr, rPr: rPr}
+
+    s.styleList = append(s.styleList, style)
+}
+
+// AddRunStyle 添加一个文本的样式结构
+func (s *StyleConfig) AddRunStyle(styleId string, rPr *run.RPr) {
+    style := &Style{styleId: styleId, styleType: StyleTypeCharacter, rPr: rPr}
+
+    s.styleList = append(s.styleList, style)
+}
+
+// AddTableStyle 添加一个表格样式结构
+func (s *StyleConfig) AddTableStyle(styleId string, tblPr *table.TblPr) {
+    style := &Style{styleId: styleId, styleType: StyleTypeTable, tblPr: tblPr}
 
     s.styleList = append(s.styleList, style)
 }
@@ -108,6 +123,9 @@ type Style struct {
 
     // 文本样式属性
     rPr *run.RPr
+
+    // 表格样式
+    tblPr *table.TblPr
 }
 
 // SetStyleType 设置样式类型
@@ -134,6 +152,13 @@ func (s *Style) SetPPr(pPr *paragraph.PPr) *Style {
 //SetRPr 设置文本样式
 func (s *Style) SetRPr(rPr *run.RPr) *Style {
     s.rPr = rPr
+
+    return s
+}
+
+// SetTblPr 设置表格样式
+func (s *Style) SetTblPr(tblPr *table.TblPr) *Style {
+    s.tblPr = tblPr
 
     return s
 }
@@ -166,6 +191,15 @@ func (s *Style) GetXmlBytes() ([]byte, error) {
         buffer.Write(body)
     }
 
+    if nil != s.tblPr {
+        body, err := s.tblPr.GetXmlBytes()
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
+    }
+
     buffer.Write([]byte{'<', '/'})
     buffer.WriteString(template.StyleStyleTag)
     buffer.WriteByte('>')
@@ -178,4 +212,5 @@ type StyleType string
 const (
     StyleTypeParagraph = StyleType("paragraph")
     StyleTypeCharacter = StyleType("character")
+    StyleTypeTable     = StyleType("table")
 )

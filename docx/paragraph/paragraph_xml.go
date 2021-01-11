@@ -8,7 +8,7 @@ import (
 func (p *Paragraph) GetXmlBytes() ([]byte, error) {
     runBuffer := new(bytes.Buffer)
 
-    for _, r := range p.runs {
+    for _, r := range p.GetRuns() {
         body, err := r.GetXmlBytes()
         if nil != err {
             return nil, err

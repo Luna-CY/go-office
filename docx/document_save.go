@@ -16,11 +16,17 @@ func (d *Document) Save(path string) error {
         if DocumentContentTypeParagraph == content.ct {
             p := content.paragraph
 
-            d.style.AddStyle(p.GetParagraphProperties().GetId(), StyleTypeParagraph, p.GetParagraphProperties(), p.GetRunProperties())
+            d.style.AddParagraphStyle(p.GetProperties().GetId(), p.GetProperties(), p.GetRunProperties())
 
-            for _, run := range p.GetRuns() {
-                d.style.AddStyle(run.GetRunProperties().GetId(), StyleTypeCharacter, nil, run.GetRunProperties())
+            for _, r := range p.GetRuns() {
+                d.style.AddRunStyle(r.GetProperties().GetId(), r.GetProperties())
             }
+        }
+
+        if DocumentContentTypeTable == content.ct {
+            t := content.table
+
+            d.style.AddTableStyle(t.GetProperties().GetId(), t.GetProperties())
         }
     }
 
@@ -165,7 +171,7 @@ func (d *Document) addDocumentXml(word *zip.Writer) error {
 
     buffer.WriteString(template.DocumentBodyStart)
 
-    for _, content := range d.contents {
+    for _, content := range d.GetContents() {
         if DocumentContentTypeParagraph == content.ct {
             body, err := content.paragraph.GetXmlBytes()
             if nil != err {

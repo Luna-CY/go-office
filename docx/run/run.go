@@ -14,7 +14,7 @@ type Run struct {
     body bytes.Buffer
 }
 
-func (r *Run) GetRunProperties() *RPr {
+func (r *Run) GetProperties() *RPr {
     if nil == r.rpr {
         r.rpr = new(RPr)
     }

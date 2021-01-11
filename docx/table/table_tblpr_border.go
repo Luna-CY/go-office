@@ -1,4 +1,4 @@
-package paragraph
+package table
 
 import (
     "bytes"
@@ -14,17 +14,20 @@ type BorderManager struct {
     // top 上边框
     top *Border
 
-    // right 右边框
-    right *Border
+    // end 右边框
+    end *Border
 
     // bottom 下边框
     bottom *Border
 
-    // left 左边框
-    left *Border
+    // start 左边框
+    start *Border
 
-    // between 段落间边框重合时的边框样式
-    between *Border
+    // insideH 表格内行间边框的样式
+    insideH *Border
+
+    // insideV 表格内列间边框的样式
+    insideV *Border
 }
 
 // SetBorder 统一设置边框样式
@@ -33,10 +36,11 @@ func (b *BorderManager) SetBorder(style BorderStyle, color string, size uint8, s
 
     b.isSet = true
     b.top = border
-    b.right = border
+    b.end = border
     b.bottom = border
-    b.left = border
-    b.between = border
+    b.start = border
+    b.insideH = border
+    b.insideV = border
 
     return b
 }
@@ -56,7 +60,7 @@ func (b *BorderManager) SetRight(style BorderStyle, color string, size uint8, sp
     border := &Border{Style: style, Color: color, Size: size, Space: space, Shadow: shadow}
 
     b.isSet = true
-    b.right = border
+    b.end = border
 
     return b
 }
@@ -76,17 +80,27 @@ func (b *BorderManager) SetLeft(style BorderStyle, color string, size uint8, spa
     border := &Border{Style: style, Color: color, Size: size, Space: space, Shadow: shadow}
 
     b.isSet = true
-    b.left = border
+    b.start = border
 
     return b
 }
 
-// SetBetween 设置重合边框
-func (b *BorderManager) SetBetween(style BorderStyle, color string, size uint8, space uint, shadow bool) *BorderManager {
+// SetInsideHorizontal 设置表格内行间边框
+func (b *BorderManager) SetInsideHorizontal(style BorderStyle, color string, size uint8, space uint, shadow bool) *BorderManager {
     border := &Border{Style: style, Color: color, Size: size, Space: space, Shadow: shadow}
 
     b.isSet = true
-    b.between = border
+    b.insideH = border
+
+    return b
+}
+
+// SetInsideVertical 设置表格内列间边框
+func (b *BorderManager) SetInsideVertical(style BorderStyle, color string, size uint8, space uint, shadow bool) *BorderManager {
+    border := &Border{Style: style, Color: color, Size: size, Space: space, Shadow: shadow}
+
+    b.isSet = true
+    b.insideV = border
 
     return b
 }
@@ -98,10 +112,10 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
 
     buffer := new(bytes.Buffer)
 
-    buffer.WriteString(template.ParagraphPPrBorderStart)
+    buffer.WriteString(template.TblPrBorderStart)
 
     if nil != b.top {
-        body, err := b.getBorderBody(template.ParagraphPPrBorderTop, b.top)
+        body, err := b.getBorderBody(template.TblPrBorderTopTag, b.top)
         if nil != err {
             return nil, err
         }
@@ -109,8 +123,15 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
         buffer.Write(body)
     }
 
-    if nil != b.right {
-        body, err := b.getBorderBody(template.ParagraphPPrBorderRight, b.right)
+    if nil != b.end {
+        body, err := b.getBorderBody(template.TblPrBorderEndTag, b.end)
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
+
+        body, err = b.getBorderBody(template.TblPrBorderRightTag, b.end)
         if nil != err {
             return nil, err
         }
@@ -119,7 +140,7 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
     }
 
     if nil != b.bottom {
-        body, err := b.getBorderBody(template.ParagraphPPrBorderBottom, b.bottom)
+        body, err := b.getBorderBody(template.TblPrBorderBottomTag, b.bottom)
         if nil != err {
             return nil, err
         }
@@ -127,8 +148,15 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
         buffer.Write(body)
     }
 
-    if nil != b.left {
-        body, err := b.getBorderBody(template.ParagraphPPrBorderLeft, b.left)
+    if nil != b.start {
+        body, err := b.getBorderBody(template.TblPrBorderStartTag, b.start)
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
+
+        body, err = b.getBorderBody(template.TblPrBorderLeftTag, b.start)
         if nil != err {
             return nil, err
         }
@@ -136,8 +164,8 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
         buffer.Write(body)
     }
 
-    if nil != b.between {
-        body, err := b.getBorderBody(template.ParagraphPPrBorderTop, b.between)
+    if nil != b.insideH {
+        body, err := b.getBorderBody(template.TblPrBorderInsideHTag, b.insideH)
         if nil != err {
             return nil, err
         }
@@ -145,7 +173,16 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
         buffer.Write(body)
     }
 
-    buffer.WriteString(template.ParagraphPPrBorderEnd)
+    if nil != b.insideV {
+        body, err := b.getBorderBody(template.TblPrBorderInsideVTag, b.insideV)
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
+    }
+
+    buffer.WriteString(template.TblPrBorderEnd)
 
     return buffer.Bytes(), nil
 }

@@ -8,7 +8,7 @@ import (
 // PPr 段落的样式属性定义
 type PPr struct {
     // horizontalAlignment 水平对齐方式
-    horizontalAlignment *HorizontalAlignment
+    horizontalAlignment *HorizontalAlignmentType
 
     // borderManager 边框管理器
     borderManager *BorderManager
@@ -101,27 +101,27 @@ func (p *PPr) SetKeepNext(keepNext bool) *PPr {
 }
 
 // SetHorizontalAlignment 设置水平对齐方式
-func (p *PPr) SetHorizontalAlignment(alignment HorizontalAlignment) *PPr {
+func (p *PPr) SetHorizontalAlignment(alignment HorizontalAlignmentType) *PPr {
     p.horizontalAlignment = &alignment
 
     return p
 }
 
-type HorizontalAlignment string
+type HorizontalAlignmentType string
 
 const (
     // HorizontalAlignmentStart 左对齐
-    HorizontalAlignmentStart = HorizontalAlignment("start")
+    HorizontalAlignmentStart = HorizontalAlignmentType("start")
 
     // HorizontalAlignmentEnd 右对齐
-    HorizontalAlignmentEnd = HorizontalAlignment("end")
+    HorizontalAlignmentEnd = HorizontalAlignmentType("end")
 
     // HorizontalAlignmentCenter 居中对齐
-    HorizontalAlignmentCenter = HorizontalAlignment("center")
+    HorizontalAlignmentCenter = HorizontalAlignmentType("center")
 
     // HorizontalAlignmentBoth 左右对齐，不改变字符间距
-    HorizontalAlignmentBoth = HorizontalAlignment("both")
+    HorizontalAlignmentBoth = HorizontalAlignmentType("both")
 
     // HorizontalAlignmentDistribute 左右对齐，改变字符间距
-    HorizontalAlignmentDistribute = HorizontalAlignment("distribute")
+    HorizontalAlignmentDistribute = HorizontalAlignmentType("distribute")
 )

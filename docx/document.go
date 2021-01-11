@@ -4,6 +4,7 @@ import (
     "github.com/Luna-CY/go-office/docx/paragraph"
     "github.com/Luna-CY/go-office/docx/section"
     "github.com/Luna-CY/go-office/docx/table"
+    "sync"
 )
 
 // Document 文档结构定义
@@ -21,6 +22,7 @@ type Document struct {
     // background 文档的背景配置
     background Background
 
+    cm sync.RWMutex
     // contents 文档的内容列表
     contents []*DocumentContent
 
@@ -28,11 +30,14 @@ type Document struct {
     section section.Section
 }
 
-func (d *Document) GetStyle() *StyleConfig {
+func (d *Document) GetProperties() *StyleConfig {
     return &d.style
 }
 
 func (d *Document) GetContents() []*DocumentContent {
+    d.cm.RLock()
+    defer d.cm.RUnlock()
+
     return d.contents
 }
 
@@ -42,7 +47,9 @@ func (d *Document) AddParagraph() *paragraph.Paragraph {
     content.ct = DocumentContentTypeParagraph
 
     content.paragraph = new(paragraph.Paragraph)
+    d.cm.Lock()
     d.contents = append(d.contents, content)
+    d.cm.Unlock()
 
     return content.paragraph
 }
@@ -54,7 +61,9 @@ func (d *Document) AddTable() *table.Table {
 
     content.table = new(table.Table)
 
+    d.cm.Lock()
     d.contents = append(d.contents, content)
+    d.cm.Unlock()
 
     return content.table
 }
@@ -69,7 +78,9 @@ func (d *Document) AddTableWithColumns(columns int) *table.Table {
         content.table.AddCol()
     }
 
+    d.cm.Lock()
     d.contents = append(d.contents, content)
+    d.cm.Unlock()
 
     return content.table
 }

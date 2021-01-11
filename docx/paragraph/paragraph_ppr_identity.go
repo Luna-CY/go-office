@@ -63,24 +63,24 @@ func (i *Identity) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
     buffer.WriteByte('<')
-    buffer.WriteString(template.ParagraphPPrIdentityTag)
+    buffer.WriteString(template.ParagraphPPrIndentationTag)
 
     if nil != i.left {
-        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIdentityLeft, *i.left))
-        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIdentityStart, *i.left))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIndentationLeft, *i.left))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIndentationStart, *i.left))
     }
 
     if nil != i.right {
-        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIdentityRight, *i.right))
-        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIdentityEnd, *i.right))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIndentationRight, *i.right))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIndentationEnd, *i.right))
     }
 
     if nil != i.hanging {
-        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIdentityHanging, *i.hanging))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIndentationHanging, *i.hanging))
     }
 
     if nil != i.firstLine {
-        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIdentityFirstLine, *i.firstLine))
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrIndentationFirstLine, *i.firstLine))
     }
     buffer.WriteString("/>")
 

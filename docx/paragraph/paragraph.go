@@ -2,6 +2,7 @@ package paragraph
 
 import (
     "github.com/Luna-CY/go-office/docx/run"
+    "sync"
 )
 
 // Paragraph 段落结构
@@ -14,11 +15,12 @@ type Paragraph struct {
     // rpr 段落内容统一样式
     rpr *run.RPr
 
+    rm sync.RWMutex
     // runs Run 结构列表
     runs []*run.Run
 }
 
-func (p *Paragraph) GetParagraphProperties() *PPr {
+func (p *Paragraph) GetProperties() *PPr {
     if nil == p.ppr {
         p.ppr = new(PPr)
     }
@@ -35,13 +37,19 @@ func (p *Paragraph) GetRunProperties() *run.RPr {
 }
 
 func (p *Paragraph) GetRuns() []*run.Run {
+    p.rm.RLock()
+    defer p.rm.RUnlock()
+
     return p.runs
 }
 
 // AddRun 新增一个内容结构
 func (p *Paragraph) AddRun() *run.Run {
     r := new(run.Run)
+
+    p.rm.Lock()
     p.runs = append(p.runs, r)
+    p.rm.Unlock()
 
     return r
 }
@@ -49,7 +57,10 @@ func (p *Paragraph) AddRun() *run.Run {
 // AddBreakLine 添加换行符
 func (p *Paragraph) AddBreakLine(breakLineType run.BreakLineType, breakLineClearType run.BreakLineClearType) {
     r := new(run.Run)
+
+    p.rm.Lock()
     p.runs = append(p.runs, r)
+    p.rm.Unlock()
 
     r.AddBreakLine(breakLineType, breakLineClearType)
 }

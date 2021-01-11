@@ -19,7 +19,7 @@ type Table struct {
     rows []*Row
 }
 
-func (t *Table) GetTableProperties() *TblPr {
+func (t *Table) GetProperties() *TblPr {
     if nil == t.tblPr {
         t.tblPr = new(TblPr)
     }

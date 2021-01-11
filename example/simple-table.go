@@ -2,6 +2,7 @@ package main
 
 import (
     "github.com/Luna-CY/go-office/docx"
+    "github.com/Luna-CY/go-office/docx/table"
     "log"
 )
 
@@ -13,6 +14,9 @@ func main() {
 
     // 初始化创建三列
     t1 := doc.AddTableWithColumns(3)
+    t1.GetProperties().SetWidth(8000)
+    t1.GetProperties().GetCellMargin().SetMargin(300)
+    t1.GetProperties().GetBorder().SetBorder(table.BorderStyleSingle, "000000", 10, 0, false)
 
     // 单独增加一列
     t1.AddCol()
