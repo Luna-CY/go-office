@@ -82,5 +82,10 @@ func (p *PPr) GetXmlBytes() ([]byte, error) {
 
     buffer.WriteString(template.ParagraphPPrEnd)
 
+    empty := fmt.Sprintf(`%v%v`, template.ParagraphPPrStart, template.ParagraphPPrEnd)
+    if empty == buffer.String() {
+        return []byte{}, nil
+    }
+
     return buffer.Bytes(), nil
 }

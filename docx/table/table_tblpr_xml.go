@@ -79,5 +79,10 @@ func (t *TblPr) GetXmlBytes() ([]byte, error) {
 
     buffer.WriteString(template.TblPrEnd)
 
+    empty := fmt.Sprintf(`%v%v`, template.TblPrStart, template.TblPrEnd)
+    if empty == buffer.String() {
+        return []byte{}, nil
+    }
+
     return buffer.Bytes(), nil
 }

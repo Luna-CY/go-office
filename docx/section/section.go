@@ -2,6 +2,7 @@ package section
 
 import (
     "bytes"
+    "fmt"
     "github.com/Luna-CY/go-office/docx/template"
 )
 
@@ -157,6 +158,11 @@ func (s *Section) GetXmlBytes() ([]byte, error) {
     }
 
     buffer.WriteString(template.SectionEnd)
+
+    empty := fmt.Sprintf(`%v%v`, template.SectionStart, template.SectionEnd)
+    if empty == buffer.String() {
+        return []byte{}, nil
+    }
 
     return buffer.Bytes(), nil
 }

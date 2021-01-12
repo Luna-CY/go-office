@@ -1,4 +1,4 @@
-package table
+package cell
 
 import (
     "bytes"
@@ -13,7 +13,7 @@ func (c *Cell) GetXmlBytes() ([]byte, error) {
     buffer.WriteByte('>')
 
     for _, content := range c.contents {
-        if CellContentTypeParagraph == content.ct {
+        if ContentTypeParagraph == content.ct {
             body, err := content.paragraph.GetXmlBytes()
             if nil != err {
                 return nil, err
@@ -22,7 +22,7 @@ func (c *Cell) GetXmlBytes() ([]byte, error) {
             buffer.Write(body)
         }
 
-        if CellContentTypeTable == content.ct {
+        if ContentTypeTable == content.ct {
             body, err := content.table.GetXmlBytes()
             if nil != err {
                 return nil, err

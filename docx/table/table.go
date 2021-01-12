@@ -3,6 +3,7 @@ package table
 import (
     "errors"
     "fmt"
+    "github.com/Luna-CY/go-office/docx/table/row"
     "sync"
 )
 
@@ -16,7 +17,7 @@ type Table struct {
 
     rm sync.RWMutex
     // rows 行列表
-    rows []*Row
+    rows []*row.Row
 }
 
 func (t *Table) GetProperties() *TblPr {
@@ -45,8 +46,8 @@ func (t *Table) addColWithWidth(width *int) {
     t.gridCols = append(t.gridCols, col)
     t.gm.Unlock()
 
-    for _, row := range t.rows {
-        row.addCell()
+    for _, r := range t.GetRows() {
+        r.AddCell()
     }
 }
 
@@ -72,8 +73,8 @@ func (t *Table) addColWithIndexAndWidth(index uint, width *int) {
         t.gridCols = append(t.gridCols, col)
         t.gm.Unlock()
 
-        for _, row := range t.rows {
-            row.addCellWithIndex(index)
+        for _, r := range t.rows {
+            r.AddCellWithIndex(index)
         }
 
         return
@@ -89,8 +90,8 @@ func (t *Table) addColWithIndexAndWidth(index uint, width *int) {
     t.gridCols = append(t.gridCols, after...)
     t.gm.Unlock()
 
-    for _, row := range t.rows {
-        row.addCellWithIndex(index)
+    for _, r := range t.rows {
+        r.AddCellWithIndex(index)
     }
 }
 
@@ -115,24 +116,24 @@ func (t *Table) GetCols() []*GridCol {
 }
 
 // AddRow 添加一行
-func (t *Table) AddRow() *Row {
-    row := new(Row)
+func (t *Table) AddRow() *row.Row {
+    r := new(row.Row)
     for i := 0; i < len(t.gridCols); i++ {
-        row.addCell()
+        r.AddCell()
     }
 
     t.rm.Lock()
-    t.rows = append(t.rows, row)
+    t.rows = append(t.rows, r)
     t.rm.Unlock()
 
-    return row
+    return r
 }
 
 // AddRowWithIndex 添加一行到指定位置
-func (t *Table) AddRowWithIndex(index uint) *Row {
-    row := new(Row)
+func (t *Table) AddRowWithIndex(index uint) *row.Row {
+    r := new(row.Row)
     for i := 0; i < len(t.gridCols); i++ {
-        row.addCell()
+        r.AddCell()
     }
 
     if index > uint(len(t.rows)) {
@@ -141,25 +142,25 @@ func (t *Table) AddRowWithIndex(index uint) *Row {
 
     if index == uint(len(t.rows)) {
         t.rm.Lock()
-        t.rows = append(t.rows, row)
+        t.rows = append(t.rows, r)
         t.rm.Unlock()
 
-        return row
+        return r
     }
 
     before := t.rows[:index]
     after := t.rows[index:]
 
-    t.rows = make([]*Row, len(t.rows)+1)
+    t.rows = make([]*row.Row, len(t.rows)+1)
     t.rows = append(t.rows, before...)
-    t.rows[index] = row
+    t.rows[index] = r
     t.rows = append(t.rows, after...)
 
-    return row
+    return r
 }
 
 // GetRow 获取指定行结构
-func (t *Table) GetRow(index uint) (*Row, error) {
+func (t *Table) GetRow(index uint) (*row.Row, error) {
     if index > uint(len(t.rows)) {
         return nil, errors.New(fmt.Sprintf("索引溢出"))
     }
@@ -170,7 +171,7 @@ func (t *Table) GetRow(index uint) (*Row, error) {
     return t.rows[index], nil
 }
 
-func (t *Table) GetRows() []*Row {
+func (t *Table) GetRows() []*row.Row {
     t.rm.RLock()
     defer t.rm.RUnlock()
 

@@ -5,7 +5,6 @@ const (
     TableGridTag      = `w:tblGrid`
     TableGridColTag   = `w:gridCol`
     TableGridColWidth = `w:w`
-    TableRowTag       = `w:tr`
     TableRowCellTag   = `w:tc`
 
     TblPrStart                  = `<w:tblPr>`
@@ -40,4 +39,17 @@ const (
     TblPrCellMarginEnd          = `</w:tblCellMar>`
     TblPrCellSpacingTag         = `w:tblCellSpacing`
     TblPrLayoutTag              = `w:tblLayout`
+
+    TableRowTag                        = `w:tr`
+    TableRowTrPrStart                  = `<w:trPr>`
+    TableRowTrPrEnd                    = `</w:trPr>`
+    TableRowTrPrVal                    = `w:val`
+    TableRowTrPrType                   = `w:type`
+    TableRowTrPrCantSplitTag           = `<w:cantSplit/>`
+    TableRowTrPrHiddenTag              = `<w:hidden/>`
+    TableRowTrPrHorizontalAlignmentTag = `w:jc`
+    TableRowTrPrCellSpacingTag         = `w:tblCellSpacing`
+    TableRowTrPrHeaderTag              = `<w:tblHeader/>`
+    TableRowTrPrHeightTag              = `w:trHeight`
+    TableRowTrPrHeightRule             = `w:hRule`
 )

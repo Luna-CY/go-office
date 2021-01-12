@@ -91,5 +91,10 @@ func (r *RPr) GetXmlBytes() ([]byte, error) {
 
     buffer.WriteString(template.RunRPrEnd)
 
+    empty := fmt.Sprintf(`%v%v`, template.RunRPrStart, template.RunRPrEnd)
+    if empty == buffer.String() {
+        return []byte{}, nil
+    }
+
     return buffer.Bytes(), nil
 }
