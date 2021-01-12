@@ -3,12 +3,33 @@ package cell
 import (
     "github.com/Luna-CY/go-office/docx/paragraph"
     "github.com/Luna-CY/go-office/docx/table"
+    "sync"
 )
 
 // Cell 表格单元格结构定义
 type Cell struct {
+    pr *TcPr
+
+    cm sync.RWMutex
     // contents 单元格的内容
     contents []*Content
+}
+
+// GetProperties 获取属性配置结构
+func (c *Cell) GetProperties() *TcPr {
+    if nil == c.pr {
+        c.pr = new(TcPr)
+    }
+
+    return c.pr
+}
+
+// GetContents 获取所有内容列表
+func (c *Cell) GetContents() []*Content {
+    c.cm.RLock()
+    defer c.cm.RUnlock()
+
+    return c.contents
 }
 
 // AddParagraph 添加一个段落
@@ -17,7 +38,9 @@ func (c *Cell) AddParagraph() *paragraph.Paragraph {
     content.ct = ContentTypeParagraph
     content.paragraph = new(paragraph.Paragraph)
 
+    c.cm.Lock()
     c.contents = append(c.contents, content)
+    c.cm.Unlock()
 
     return content.paragraph
 }
@@ -28,7 +51,9 @@ func (c *Cell) AddTable() *table.Table {
     content.ct = ContentTypeTable
     content.table = new(table.Table)
 
+    c.cm.Lock()
     c.contents = append(c.contents, content)
+    c.cm.Unlock()
 
     return content.table
 }

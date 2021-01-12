@@ -34,6 +34,56 @@ type TrPr struct {
     heightRule *HeightRuleType
 }
 
+// SetCantSplit 设置不允许分割标志位
+func (t *TrPr) SetCantSplit(cantSplit bool) *TrPr {
+    t.cantSplit = cantSplit
+
+    return t
+}
+
+// SetHidden 设置隐藏标志位
+func (t *TrPr) SetHidden(hidden bool) *TrPr {
+    t.hidden = hidden
+
+    return t
+}
+
+// SetHorizontalAlignment 设置水平对齐方式
+func (t *TrPr) SetHorizontalAlignment(horizontalAlignment HorizontalAlignmentType) *TrPr {
+    t.horizontalAlignment = &horizontalAlignment
+
+    return t
+}
+
+// SetCellSpacing 设置单元格间距
+func (t *TrPr) SetCellSpacing(cellSpacing int) *TrPr {
+    t.cellSpacing = &cellSpacing
+
+    return t
+}
+
+// SetHeader 设置表头标志位
+func (t *TrPr) SetHeader(header bool) *TrPr {
+    t.header = header
+
+    return t
+}
+
+// SetHeight 设置行高
+func (t *TrPr) SetHeight(height int) *TrPr {
+    t.height = &height
+
+    return t
+}
+
+// SetHeightWithRule 设置行高以及行高规则
+func (t *TrPr) SetHeightWithRule(height int, rule HeightRuleType) *TrPr {
+    t.height = &height
+    t.heightRule = &rule
+
+    return t
+}
+
 type HorizontalAlignmentType string
 
 const (

@@ -12,7 +12,16 @@ func (r *Row) GetXmlBytes() ([]byte, error) {
     buffer.WriteString(template.TableRowTag)
     buffer.WriteByte('>')
 
-    for _, cell := range r.cells {
+    if nil != r.pr {
+        body, err := r.pr.GetXmlBytes()
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
+    }
+
+    for _, cell := range r.GetCells() {
         body, err := cell.GetXmlBytes()
         if nil != err {
             return nil, err

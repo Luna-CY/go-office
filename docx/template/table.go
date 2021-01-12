@@ -5,7 +5,6 @@ const (
     TableGridTag      = `w:tblGrid`
     TableGridColTag   = `w:gridCol`
     TableGridColWidth = `w:w`
-    TableRowCellTag   = `w:tc`
 
     TblPrStart                  = `<w:tblPr>`
     TblPrEnd                    = `</w:tblPr>`
@@ -23,6 +22,11 @@ const (
     TblPrBorderEndTag           = `w:end`
     TblPrBorderInsideHTag       = `w:insideH`
     TblPrBorderInsideVTag       = `w:insideV`
+    TblPrBorderStyle            = `w:val`
+    TblPrBorderSize             = `w:sz`
+    TblPrBorderSpace            = `w:space`
+    TblPrBorderColor            = `w:color`
+    TblPrBorderShadow           = `w:shadow`
     TblPrCaptionTag             = `w:tblCaption`
     TblPrIndentationTag         = `w:tblInd`
     TblPrBackgroundTag          = `w:shd`
@@ -52,4 +56,42 @@ const (
     TableRowTrPrHeaderTag              = `<w:tblHeader/>`
     TableRowTrPrHeightTag              = `w:trHeight`
     TableRowTrPrHeightRule             = `w:hRule`
+
+    TableCellTag                     = `w:tc`
+    TableCellTcPrStart               = `<w:tcPr>`
+    TableCellTcPrEnd                 = `</w:tcPr>`
+    TableCellTcPrVal                 = `w:val`
+    TableCellTcPrW                   = `w:w`
+    TableCellTcPrType                = `w:type`
+    TableCellTcPrNoWrapTag           = `<noWrap/>`
+    TableCellTcPrGridSpanTag         = `w:gridSpan`
+    TableCellTcPrTcFitTextTag        = `w:tcFitText`
+    TableCellTcPrVMergeTag           = `vMerge`
+    TableCellTcPrBackgroundTag       = `w:shd`
+    TableCellTcPrBackgroundFill      = `w:fill`
+    TableCellTcPrBackgroundColor     = `w:color`
+    TableCellTcPrBorderStart         = `<w:tcBorders>`
+    TableCellTcPrBorderEnd           = `</w:tcBorders>`
+    TableCellTcPrBorderTopTag        = `w:top`
+    TableCellTcPrBorderStartTag      = `w:start`
+    TableCellTcPrBorderLeftTag       = `w:left`
+    TableCellTcPrBorderBottomTag     = `w:bottom`
+    TableCellTcPrBorderRightTag      = `w:right`
+    TableCellTcPrBorderEndTag        = `w:end`
+    TableCellTcPrBorderInsideHTag    = `w:insideH`
+    TableCellTcPrBorderInsideVTag    = `w:insideV`
+    TableCellTcPrBorderStyle         = `w:val`
+    TableCellTcPrBorderSize          = `w:sz`
+    TableCellTcPrBorderSpace         = `w:space`
+    TableCellTcPrBorderColor         = `w:color`
+    TableCellTcPrBorderShadow        = `w:shadow`
+    TableCellTcPrCellMarginStart     = `<w:tcMar>`
+    TableCellTcPrCellMarginTopTag    = `w:top`
+    TableCellTcPrCellMarginStartTag  = `w:start`
+    TableCellTcPrCellMarginLeftTag   = `w:left`
+    TableCellTcPrCellMarginBottomTag = `w:bottom`
+    TableCellTcPrCellMarginEndTag    = `w:end`
+    TableCellTcPrCellMarginRightTag  = `w:right`
+    TableCellTcPrCellMarginEnd       = `</w:tcMar>`
+    TableCellTcPrCellWidth           = `w:tcW`
 )

@@ -1,4 +1,4 @@
-package table
+package cell
 
 import (
     "bytes"
@@ -7,6 +7,7 @@ import (
 )
 
 // BorderManager 边框管理器
+// TODO: 未实现 tl2br(左上到右下斜线)以及tr2bl(左下到右上斜线)两个样式
 type BorderManager struct {
     // isSet 是否设置了边框
     isSet bool
@@ -112,10 +113,10 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
 
     buffer := new(bytes.Buffer)
 
-    buffer.WriteString(template.TblPrBorderStart)
+    buffer.WriteString(template.TableCellTcPrBorderStart)
 
     if nil != b.top {
-        body, err := b.getBorderBody(template.TblPrBorderTopTag, b.top)
+        body, err := b.getBorderBody(template.TableCellTcPrBorderTopTag, b.top)
         if nil != err {
             return nil, err
         }
@@ -124,14 +125,14 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
     }
 
     if nil != b.end {
-        body, err := b.getBorderBody(template.TblPrBorderEndTag, b.end)
+        body, err := b.getBorderBody(template.TableCellTcPrBorderEndTag, b.end)
         if nil != err {
             return nil, err
         }
 
         buffer.Write(body)
 
-        body, err = b.getBorderBody(template.TblPrBorderRightTag, b.end)
+        body, err = b.getBorderBody(template.TableCellTcPrBorderRightTag, b.end)
         if nil != err {
             return nil, err
         }
@@ -140,7 +141,7 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
     }
 
     if nil != b.bottom {
-        body, err := b.getBorderBody(template.TblPrBorderBottomTag, b.bottom)
+        body, err := b.getBorderBody(template.TableCellTcPrBorderBottomTag, b.bottom)
         if nil != err {
             return nil, err
         }
@@ -149,14 +150,14 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
     }
 
     if nil != b.start {
-        body, err := b.getBorderBody(template.TblPrBorderStartTag, b.start)
+        body, err := b.getBorderBody(template.TableCellTcPrBorderStartTag, b.start)
         if nil != err {
             return nil, err
         }
 
         buffer.Write(body)
 
-        body, err = b.getBorderBody(template.TblPrBorderLeftTag, b.start)
+        body, err = b.getBorderBody(template.TableCellTcPrBorderLeftTag, b.start)
         if nil != err {
             return nil, err
         }
@@ -165,7 +166,7 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
     }
 
     if nil != b.insideH {
-        body, err := b.getBorderBody(template.TblPrBorderInsideHTag, b.insideH)
+        body, err := b.getBorderBody(template.TableCellTcPrBorderInsideHTag, b.insideH)
         if nil != err {
             return nil, err
         }
@@ -174,7 +175,7 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
     }
 
     if nil != b.insideV {
-        body, err := b.getBorderBody(template.TblPrBorderInsideVTag, b.insideV)
+        body, err := b.getBorderBody(template.TableCellTcPrBorderInsideVTag, b.insideV)
         if nil != err {
             return nil, err
         }
@@ -182,7 +183,7 @@ func (b *BorderManager) GetXmlBytes() ([]byte, error) {
         buffer.Write(body)
     }
 
-    buffer.WriteString(template.TblPrBorderEnd)
+    buffer.WriteString(template.TableCellTcPrBorderEnd)
 
     return buffer.Bytes(), nil
 }
@@ -193,11 +194,11 @@ func (b *BorderManager) getBorderBody(tag string, border *Border) ([]byte, error
     buffer.WriteByte('<')
     buffer.WriteString(tag)
 
-    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TblPrBorderStyle, border.Style))
-    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TblPrBorderSize, border.Size))
-    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TblPrBorderColor, border.Color))
-    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TblPrBorderSpace, border.Space))
-    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TblPrBorderShadow, border.Shadow))
+    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TableCellTcPrBorderStyle, border.Style))
+    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TableCellTcPrBorderSize, border.Size))
+    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TableCellTcPrBorderColor, border.Color))
+    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TableCellTcPrBorderSpace, border.Space))
+    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TableCellTcPrBorderShadow, border.Shadow))
 
     buffer.WriteString("/>")
 

@@ -1,4 +1,4 @@
-package table
+package cell
 
 import (
     "bytes"
@@ -107,53 +107,53 @@ func (c *CellMargin) GetXmlBytes() ([]byte, error) {
 
     buffer := new(bytes.Buffer)
 
-    buffer.WriteString(template.TblPrCellMarginStart)
+    buffer.WriteString(template.TableCellTcPrCellMarginStart)
 
     if nil != c.top {
         buffer.WriteByte('<')
-        buffer.WriteString(template.TblPrCellMarginTopTag)
+        buffer.WriteString(template.TableCellTcPrCellMarginTopTag)
         // type为固定值dxa，点的二十分之一
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.top, template.TblPrType, "dxa"))
+        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TableCellTcPrW, *c.top, template.TableCellTcPrType, "dxa"))
         buffer.WriteString("/>")
     }
 
     if nil != c.end {
         buffer.WriteByte('<')
-        buffer.WriteString(template.TblPrCellMarginEndTag)
+        buffer.WriteString(template.TableCellTcPrCellMarginEndTag)
         // type为固定值dxa，点的二十分之一
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.end, template.TblPrType, "dxa"))
+        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TableCellTcPrW, *c.end, template.TableCellTcPrType, "dxa"))
         buffer.WriteString("/>")
 
         buffer.WriteByte('<')
-        buffer.WriteString(template.TblPrCellMarginRightTag)
+        buffer.WriteString(template.TableCellTcPrCellMarginRightTag)
         // type为固定值dxa，点的二十分之一
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.end, template.TblPrType, "dxa"))
+        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TableCellTcPrW, *c.end, template.TableCellTcPrType, "dxa"))
         buffer.WriteString("/>")
     }
 
     if nil != c.bottom {
         buffer.WriteByte('<')
-        buffer.WriteString(template.TblPrCellMarginBottomTag)
+        buffer.WriteString(template.TableCellTcPrCellMarginBottomTag)
         // type为固定值dxa，点的二十分之一
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.bottom, template.TblPrType, "dxa"))
+        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TableCellTcPrW, *c.bottom, template.TableCellTcPrType, "dxa"))
         buffer.WriteString("/>")
     }
 
     if nil != c.start {
         buffer.WriteByte('<')
-        buffer.WriteString(template.TblPrCellMarginStartTag)
+        buffer.WriteString(template.TableCellTcPrCellMarginStartTag)
         // type为固定值dxa，点的二十分之一
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.start, template.TblPrType, "dxa"))
+        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TableCellTcPrW, *c.start, template.TableCellTcPrType, "dxa"))
         buffer.WriteString("/>")
 
         buffer.WriteByte('<')
-        buffer.WriteString(template.TblPrCellMarginLeftTag)
+        buffer.WriteString(template.TableCellTcPrCellMarginLeftTag)
         // type为固定值dxa，点的二十分之一
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.start, template.TblPrType, "dxa"))
+        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TableCellTcPrW, *c.start, template.TableCellTcPrType, "dxa"))
         buffer.WriteString("/>")
     }
 
-    buffer.WriteString(template.TblPrCellMarginEnd)
+    buffer.WriteString(template.TableCellTcPrCellMarginEnd)
 
     return buffer.Bytes(), nil
 }

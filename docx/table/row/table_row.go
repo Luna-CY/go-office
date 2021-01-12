@@ -17,7 +17,7 @@ type Row struct {
     cells []*cell.Cell
 }
 
-// GetProperties 获取属性配置指针
+// GetProperties 获取属性配置结构
 func (r *Row) GetProperties() *TrPr {
     if nil == r.pr {
         r.pr = new(TrPr)

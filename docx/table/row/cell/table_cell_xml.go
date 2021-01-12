@@ -9,10 +9,19 @@ func (c *Cell) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
     buffer.WriteByte('<')
-    buffer.WriteString(template.TableRowCellTag)
+    buffer.WriteString(template.TableCellTag)
     buffer.WriteByte('>')
 
-    for _, content := range c.contents {
+    if nil != c.pr {
+        body, err := c.pr.GetXmlBytes()
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
+    }
+
+    for _, content := range c.GetContents() {
         if ContentTypeParagraph == content.ct {
             body, err := content.paragraph.GetXmlBytes()
             if nil != err {
@@ -33,7 +42,7 @@ func (c *Cell) GetXmlBytes() ([]byte, error) {
     }
 
     buffer.Write([]byte{'<', '/'})
-    buffer.WriteString(template.TableRowCellTag)
+    buffer.WriteString(template.TableCellTag)
     buffer.WriteByte('>')
 
     return buffer.Bytes(), nil
