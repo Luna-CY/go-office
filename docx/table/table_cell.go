@@ -1,14 +1,14 @@
-package cell
+package table
 
 import (
     "github.com/Luna-CY/go-office/docx/paragraph"
-    "github.com/Luna-CY/go-office/docx/table"
+    "github.com/Luna-CY/go-office/docx/table/row/cell"
     "sync"
 )
 
 // Cell 表格单元格结构定义
 type Cell struct {
-    pr *TcPr
+    pr *cell.TcPr
 
     cm sync.RWMutex
     // contents 单元格的内容
@@ -16,9 +16,9 @@ type Cell struct {
 }
 
 // GetProperties 获取属性配置结构
-func (c *Cell) GetProperties() *TcPr {
+func (c *Cell) GetProperties() *cell.TcPr {
     if nil == c.pr {
-        c.pr = new(TcPr)
+        c.pr = new(cell.TcPr)
     }
 
     return c.pr
@@ -46,10 +46,10 @@ func (c *Cell) AddParagraph() *paragraph.Paragraph {
 }
 
 // AddTable 添加一个表格
-func (c *Cell) AddTable() *table.Table {
+func (c *Cell) AddTable() *Table {
     content := new(Content)
     content.ct = ContentTypeTable
-    content.table = new(table.Table)
+    content.table = new(Table)
 
     c.cm.Lock()
     c.contents = append(c.contents, content)
@@ -66,7 +66,7 @@ type Content struct {
     paragraph *paragraph.Paragraph
 
     // 表格
-    table *table.Table
+    table *Table
 }
 
 type ContentType string

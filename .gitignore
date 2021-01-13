@@ -19,3 +19,6 @@
 
 # docx
 *.docx
+
+# output
+out/

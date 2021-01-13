@@ -3,7 +3,6 @@ package table
 import (
     "errors"
     "fmt"
-    "github.com/Luna-CY/go-office/docx/table/row"
     "sync"
 )
 
@@ -17,7 +16,7 @@ type Table struct {
 
     rm sync.RWMutex
     // rows 行列表
-    rows []*row.Row
+    rows []*Row
 }
 
 func (t *Table) GetProperties() *TblPr {
@@ -116,8 +115,8 @@ func (t *Table) GetCols() []*GridCol {
 }
 
 // AddRow 添加一行
-func (t *Table) AddRow() *row.Row {
-    r := new(row.Row)
+func (t *Table) AddRow() *Row {
+    r := new(Row)
     for i := 0; i < len(t.gridCols); i++ {
         r.AddCell()
     }
@@ -130,8 +129,8 @@ func (t *Table) AddRow() *row.Row {
 }
 
 // AddRowWithIndex 添加一行到指定位置
-func (t *Table) AddRowWithIndex(index uint) *row.Row {
-    r := new(row.Row)
+func (t *Table) AddRowWithIndex(index uint) *Row {
+    r := new(Row)
     for i := 0; i < len(t.gridCols); i++ {
         r.AddCell()
     }
@@ -151,7 +150,7 @@ func (t *Table) AddRowWithIndex(index uint) *row.Row {
     before := t.rows[:index]
     after := t.rows[index:]
 
-    t.rows = make([]*row.Row, len(t.rows)+1)
+    t.rows = make([]*Row, len(t.rows)+1)
     t.rows = append(t.rows, before...)
     t.rows[index] = r
     t.rows = append(t.rows, after...)
@@ -160,7 +159,7 @@ func (t *Table) AddRowWithIndex(index uint) *row.Row {
 }
 
 // GetRow 获取指定行结构
-func (t *Table) GetRow(index uint) (*row.Row, error) {
+func (t *Table) GetRow(index uint) (*Row, error) {
     if index > uint(len(t.rows)) {
         return nil, errors.New(fmt.Sprintf("索引溢出"))
     }
@@ -171,7 +170,7 @@ func (t *Table) GetRow(index uint) (*row.Row, error) {
     return t.rows[index], nil
 }
 
-func (t *Table) GetRows() []*row.Row {
+func (t *Table) GetRows() []*Row {
     t.rm.RLock()
     defer t.rm.RUnlock()
 

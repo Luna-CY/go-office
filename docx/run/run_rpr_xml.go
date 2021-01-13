@@ -47,7 +47,7 @@ func (r *RPr) GetXmlBytes() ([]byte, error) {
     }
 
     if nil != r.color {
-        buffer.WriteString(fmt.Sprintf(`<%v %v="%v" />`, template.RunRPrColorTag, template.RunRPrVal, *r.color))
+        buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.RunRPrColorTag, template.RunRPrVal, *r.color))
     }
 
     if nil != r.underline {
@@ -73,7 +73,7 @@ func (r *RPr) GetXmlBytes() ([]byte, error) {
     }
 
     if nil != r.size {
-        buffer.WriteString(fmt.Sprintf(`<%v %v="%v" />`, template.RunRPrSizeTag, template.RunRPrVal, *r.size))
+        buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.RunRPrSizeTag, template.RunRPrVal, *r.size))
     }
 
     if nil != r.background {
@@ -86,7 +86,7 @@ func (r *RPr) GetXmlBytes() ([]byte, error) {
     }
 
     if nil != r.highlight {
-        buffer.WriteString(fmt.Sprintf(`<%v %v="%v" />`, template.RunRPrHighlightTag, template.RunRPrVal, *r.highlight))
+        buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.RunRPrHighlightTag, template.RunRPrVal, *r.highlight))
     }
 
     buffer.WriteString(template.RunRPrEnd)

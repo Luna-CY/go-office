@@ -7,6 +7,7 @@ import (
     "github.com/Luna-CY/go-office/docx/run"
     "github.com/Luna-CY/go-office/docx/table"
     "github.com/Luna-CY/go-office/docx/template"
+    "sync"
 )
 
 // StyleConfig 样式配置结构
@@ -17,6 +18,7 @@ type StyleConfig struct {
     // rPrDefault 文本的默认样式
     rPrDefault *run.RPr
 
+    sm        sync.RWMutex
     styleList []*Style
 }
 
@@ -40,6 +42,9 @@ func (s *StyleConfig) GetDefaultRunProperties() *run.RPr {
 func (s *StyleConfig) AddParagraphStyle(styleId string, pPr *paragraph.PPr, rPr *run.RPr) {
     style := &Style{styleId: styleId, styleType: StyleTypeParagraph, pPr: pPr, rPr: rPr}
 
+    s.sm.Lock()
+    defer s.sm.Unlock()
+
     s.styleList = append(s.styleList, style)
 }
 
@@ -47,12 +52,18 @@ func (s *StyleConfig) AddParagraphStyle(styleId string, pPr *paragraph.PPr, rPr 
 func (s *StyleConfig) AddRunStyle(styleId string, rPr *run.RPr) {
     style := &Style{styleId: styleId, styleType: StyleTypeCharacter, rPr: rPr}
 
+    s.sm.Lock()
+    defer s.sm.Unlock()
+
     s.styleList = append(s.styleList, style)
 }
 
 // AddTableStyle 添加一个表格样式结构
 func (s *StyleConfig) AddTableStyle(styleId string, tblPr *table.TblPr) {
     style := &Style{styleId: styleId, styleType: StyleTypeTable, tblPr: tblPr}
+
+    s.sm.Lock()
+    defer s.sm.Unlock()
 
     s.styleList = append(s.styleList, style)
 }
@@ -69,28 +80,30 @@ func (s *StyleConfig) GetXmlBytes() ([]byte, error) {
 
         // 段落默认样式
         if nil != s.pPrDefault {
-            buffer.WriteString(template.StyleDefaultParagraphStart)
-
             body, err := s.pPrDefault.GetXmlBytes()
             if nil != err {
                 return nil, err
             }
-            buffer.Write(body)
 
-            buffer.WriteString(template.StyleDefaultParagraphEnd)
+            if 0 < len(body) {
+                buffer.WriteString(template.StyleDefaultParagraphStart)
+                buffer.Write(body)
+                buffer.WriteString(template.StyleDefaultParagraphEnd)
+            }
         }
 
         // 文本默认样式
         if nil != s.rPrDefault {
-            buffer.WriteString(template.StyleDefaultRunStart)
-
             body, err := s.rPrDefault.GetXmlBytes()
             if nil != err {
                 return nil, err
             }
-            buffer.Write(body)
 
-            buffer.WriteString(template.StyleDefaultRunEnd)
+            if 0 < len(body) {
+                buffer.WriteString(template.StyleDefaultRunStart)
+                buffer.Write(body)
+                buffer.WriteString(template.StyleDefaultRunEnd)
+            }
         }
 
         buffer.WriteString(template.StyleDocDefaultEnd)

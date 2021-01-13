@@ -1,26 +1,26 @@
-package row
+package table
 
 import (
     "errors"
     "fmt"
-    "github.com/Luna-CY/go-office/docx/table/row/cell"
+    "github.com/Luna-CY/go-office/docx/table/row"
     "sync"
 )
 
 // Row 表格行结构定义
 type Row struct {
     // pr 表格行的属性指针
-    pr *TrPr
+    pr *row.TrPr
 
     cm sync.RWMutex
     // 单元格列表
-    cells []*cell.Cell
+    cells []*Cell
 }
 
 // GetProperties 获取属性配置结构
-func (r *Row) GetProperties() *TrPr {
+func (r *Row) GetProperties() *row.TrPr {
     if nil == r.pr {
-        r.pr = new(TrPr)
+        r.pr = new(row.TrPr)
     }
 
     return r.pr
@@ -31,11 +31,11 @@ func (r *Row) AddCell() {
     r.cm.Lock()
     defer r.cm.Unlock()
 
-    r.cells = append(r.cells, new(cell.Cell))
+    r.cells = append(r.cells, new(Cell))
 }
 
 // GetCells 获取全部单元格
-func (r *Row) GetCells() []*cell.Cell {
+func (r *Row) GetCells() []*Cell {
     r.cm.RLock()
     r.cm.RUnlock()
 
@@ -43,7 +43,7 @@ func (r *Row) GetCells() []*cell.Cell {
 }
 
 // GetCell 获取指定位置的单元格
-func (r *Row) GetCell(index uint) (*cell.Cell, error) {
+func (r *Row) GetCell(index uint) (*Cell, error) {
     if index > uint(len(r.cells)) {
         return nil, errors.New(fmt.Sprintf("索引溢出"))
     }
@@ -57,7 +57,7 @@ func (r *Row) GetCell(index uint) (*cell.Cell, error) {
 // AddCellWithIndex 添加一列到指定位置
 func (r *Row) AddCellWithIndex(index uint) {
     if index == uint(len(r.cells)) {
-        r.cells = append(r.cells, new(cell.Cell))
+        r.cells = append(r.cells, new(Cell))
 
         return
     }
@@ -68,8 +68,8 @@ func (r *Row) AddCellWithIndex(index uint) {
     before := r.cells[:index]
     after := r.cells[index:]
 
-    r.cells = make([]*cell.Cell, len(r.cells)+1)
+    r.cells = make([]*Cell, len(r.cells)+1)
     r.cells = append(r.cells, before...)
-    r.cells[index] = new(cell.Cell)
+    r.cells[index] = new(Cell)
     r.cells = append(r.cells, after...)
 }
