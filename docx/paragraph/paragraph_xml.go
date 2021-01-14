@@ -6,7 +6,34 @@ import (
 )
 
 func (p *Paragraph) GetXmlBytes() ([]byte, error) {
-    runBuffer := new(bytes.Buffer)
+    if nil == p.ppr && 0 == len(p.GetRuns()) {
+        return []byte{}, nil
+    }
+
+    buffer := new(bytes.Buffer)
+    buffer.WriteString(template.ParagraphStart)
+
+    if nil != p.ppr {
+        buffer.WriteString(template.ParagraphPPrStart)
+        body, err := p.ppr.GetStyleXmlBytes()
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
+        buffer.WriteString(template.ParagraphPPrEnd)
+    }
+
+    if nil != p.rpr {
+        buffer.WriteString(template.RunRPrStart)
+        body, err := p.rpr.GetStyleXmlBytes()
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
+        buffer.WriteString(template.RunRPrEnd)
+    }
 
     for _, r := range p.GetRuns() {
         body, err := r.GetXmlBytes()
@@ -14,25 +41,10 @@ func (p *Paragraph) GetXmlBytes() ([]byte, error) {
             return nil, err
         }
 
-        runBuffer.Write(body)
+        buffer.Write(body)
     }
 
-    bodyBuffer := new(bytes.Buffer)
-    bodyBuffer.WriteString(template.ParagraphStart)
+    buffer.WriteString(template.ParagraphEnd)
 
-    if nil != p.ppr {
-        bodyBuffer.WriteString(template.ParagraphPPrStart)
-        body, err := p.ppr.GetStyleXmlBytes()
-        if nil != err {
-            return nil, err
-        }
-
-        bodyBuffer.Write(body)
-        bodyBuffer.WriteString(template.ParagraphPPrEnd)
-    }
-
-    bodyBuffer.Write(runBuffer.Bytes())
-    bodyBuffer.WriteString(template.ParagraphEnd)
-
-    return bodyBuffer.Bytes(), nil
+    return buffer.Bytes(), nil
 }
