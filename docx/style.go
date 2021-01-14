@@ -177,6 +177,10 @@ func (s *Style) SetTblPr(tblPr *table.TblPr) *Style {
 }
 
 func (s *Style) GetXmlBytes() ([]byte, error) {
+    if nil == s.pPr && nil == s.rPr && nil == s.tblPr {
+        return []byte{}, nil
+    }
+
     buffer := new(bytes.Buffer)
 
     buffer.WriteByte('<')
