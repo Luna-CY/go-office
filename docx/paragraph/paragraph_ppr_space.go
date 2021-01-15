@@ -21,7 +21,7 @@ type Spacing struct {
     line *int
 
     // lineRule 设置段落内行间距的规则
-    lineRule *string
+    lineRule *LineRuleType
 
     // beforeAutoSpacing 段落前间距是否由编辑器自行定义
     // 设置了该属性后将会忽略 before 属性
@@ -67,8 +67,7 @@ func (s *Spacing) SetLine(line int) *Spacing {
 }
 
 // SetLineRule 设置段落内行间距规则
-// TODO: 需要查看参考手册定义可用值
-func (s *Spacing) SetLineRule(rule string) *Spacing {
+func (s *Spacing) SetLineRule(rule LineRuleType) *Spacing {
     s.isSet = true
     s.lineRule = &rule
 
@@ -129,3 +128,11 @@ func (s *Spacing) GetXmlBytes() ([]byte, error) {
 
     return buffer.Bytes(), nil
 }
+
+type LineRuleType string
+
+const (
+    LineRuleTypeAtLeast = LineRuleType("atLeast")
+    LineRuleTypeExactly = LineRuleType("exactly")
+    LineRuleTypeAuto    = LineRuleType("auto")
+)
