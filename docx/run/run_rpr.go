@@ -41,10 +41,6 @@ type RPr struct {
 
     // background 背景设置
     background *Background
-
-    // highlight 高亮背景色值
-    // 设置高亮后将会无视背景设置
-    highlight *Highlight
 }
 
 func (r *RPr) GetId() string {
@@ -152,13 +148,6 @@ func (r *RPr) SetUnderline(lineType UnderlineType) *RPr {
 func (r *RPr) SetUnderlineWithColor(lineType UnderlineType, color string) *RPr {
     underline := &Underline{lineType: lineType, color: &color}
     r.underline = underline
-
-    return r
-}
-
-// SetHighlight 设置高亮
-func (r *RPr) SetHighlight(highlight Highlight) *RPr {
-    r.highlight = &highlight
 
     return r
 }

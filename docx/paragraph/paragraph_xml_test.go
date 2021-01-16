@@ -13,7 +13,7 @@ func TestParagraph_GetXmlBytes(t *testing.T) {
         t.Fatalf("生成XML失败: %v\n", err)
     }
 
-    if "" != string(act) {
+    if "<w:p></w:p>" != string(act) {
         t.Fatal("验证失败")
     }
 

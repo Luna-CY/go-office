@@ -12,11 +12,15 @@ import (
 // Save 保存文件到路径
 // path 为一个完整的包含文件后缀名的路径地址
 func (d *Document) Save(path string) error {
+    // 在最后增加一个空的段落
+    d.AddParagraph()
+
     for _, content := range d.GetContents() {
         if DocumentContentTypeParagraph == content.ct {
             p := content.paragraph
 
-            d.style.AddParagraphStyle(p.GetProperties().GetId(), p.GetProperties(), p.GetRunProperties())
+            d.style.AddParagraphStyle(p.GetProperties().GetId(), p.GetProperties())
+            d.style.AddRunStyle(p.GetRunProperties().GetId(), p.GetRunProperties())
 
             for _, r := range p.GetRuns() {
                 d.style.AddRunStyle(r.GetProperties().GetId(), r.GetProperties())

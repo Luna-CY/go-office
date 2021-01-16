@@ -39,8 +39,8 @@ func (s *StyleConfig) GetDefaultRunProperties() *run.RPr {
 }
 
 // AddParagraphStyle 添加一个段落的样式结构
-func (s *StyleConfig) AddParagraphStyle(styleId string, pPr *paragraph.PPr, rPr *run.RPr) {
-    style := &Style{styleId: styleId, styleType: StyleTypeParagraph, pPr: pPr, rPr: rPr}
+func (s *StyleConfig) AddParagraphStyle(styleId string, pPr *paragraph.PPr) {
+    style := &Style{styleId: styleId, styleType: StyleTypeParagraph, pPr: pPr}
 
     s.sm.Lock()
     defer s.sm.Unlock()
@@ -191,6 +191,7 @@ func (s *Style) GetXmlBytes() ([]byte, error) {
     buffer.WriteByte('>')
 
     if nil != s.pPr {
+        buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.StyleStyleNameTag, template.StyleStyleVal, s.styleId))
         body, err := s.pPr.GetXmlBytes()
         if nil != err {
             return nil, err
@@ -200,6 +201,7 @@ func (s *Style) GetXmlBytes() ([]byte, error) {
     }
 
     if nil != s.rPr {
+        buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.StyleStyleNameTag, template.StyleStyleVal, s.styleId))
         body, err := s.rPr.GetXmlBytes()
         if nil != err {
             return nil, err
@@ -209,6 +211,7 @@ func (s *Style) GetXmlBytes() ([]byte, error) {
     }
 
     if nil != s.tblPr {
+        buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.StyleStyleNameTag, template.StyleStyleVal, s.styleId))
         body, err := s.tblPr.GetXmlBytes()
         if nil != err {
             return nil, err

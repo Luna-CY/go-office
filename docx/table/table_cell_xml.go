@@ -21,6 +21,11 @@ func (c *Cell) GetXmlBytes() ([]byte, error) {
         buffer.Write(body)
     }
 
+    // 如果是空的内容列表就添加一个默认的空段落
+    if 0 == len(c.GetContents()) {
+        c.AddParagraph()
+    }
+
     for _, content := range c.GetContents() {
         if ContentTypeParagraph == content.ct {
             body, err := content.paragraph.GetXmlBytes()

@@ -3,7 +3,6 @@ package main
 import (
     "github.com/Luna-CY/go-office/docx"
     "github.com/Luna-CY/go-office/docx/paragraph"
-    "github.com/Luna-CY/go-office/docx/run"
     "log"
 )
 
@@ -21,7 +20,7 @@ func main() {
 
     r1 := p1.AddRun()
     r1.AddText("hi")
-    r1.GetProperties().SetHighlight(run.HighlightYellow)
+    r1.GetProperties().GetBackground().SetBackgroundColor("FF0000")
 
     r2 := p1.AddRun()
     r2.AddText("没有背景色")

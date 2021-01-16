@@ -106,11 +106,11 @@ type HorizontalAlignmentType string
 const (
     // HorizontalAlignmentStart
     // 表格以文本段的左侧沿线对齐
-    HorizontalAlignmentStart = HorizontalAlignmentType("start")
+    HorizontalAlignmentStart = HorizontalAlignmentType("left")
 
     // HorizontalAlignmentEnd
     // 表格以文本段的右侧沿线对齐
-    HorizontalAlignmentEnd = HorizontalAlignmentType("end")
+    HorizontalAlignmentEnd = HorizontalAlignmentType("right")
 
     // HorizontalAlignmentCenter
     // 表格以文本段的居中位置显示

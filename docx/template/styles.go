@@ -21,6 +21,8 @@ const (
     StyleDefaultRunEnd   = `</w:rPrDefault>`
 
     StyleStyleTag     = `w:style`
+    StyleStyleNameTag = `w:name`
+    StyleStyleVal     = `w:val`
     StyleStyleType    = `w:type`
     StyleStyleStyleId = `w:styleId`
 

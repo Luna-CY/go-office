@@ -26,12 +26,14 @@ func (r *Row) GetProperties() *row.TrPr {
     return r.pr
 }
 
-// AddCell 添加一个单元格
-func (r *Row) AddCell() {
+// addCell 添加一个单元格
+func (r *Row) addCell() {
     r.cm.Lock()
     defer r.cm.Unlock()
 
-    r.cells = append(r.cells, new(Cell))
+    cell := new(Cell)
+    cell.GetProperties().SetWidth(2000)
+    r.cells = append(r.cells, cell)
 }
 
 // GetCells 获取全部单元格
@@ -54,8 +56,8 @@ func (r *Row) GetCell(index uint) (*Cell, error) {
     return r.cells[index], nil
 }
 
-// AddCellWithIndex 添加一列到指定位置
-func (r *Row) AddCellWithIndex(index uint) {
+// addCellWithIndex 添加一列到指定位置
+func (r *Row) addCellWithIndex(index uint) {
     if index == uint(len(r.cells)) {
         r.cells = append(r.cells, new(Cell))
 

@@ -8,6 +8,9 @@ import (
 
 // App app.xml
 type App struct {
+    // Template 模板名称
+    Template string
+
     // Application 生产者应用的名称
     Application string
 
@@ -20,6 +23,10 @@ func (a *App) GetXmlBytes() ([]byte, error) {
 
     buffer.WriteString(template.Xml)
     buffer.WriteString(template.AppXmlStart)
+
+    buffer.WriteString(template.AppTemplateStart)
+    buffer.WriteString(a.Template)
+    buffer.WriteString(template.AppTemplateEnd)
 
     buffer.WriteString(template.AppApplicationStart)
     buffer.WriteString(a.Application)

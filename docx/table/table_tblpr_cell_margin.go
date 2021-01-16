@@ -14,14 +14,14 @@ type CellMargin struct {
     // top 上边距
     top *int
 
-    // end 右边距
-    end *int
+    // right 右边距
+    right *int
 
     // bottom 下边距
     bottom *int
 
-    // start 左边距
-    start *int
+    // left 左边距
+    left *int
 }
 
 // SetMargin 设置全部边距
@@ -29,22 +29,22 @@ func (c *CellMargin) SetMargin(margin int) *CellMargin {
     c.isSet = true
 
     c.top = &margin
-    c.end = &margin
+    c.right = &margin
     c.bottom = &margin
-    c.start = &margin
+    c.left = &margin
 
     return c
 }
 
 // SetGroup 分组设置边距
-func (c *CellMargin) SetGroup(topAndBottom int, startAndEnd int) *CellMargin {
+func (c *CellMargin) SetGroup(topAndBottom int, LeftAndRight int) *CellMargin {
     c.isSet = true
 
     c.top = &topAndBottom
     c.bottom = &topAndBottom
 
-    c.start = &startAndEnd
-    c.end = &startAndEnd
+    c.left = &LeftAndRight
+    c.right = &LeftAndRight
 
     return c
 }
@@ -62,15 +62,15 @@ func (c *CellMargin) SetTop(top int) *CellMargin {
     return c
 }
 
-// GetEnd
-func (c *CellMargin) GetEnd() int {
-    return *c.end
+// GetRight
+func (c *CellMargin) GetRight() int {
+    return *c.right
 }
 
-// SetEnd 设置右边距
-func (c *CellMargin) SetEnd(end int) *CellMargin {
+// SetRight 设置右边距
+func (c *CellMargin) SetRight(right int) *CellMargin {
     c.isSet = true
-    c.end = &end
+    c.right = &right
 
     return c
 }
@@ -88,14 +88,15 @@ func (c *CellMargin) SetBottom(bottom int) *CellMargin {
     return c
 }
 
-func (c *CellMargin) GetStart() int {
-    return *c.start
+// GetLeft
+func (c *CellMargin) GetLeft() int {
+    return *c.left
 }
 
-// SetStart 设置左边距
-func (c *CellMargin) SetStart(start int) *CellMargin {
+// SetLeft 设置左边距
+func (c *CellMargin) SetLeft(left int) *CellMargin {
     c.isSet = true
-    c.start = &start
+    c.left = &left
 
     return c
 }
@@ -117,17 +118,11 @@ func (c *CellMargin) GetXmlBytes() ([]byte, error) {
         buffer.WriteString("/>")
     }
 
-    if nil != c.end {
-        buffer.WriteByte('<')
-        buffer.WriteString(template.TblPrCellMarginEndTag)
-        // type为固定值dxa，点的二十分之一
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.end, template.TblPrType, "dxa"))
-        buffer.WriteString("/>")
-
+    if nil != c.right {
         buffer.WriteByte('<')
         buffer.WriteString(template.TblPrCellMarginRightTag)
         // type为固定值dxa，点的二十分之一
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.end, template.TblPrType, "dxa"))
+        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.right, template.TblPrType, "dxa"))
         buffer.WriteString("/>")
     }
 
@@ -139,17 +134,11 @@ func (c *CellMargin) GetXmlBytes() ([]byte, error) {
         buffer.WriteString("/>")
     }
 
-    if nil != c.start {
-        buffer.WriteByte('<')
-        buffer.WriteString(template.TblPrCellMarginStartTag)
-        // type为固定值dxa，点的二十分之一
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.start, template.TblPrType, "dxa"))
-        buffer.WriteString("/>")
-
+    if nil != c.left {
         buffer.WriteByte('<')
         buffer.WriteString(template.TblPrCellMarginLeftTag)
         // type为固定值dxa，点的二十分之一
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.start, template.TblPrType, "dxa"))
+        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *c.left, template.TblPrType, "dxa"))
         buffer.WriteString("/>")
     }
 

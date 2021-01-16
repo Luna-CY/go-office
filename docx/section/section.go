@@ -157,6 +157,8 @@ func (s *Section) GetXmlBytes() ([]byte, error) {
         buffer.Write(body)
     }
 
+    buffer.WriteString(`<w:docGrid w:type="lines" w:linePitch="312"/>`)
+
     buffer.WriteString(template.SectionEnd)
 
     empty := fmt.Sprintf(`%v%v`, template.SectionStart, template.SectionEnd)

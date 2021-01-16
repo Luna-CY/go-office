@@ -29,7 +29,8 @@ func (t *Table) GetProperties() *TblPr {
 
 // AddCol 添加新的列
 func (t *Table) AddCol() {
-    t.addColWithWidth(nil)
+    defaultWidth := 2000
+    t.addColWithWidth(&defaultWidth)
 }
 
 // AddColWithWidth 添加一列并设置列宽
@@ -46,7 +47,7 @@ func (t *Table) addColWithWidth(width *int) {
     t.gm.Unlock()
 
     for _, r := range t.GetRows() {
-        r.AddCell()
+        r.addCell()
     }
 }
 
@@ -73,7 +74,7 @@ func (t *Table) addColWithIndexAndWidth(index uint, width *int) {
         t.gm.Unlock()
 
         for _, r := range t.rows {
-            r.AddCellWithIndex(index)
+            r.addCellWithIndex(index)
         }
 
         return
@@ -90,7 +91,7 @@ func (t *Table) addColWithIndexAndWidth(index uint, width *int) {
     t.gm.Unlock()
 
     for _, r := range t.rows {
-        r.AddCellWithIndex(index)
+        r.addCellWithIndex(index)
     }
 }
 
@@ -118,7 +119,7 @@ func (t *Table) GetCols() []*GridCol {
 func (t *Table) AddRow() *Row {
     r := new(Row)
     for i := 0; i < len(t.gridCols); i++ {
-        r.AddCell()
+        r.addCell()
     }
 
     t.rm.Lock()
@@ -132,7 +133,7 @@ func (t *Table) AddRow() *Row {
 func (t *Table) AddRowWithIndex(index uint) *Row {
     r := new(Row)
     for i := 0; i < len(t.gridCols); i++ {
-        r.AddCell()
+        r.addCell()
     }
 
     if index > uint(len(t.rows)) {

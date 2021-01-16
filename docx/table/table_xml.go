@@ -14,11 +14,15 @@ func (t *Table) GetXmlBytes() ([]byte, error) {
 
     // w:tblPr
     if nil != t.tblPr {
-        body, err := t.tblPr.GetXmlBytes()
+        buffer.WriteString(template.TblPrStart)
+
+        body, err := t.tblPr.GetStyleXmlBytes()
         if nil != err {
             return nil, err
         }
         buffer.Write(body)
+
+        buffer.WriteString(template.TblPrEnd)
     }
 
     // w:tblGrid

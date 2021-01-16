@@ -6,10 +6,6 @@ import (
 )
 
 func (p *Paragraph) GetXmlBytes() ([]byte, error) {
-    if nil == p.ppr && 0 == len(p.GetRuns()) {
-        return []byte{}, nil
-    }
-
     buffer := new(bytes.Buffer)
     buffer.WriteString(template.ParagraphStart)
 

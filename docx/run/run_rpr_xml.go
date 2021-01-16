@@ -85,16 +85,7 @@ func (r *RPr) GetXmlBytes() ([]byte, error) {
         buffer.Write(body)
     }
 
-    if nil != r.highlight {
-        buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.RunRPrHighlightTag, template.RunRPrVal, *r.highlight))
-    }
-
     buffer.WriteString(template.RunRPrEnd)
-
-    empty := fmt.Sprintf(`%v%v`, template.RunRPrStart, template.RunRPrEnd)
-    if empty == buffer.String() {
-        return []byte{}, nil
-    }
 
     return buffer.Bytes(), nil
 }
