@@ -19,18 +19,18 @@ func (d *Document) Save(path string) error {
         if DocumentContentTypeParagraph == content.ct {
             p := content.paragraph
 
-            d.style.AddParagraphStyle(p.GetProperties().GetId(), p.GetProperties())
-            d.style.AddRunStyle(p.GetRunProperties().GetId(), p.GetRunProperties())
+            d.style.addParagraphStyle(p.GetProperties().GetId(), p.GetProperties())
+            d.style.addRunStyle(p.GetRunProperties().GetId(), p.GetRunProperties())
 
             for _, r := range p.GetRuns() {
-                d.style.AddRunStyle(r.GetProperties().GetId(), r.GetProperties())
+                d.style.addRunStyle(r.GetProperties().GetId(), r.GetProperties())
             }
         }
 
         if DocumentContentTypeTable == content.ct {
             t := content.table
 
-            d.style.AddTableStyle(t.GetProperties().GetId(), t.GetProperties())
+            d.style.addTableStyle(t.GetProperties().GetId(), t.GetProperties())
         }
     }
 

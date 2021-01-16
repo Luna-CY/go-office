@@ -38,8 +38,8 @@ func (s *StyleConfig) GetDefaultRunProperties() *run.RPr {
     return s.rPrDefault
 }
 
-// AddParagraphStyle 添加一个段落的样式结构
-func (s *StyleConfig) AddParagraphStyle(styleId string, pPr *paragraph.PPr) {
+// addParagraphStyle 添加一个段落的样式结构
+func (s *StyleConfig) addParagraphStyle(styleId string, pPr *paragraph.PPr) {
     style := &Style{styleId: styleId, styleType: StyleTypeParagraph, pPr: pPr}
 
     s.sm.Lock()
@@ -48,8 +48,8 @@ func (s *StyleConfig) AddParagraphStyle(styleId string, pPr *paragraph.PPr) {
     s.styleList = append(s.styleList, style)
 }
 
-// AddRunStyle 添加一个文本的样式结构
-func (s *StyleConfig) AddRunStyle(styleId string, rPr *run.RPr) {
+// addRunStyle 添加一个文本的样式结构
+func (s *StyleConfig) addRunStyle(styleId string, rPr *run.RPr) {
     style := &Style{styleId: styleId, styleType: StyleTypeCharacter, rPr: rPr}
 
     s.sm.Lock()
@@ -58,8 +58,8 @@ func (s *StyleConfig) AddRunStyle(styleId string, rPr *run.RPr) {
     s.styleList = append(s.styleList, style)
 }
 
-// AddTableStyle 添加一个表格样式结构
-func (s *StyleConfig) AddTableStyle(styleId string, tblPr *table.TblPr) {
+// addTableStyle 添加一个表格样式结构
+func (s *StyleConfig) addTableStyle(styleId string, tblPr *table.TblPr) {
     style := &Style{styleId: styleId, styleType: StyleTypeTable, tblPr: tblPr}
 
     s.sm.Lock()

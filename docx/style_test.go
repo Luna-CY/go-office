@@ -84,13 +84,13 @@ func TestStyleConfig_GetXmlBytes(t *testing.T) {
     }
 }
 
-func TestStyleConfig_AddParagraphStyle(t *testing.T) {
+func TestStyleConfig_addParagraphStyle(t *testing.T) {
     style := StyleConfig{}
     if 0 != len(style.styleList) {
         t.Fatal("验证失败")
     }
 
-    style.AddParagraphStyle("TEST_ID", nil)
+    style.addParagraphStyle("TEST_ID", nil)
     if 1 != len(style.styleList) {
         t.Fatal("验证失败")
     }
@@ -108,7 +108,7 @@ func TestStyleConfig_AddParagraphStyle(t *testing.T) {
     ppr := new(paragraph.PPr)
     ppr.SetKeepNext(true)
 
-    style.AddParagraphStyle("TEST ID 2", ppr)
+    style.addParagraphStyle("TEST ID 2", ppr)
 
     exp = fmt.Sprintf(`%v%v<w:style w:type="paragraph" w:styleId="TEST ID 2"><w:name w:val="TEST ID 2"/><w:pPr><w:keepNext/></w:pPr></w:style>%v`, template.Xml, template.StyleXmlStart, template.StyleXmlEnd)
     act, err = style.GetXmlBytes()
@@ -121,13 +121,13 @@ func TestStyleConfig_AddParagraphStyle(t *testing.T) {
     }
 }
 
-func TestStyleConfig_AddRunStyle(t *testing.T) {
+func TestStyleConfig_addRunStyle(t *testing.T) {
     style := StyleConfig{}
     if 0 != len(style.styleList) {
         t.Fatal("验证失败")
     }
 
-    style.AddRunStyle("TEST_ID", nil)
+    style.addRunStyle("TEST_ID", nil)
     if 1 != len(style.styleList) {
         t.Fatal("验证失败")
     }
@@ -145,7 +145,7 @@ func TestStyleConfig_AddRunStyle(t *testing.T) {
     rpr := new(run.RPr)
     rpr.SetBold(true)
 
-    style.AddRunStyle("TEST ID 2", rpr)
+    style.addRunStyle("TEST ID 2", rpr)
 
     exp = fmt.Sprintf(`%v%v<w:style w:type="character" w:styleId="TEST ID 2"><w:name w:val="TEST ID 2"/><w:rPr><w:b w:val="true"/></w:rPr></w:style>%v`, template.Xml, template.StyleXmlStart, template.StyleXmlEnd)
     act, err = style.GetXmlBytes()
@@ -158,13 +158,13 @@ func TestStyleConfig_AddRunStyle(t *testing.T) {
     }
 }
 
-func TestStyleConfig_AddTableStyle(t *testing.T) {
+func TestStyleConfig_addTableStyle(t *testing.T) {
     style := StyleConfig{}
     if 0 != len(style.styleList) {
         t.Fatal("验证失败")
     }
 
-    style.AddTableStyle("TEST_ID", nil)
+    style.addTableStyle("TEST_ID", nil)
     if 1 != len(style.styleList) {
         t.Fatal("验证失败")
     }
@@ -182,7 +182,7 @@ func TestStyleConfig_AddTableStyle(t *testing.T) {
     tblPr := new(table.TblPr)
     tblPr.SetWidth(10)
 
-    style.AddTableStyle("TEST ID 2", tblPr)
+    style.addTableStyle("TEST ID 2", tblPr)
 
     exp = fmt.Sprintf(`%v%v<w:style w:type="table" w:styleId="TEST ID 2"><w:name w:val="TEST ID 2"/><w:tblPr><w:tblW w:w="10" w:type="dxa"/></w:tblPr></w:style>%v`, template.Xml, template.StyleXmlStart, template.StyleXmlEnd)
     act, err = style.GetXmlBytes()
