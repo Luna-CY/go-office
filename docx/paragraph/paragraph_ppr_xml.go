@@ -10,10 +10,14 @@ import (
 func (p *PPr) GetStyleXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
+    buffer.WriteString(template.ParagraphPPrStart)
+
     buffer.WriteByte('<')
     buffer.WriteString(template.ParagraphPPrStyleTag)
     buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrStyleVal, p.GetId()))
     buffer.WriteString("/>")
+
+    buffer.WriteString(template.ParagraphPPrEnd)
 
     return buffer.Bytes(), nil
 }

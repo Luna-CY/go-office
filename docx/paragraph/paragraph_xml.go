@@ -10,14 +10,12 @@ func (p *Paragraph) GetXmlBytes() ([]byte, error) {
     buffer.WriteString(template.ParagraphStart)
 
     if nil != p.ppr {
-        buffer.WriteString(template.ParagraphPPrStart)
         body, err := p.ppr.GetStyleXmlBytes()
         if nil != err {
             return nil, err
         }
 
         buffer.Write(body)
-        buffer.WriteString(template.ParagraphPPrEnd)
     }
 
     if nil != p.rpr {
