@@ -32,6 +32,10 @@ func (r *RPr) GetXmlBytes() ([]byte, error) {
 
     if r.emboss {
         buffer.WriteString(template.RunRPrEmboss)
+
+        if nil == r.color {
+            buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.RunRPrColorTag, template.RunRPrVal, "FFF"))
+        }
     }
 
     if r.imprint {

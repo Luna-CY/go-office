@@ -1,8 +1,6 @@
-package paragraph
+package run
 
-import (
-    "testing"
-)
+import "testing"
 
 func TestBackground_GetBackgroundColor(t *testing.T) {
     b := Background{}

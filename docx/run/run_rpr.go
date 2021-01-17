@@ -76,11 +76,6 @@ func (r *RPr) SetEmboss(emboss bool) *RPr {
     if emboss {
         r.imprint = false
         r.shadow = false
-
-        if nil == r.color {
-            color := "FFF"
-            r.color = &color
-        }
     }
 
     return r

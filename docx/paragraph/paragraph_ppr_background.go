@@ -43,7 +43,7 @@ func (b *Background) SetBackgroundColor(color string) *Background {
 // GetColor 获取前景色
 func (b *Background) GetColor() string {
     if nil == b.color {
-        return ""
+        return "auto"
     }
 
     return *b.color

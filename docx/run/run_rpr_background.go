@@ -17,13 +17,17 @@ type Background struct {
     // 可选值: auto
     color *string
 
-    // val 前景色蒙版的值
+    // mask 前景色蒙版的值
     // 参考文档 http://officeopenxml.com/WPtextShading.php
-    val *string
+    mask *string
 }
 
 // GetBackgroundColor 获取背景色
 func (b *Background) GetBackgroundColor() string {
+    if nil == b.fill {
+        return ""
+    }
+
     return *b.fill
 }
 
@@ -37,6 +41,10 @@ func (b *Background) SetBackgroundColor(color string) *Background {
 
 // GetColor 获取前景色
 func (b *Background) GetColor() string {
+    if nil == b.color {
+        return "auto"
+    }
+
     return *b.color
 }
 
@@ -48,10 +56,10 @@ func (b *Background) SetColor(color string) *Background {
     return b
 }
 
-// SetVal
-func (b *Background) SetVal(val string) *Background {
+// SetMask
+func (b *Background) SetMask(val string) *Background {
     b.isSet = true
-    b.val = &val
+    b.mask = &val
 
     return b
 }
@@ -77,8 +85,8 @@ func (b *Background) GetXmlBytes() ([]byte, error) {
         buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.RunPPrBackgroundColor, *b.color))
     }
 
-    if nil != b.val {
-        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.RunRPrVal, *b.val))
+    if nil != b.mask {
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.RunRPrVal, *b.mask))
     }
 
     buffer.WriteString("/>")
