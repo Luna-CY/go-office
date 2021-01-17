@@ -6,6 +6,7 @@ import (
     "sync"
 )
 
+// Table 表格结构定义
 type Table struct {
     gm sync.RWMutex
     // gridCols 列定义
@@ -19,6 +20,7 @@ type Table struct {
     rows []*Row
 }
 
+// GetProperties 获取属性配置结构
 func (t *Table) GetProperties() *TblPr {
     if nil == t.tblPr {
         t.tblPr = new(TblPr)

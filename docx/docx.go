@@ -7,6 +7,12 @@ import (
     "time"
 )
 
+// DocumentDefaultWidth 文档默认宽度
+const DocumentDefaultWidth = 11906
+
+// DocumentDefaultHeight 文档默认高度
+const DocumentDefaultHeight = 16838
+
 // New 新建一篇文档
 func New() (*Document, error) {
     doc := new(Document)
@@ -29,7 +35,7 @@ func New() (*Document, error) {
     doc.app.Security = 0
 
     // 初始化document.xml
-    doc.GetSection().GetPageSize().SetWidth(11906).SetHeight(16838)
+    doc.GetSection().GetPageSize().SetWidth(DocumentDefaultWidth).SetHeight(DocumentDefaultHeight)
     doc.GetSection().GetPageMargin().SetMargin(1440, 1800, 1440, 1800)
     doc.GetSection().GetPageMargin().SetHeader(851).SetFooter(992)
     doc.GetSection().GetCols().SetSpace(425)

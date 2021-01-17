@@ -7,6 +7,9 @@ import (
     "sync"
 )
 
+// TableDefaultWidth 表格默认宽度
+const TableDefaultWidth = DocumentDefaultWidth - 3000
+
 // Document 文档结构定义
 // 该结构统一对.docx格式文档进行操作
 type Document struct {
@@ -61,7 +64,7 @@ func (d *Document) AddTable() *table.Table {
 
     content.table = new(table.Table)
     // 设置默认宽度
-    content.table.GetProperties().SetWidth(8520)
+    content.table.GetProperties().SetWidth(TableDefaultWidth)
 
     d.cm.Lock()
     d.contents = append(d.contents, content)
@@ -77,10 +80,10 @@ func (d *Document) AddTableWithColumns(columns int) *table.Table {
 
     content.table = new(table.Table)
     // 设置默认宽度
-    content.table.GetProperties().SetWidth(8520)
+    content.table.GetProperties().SetWidth(TableDefaultWidth)
 
     for i := 0; i < columns; i++ {
-        content.table.AddColWithWidth(8520 / columns)
+        content.table.AddColWithWidth(TableDefaultWidth / columns)
     }
 
     d.cm.Lock()
