@@ -27,77 +27,19 @@ func (t *Table) GetProperties() *TblPr {
     return t.tblPr
 }
 
-// AddCol 添加新的列
-func (t *Table) AddCol() {
-    defaultWidth := 2000
-    t.addColWithWidth(&defaultWidth)
-}
-
 // AddColWithWidth 添加一列并设置列宽
 func (t *Table) AddColWithWidth(width int) {
-    t.addColWithWidth(&width)
+    t.addColWithWidth(width)
 }
 
-func (t *Table) addColWithWidth(width *int) {
-    col := new(GridCol)
-    col.w = width
-
-    t.gm.Lock()
-    t.gridCols = append(t.gridCols, col)
-    t.gm.Unlock()
-
-    for _, r := range t.GetRows() {
-        r.addCell()
-    }
-}
-
-// AddColWithIndex 插入到指定索引
-func (t *Table) AddColWithIndex(index uint) {
-    t.addColWithIndexAndWidth(index, nil)
-}
-
-func (t *Table) AddColWithIndexAndWidth(index uint, width int) {
-    t.addColWithIndexAndWidth(index, &width)
-}
-
-func (t *Table) addColWithIndexAndWidth(index uint, width *int) {
-    if index > uint(len(t.gridCols)) {
-        index = uint(len(t.gridCols))
-    }
-
-    col := new(GridCol)
-    col.w = width
-
-    if index == uint(len(t.gridCols)) {
-        t.gm.Lock()
-        t.gridCols = append(t.gridCols, col)
-        t.gm.Unlock()
-
-        for _, r := range t.rows {
-            r.addCellWithIndex(index)
-        }
-
-        return
-    }
-
-    t.gm.Lock()
-    before := t.gridCols[:index]
-    after := t.gridCols[index:]
-
-    t.gridCols = make([]*GridCol, len(t.gridCols)+1)
-    t.gridCols = append(t.gridCols, before...)
-    t.gridCols[index] = col
-    t.gridCols = append(t.gridCols, after...)
-    t.gm.Unlock()
-
-    for _, r := range t.rows {
-        r.addCellWithIndex(index)
-    }
+// AddColWithIndexAndWidth 添加一列并指定位置及宽度
+func (t *Table) AddColWithIndexAndWidth(index int, width int) {
+    t.addColWithIndexAndWidth(index, width)
 }
 
 // GetCol 获取指定列结构
-func (t *Table) GetCol(index uint) (*GridCol, error) {
-    if index > uint(len(t.gridCols)) {
+func (t *Table) GetCol(index int) (*GridCol, error) {
+    if index > len(t.gridCols) {
         return nil, errors.New(fmt.Sprintf("索引溢出"))
     }
 
@@ -118,8 +60,9 @@ func (t *Table) GetCols() []*GridCol {
 // AddRow 添加一行
 func (t *Table) AddRow() *Row {
     r := new(Row)
-    for i := 0; i < len(t.gridCols); i++ {
-        r.addCell()
+    for i := 0; i < len(t.GetCols()); i++ {
+        grid, _ := t.GetCol(i)
+        r.addCellWithWidth(grid.GetWidth())
     }
 
     t.rm.Lock()
@@ -132,8 +75,9 @@ func (t *Table) AddRow() *Row {
 // AddRowWithIndex 添加一行到指定位置
 func (t *Table) AddRowWithIndex(index uint) *Row {
     r := new(Row)
-    for i := 0; i < len(t.gridCols); i++ {
-        r.addCell()
+    for i := 0; i < len(t.GetCols()); i++ {
+        grid, _ := t.GetCol(i)
+        r.addCellWithWidth(grid.GetWidth())
     }
 
     if index > uint(len(t.rows)) {
@@ -176,4 +120,53 @@ func (t *Table) GetRows() []*Row {
     defer t.rm.RUnlock()
 
     return t.rows
+}
+
+// addColWithWidth 添加单元格列并设置宽度
+func (t *Table) addColWithWidth(width int) {
+    col := new(GridCol)
+    col.SetWidth(width)
+
+    t.gm.Lock()
+    t.gridCols = append(t.gridCols, col)
+    t.gm.Unlock()
+
+    for _, r := range t.GetRows() {
+        r.addCellWithWidth(width)
+    }
+}
+
+func (t *Table) addColWithIndexAndWidth(index int, width int) {
+    if index > len(t.gridCols) {
+        index = len(t.gridCols)
+    }
+
+    col := new(GridCol)
+    col.SetWidth(width)
+
+    if index == len(t.gridCols) {
+        t.gm.Lock()
+        t.gridCols = append(t.gridCols, col)
+        t.gm.Unlock()
+
+        for _, r := range t.rows {
+            r.addCellWithIndexAndWidth(index, width)
+        }
+
+        return
+    }
+
+    t.gm.Lock()
+    before := t.gridCols[:index]
+    after := t.gridCols[index:]
+
+    t.gridCols = make([]*GridCol, len(t.gridCols)+1)
+    t.gridCols = append(t.gridCols, before...)
+    t.gridCols[index] = col
+    t.gridCols = append(t.gridCols, after...)
+    t.gm.Unlock()
+
+    for _, r := range t.rows {
+        r.addCellWithIndexAndWidth(index, width)
+    }
 }

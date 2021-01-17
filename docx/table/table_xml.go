@@ -6,6 +6,10 @@ import (
 )
 
 func (t *Table) GetXmlBytes() ([]byte, error) {
+    if nil == t.GetProperties().width {
+        t.GetProperties().SetWidth(8520)
+    }
+
     buffer := new(bytes.Buffer)
 
     buffer.WriteByte('<')
@@ -30,7 +34,7 @@ func (t *Table) GetXmlBytes() ([]byte, error) {
     buffer.WriteString(template.TableGridTag)
     buffer.WriteByte('>')
 
-    for _, grid := range t.gridCols {
+    for _, grid := range t.GetCols() {
         body, err := grid.GetXmlBytes()
         if nil != err {
             return nil, err

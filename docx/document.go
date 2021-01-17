@@ -60,6 +60,8 @@ func (d *Document) AddTable() *table.Table {
     content.ct = DocumentContentTypeTable
 
     content.table = new(table.Table)
+    // 设置默认宽度
+    content.table.GetProperties().SetWidth(8520)
 
     d.cm.Lock()
     d.contents = append(d.contents, content)
@@ -74,8 +76,11 @@ func (d *Document) AddTableWithColumns(columns int) *table.Table {
     content.ct = DocumentContentTypeTable
 
     content.table = new(table.Table)
+    // 设置默认宽度
+    content.table.GetProperties().SetWidth(8520)
+
     for i := 0; i < columns; i++ {
-        content.table.AddCol()
+        content.table.AddColWithWidth(8520 / columns)
     }
 
     d.cm.Lock()

@@ -19,7 +19,7 @@ func main() {
     t1.GetProperties().GetBorder().SetBorder(table.BorderStyleSingle, "000000", 10, 0, false)
 
     // 单独增加一列
-    t1.AddCol()
+    t1.AddColWithWidth(2000)
 
     // 增加一行
     t1r1 := t1.AddRow()
@@ -44,13 +44,10 @@ func main() {
     // 第二行
     t1r2 := t1.AddRow()
 
-    // 获取第二行第一列
-    t1r2c1, err := t1r2.GetCell(0)
-    if nil != err {
-        log.Fatal(err)
+    // 设置整行单元格
+    if err := t1r2.AddCellText("第二行第一列", "第二行第二列"); nil != err {
+        log.Fatalf("设置行内容失败: %v\n", err)
     }
-
-    t1r2c1.AddParagraph().AddRun().AddText("第二行第一列")
 
     if err := doc.Save("example-table.docx"); nil != err {
         log.Fatal(err)

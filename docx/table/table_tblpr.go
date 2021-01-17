@@ -87,6 +87,15 @@ func (t *TblPr) SetIndentation(indentation int) *TblPr {
     return t
 }
 
+// GetWidth 获取表格宽度
+func (t *TblPr) GetWidth() int {
+    if nil == t.width {
+        return 0
+    }
+
+    return *t.width
+}
+
 // SetWidth 设置宽度
 func (t *TblPr) SetWidth(width int) *TblPr {
     t.width = &width

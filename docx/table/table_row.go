@@ -62,30 +62,36 @@ func (r *Row) AddCellText(cells ...interface{}) error {
     return nil
 }
 
-// addCell 添加一个单元格
-func (r *Row) addCell() {
+// addCellWithWidth 添加一个单元格并指定宽度
+func (r *Row) addCellWithWidth(width int) {
+    cell := new(Cell)
+    cell.GetProperties().SetWidth(width)
+
     r.cm.Lock()
     defer r.cm.Unlock()
 
-    r.cells = append(r.cells, new(Cell))
+    r.cells = append(r.cells, cell)
 }
 
-// addCellWithIndex 添加一列到指定位置
-func (r *Row) addCellWithIndex(index uint) {
-    if index == uint(len(r.cells)) {
-        r.cells = append(r.cells, new(Cell))
+// addCellWithIndexAndWidth 添加一列到指定位置以及宽度
+func (r *Row) addCellWithIndexAndWidth(index int, width int) {
+    cell := new(Cell)
+    cell.GetProperties().SetWidth(width)
+
+    r.cm.Lock()
+    defer r.cm.Unlock()
+
+    if index == len(r.cells) {
+        r.cells = append(r.cells, cell)
 
         return
     }
-
-    r.cm.Lock()
-    defer r.cm.Unlock()
 
     before := r.cells[:index]
     after := r.cells[index:]
 
     r.cells = make([]*Cell, len(r.cells)+1)
     r.cells = append(r.cells, before...)
-    r.cells[index] = new(Cell)
+    r.cells[index] = cell
     r.cells = append(r.cells, after...)
 }

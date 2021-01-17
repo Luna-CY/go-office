@@ -12,6 +12,15 @@ type GridCol struct {
     w *int
 }
 
+// GetWidth 获取宽度
+func (g *GridCol) GetWidth() int {
+    if nil == g.w {
+        return 0
+    }
+
+    return *g.w
+}
+
 // SetWidth 设置宽度
 func (g *GridCol) SetWidth(w int) *GridCol {
     g.w = &w
