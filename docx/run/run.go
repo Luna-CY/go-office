@@ -23,14 +23,14 @@ func (r *Run) GetProperties() *RPr {
 }
 
 // AddText 添加一段文本内容
-func (r *Run) AddText(text string) *Run {
+func (r *Run) AddText(text interface{}) *Run {
     r.addText(text, false)
 
     return r
 }
 
 // AddTextSpace 添加一段文本内容并保留空白
-func (r *Run) AddTextSpace(text string) *Run {
+func (r *Run) AddTextSpace(text interface{}) *Run {
     r.addText(text, true)
 
     return r
@@ -45,7 +45,7 @@ func (r *Run) AddBreakLine(breakLineType BreakLineType, breakLineClearType Break
 }
 
 // addText 添加文本内容
-func (r *Run) addText(text string, space bool) {
+func (r *Run) addText(text interface{}, space bool) {
     r.body.WriteByte('<')
     r.body.WriteString(template.RunTextTag)
     if space {
@@ -53,7 +53,7 @@ func (r *Run) addText(text string, space bool) {
     }
     r.body.WriteByte('>')
 
-    r.body.WriteString(text)
+    r.body.WriteString(fmt.Sprintf("%v", text))
 
     r.body.Write([]byte{'<', '/'})
     r.body.WriteString(template.RunTextTag)

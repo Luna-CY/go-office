@@ -26,16 +26,6 @@ func (r *Row) GetProperties() *row.TrPr {
     return r.pr
 }
 
-// addCell 添加一个单元格
-func (r *Row) addCell() {
-    r.cm.Lock()
-    defer r.cm.Unlock()
-
-    cell := new(Cell)
-    cell.GetProperties().SetWidth(2000)
-    r.cells = append(r.cells, cell)
-}
-
 // GetCells 获取全部单元格
 func (r *Row) GetCells() []*Cell {
     r.cm.RLock()
@@ -54,6 +44,30 @@ func (r *Row) GetCell(index uint) (*Cell, error) {
     defer r.cm.RUnlock()
 
     return r.cells[index], nil
+}
+
+// AddCellText 添加指定数量单元格的文本内容
+func (r *Row) AddCellText(cells ...interface{}) error {
+    r.cm.RLock()
+    defer r.cm.RUnlock()
+
+    for i, text := range cells {
+        if i >= len(r.cells) {
+            return errors.New(fmt.Sprintf("索引溢出: 单元格数量为 %v 当前访问为 %v", len(r.cells), i))
+        }
+
+        cell := r.cells[i]
+        cell.AddParagraph().AddRun().AddText(text)
+    }
+    return nil
+}
+
+// addCell 添加一个单元格
+func (r *Row) addCell() {
+    r.cm.Lock()
+    defer r.cm.Unlock()
+
+    r.cells = append(r.cells, new(Cell))
 }
 
 // addCellWithIndex 添加一列到指定位置
