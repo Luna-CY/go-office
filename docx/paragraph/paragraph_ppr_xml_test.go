@@ -23,7 +23,7 @@ func TestPPr_GetXmlBytes(t *testing.T) {
     p := PPr{}
 
     exp := `<w:pPr></w:pPr>`
-    act, err := p.GetXmlBytes()
+    act, err := p.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -34,7 +34,7 @@ func TestPPr_GetXmlBytes(t *testing.T) {
 
     p.SetHorizontalAlignment("")
     exp = `<w:pPr><w:jc w:val=""/></w:pPr>`
-    act, err = p.GetXmlBytes()
+    act, err = p.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -45,7 +45,7 @@ func TestPPr_GetXmlBytes(t *testing.T) {
 
     p.SetKeepLines(true)
     exp = `<w:pPr><w:jc w:val=""/><w:keeplines/></w:pPr>`
-    act, err = p.GetXmlBytes()
+    act, err = p.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -56,7 +56,7 @@ func TestPPr_GetXmlBytes(t *testing.T) {
 
     p.SetKeepNext(true)
     exp = `<w:pPr><w:jc w:val=""/><w:keeplines/><w:keepNext/></w:pPr>`
-    act, err = p.GetXmlBytes()
+    act, err = p.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }

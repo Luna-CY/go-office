@@ -80,7 +80,7 @@ func (s *StyleConfig) GetXmlBytes() ([]byte, error) {
 
         // 段落默认样式
         if nil != s.pPrDefault {
-            body, err := s.pPrDefault.GetXmlBytes()
+            body, err := s.pPrDefault.GetDefaultXmlBytes()
             if nil != err {
                 return nil, err
             }
@@ -94,7 +94,7 @@ func (s *StyleConfig) GetXmlBytes() ([]byte, error) {
 
         // 文本默认样式
         if nil != s.rPrDefault {
-            body, err := s.rPrDefault.GetXmlBytes()
+            body, err := s.rPrDefault.GetDefaultXmlBytes()
             if nil != err {
                 return nil, err
             }
@@ -192,7 +192,7 @@ func (s *Style) GetXmlBytes() ([]byte, error) {
 
     if nil != s.pPr {
         buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.StyleStyleNameTag, template.StyleStyleVal, s.styleId))
-        body, err := s.pPr.GetXmlBytes()
+        body, err := s.pPr.GetExtraXmlBytes()
         if nil != err {
             return nil, err
         }
@@ -202,7 +202,7 @@ func (s *Style) GetXmlBytes() ([]byte, error) {
 
     if nil != s.rPr {
         buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.StyleStyleNameTag, template.StyleStyleVal, s.styleId))
-        body, err := s.rPr.GetXmlBytes()
+        body, err := s.rPr.GetExtraXmlBytes()
         if nil != err {
             return nil, err
         }
@@ -212,7 +212,7 @@ func (s *Style) GetXmlBytes() ([]byte, error) {
 
     if nil != s.tblPr {
         buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.StyleStyleNameTag, template.StyleStyleVal, s.styleId))
-        body, err := s.tblPr.GetXmlBytes()
+        body, err := s.tblPr.GetExtraXmlBytes()
         if nil != err {
             return nil, err
         }

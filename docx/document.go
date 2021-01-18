@@ -8,7 +8,7 @@ import (
 )
 
 // TableDefaultWidth 表格默认宽度
-const TableDefaultWidth = DocumentDefaultWidth - 3000
+const TableDefaultWidth = 8800
 
 // Document 文档结构定义
 // 该结构统一对.docx格式文档进行操作

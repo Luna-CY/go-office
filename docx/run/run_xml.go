@@ -19,6 +19,14 @@ func (r *Run) GetXmlBytes() ([]byte, error) {
         }
 
         buffer.Write(body)
+
+        body, err = r.rpr.GetInnerXmlBytes()
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
+
         buffer.WriteString(template.RunRPrEnd)
     }
 

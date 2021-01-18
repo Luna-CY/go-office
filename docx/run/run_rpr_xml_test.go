@@ -22,7 +22,7 @@ func TestRPr_GetStyleXmlBytes(t *testing.T) {
 func TestRPr_GetXmlBytes(t *testing.T) {
     r := RPr{}
 
-    act, err := r.GetXmlBytes()
+    act, err := r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -33,7 +33,7 @@ func TestRPr_GetXmlBytes(t *testing.T) {
     }
 
     r.SetBold(true)
-    act, err = r.GetXmlBytes()
+    act, err = r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -44,7 +44,7 @@ func TestRPr_GetXmlBytes(t *testing.T) {
     }
 
     r.SetItalics(true)
-    act, err = r.GetXmlBytes()
+    act, err = r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -55,7 +55,7 @@ func TestRPr_GetXmlBytes(t *testing.T) {
     }
 
     r.SetEmboss(true)
-    act, err = r.GetXmlBytes()
+    act, err = r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -66,7 +66,7 @@ func TestRPr_GetXmlBytes(t *testing.T) {
     }
 
     r.SetImprint(true)
-    act, err = r.GetXmlBytes()
+    act, err = r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -77,7 +77,7 @@ func TestRPr_GetXmlBytes(t *testing.T) {
     }
 
     r.SetShadow(true)
-    act, err = r.GetXmlBytes()
+    act, err = r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -88,7 +88,7 @@ func TestRPr_GetXmlBytes(t *testing.T) {
     }
 
     r.SetVanish(true)
-    act, err = r.GetXmlBytes()
+    act, err = r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -99,7 +99,7 @@ func TestRPr_GetXmlBytes(t *testing.T) {
     }
 
     r.SetColor("000000")
-    act, err = r.GetXmlBytes()
+    act, err = r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -110,7 +110,7 @@ func TestRPr_GetXmlBytes(t *testing.T) {
     }
 
     r.SetUnderlineWithColor(UnderlineSingle, "000000")
-    act, err = r.GetXmlBytes()
+    act, err = r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -121,7 +121,7 @@ func TestRPr_GetXmlBytes(t *testing.T) {
     }
 
     r.SetDeleteLine(DeleteLineStrike)
-    act, err = r.GetXmlBytes()
+    act, err = r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -132,7 +132,7 @@ func TestRPr_GetXmlBytes(t *testing.T) {
     }
 
     r.SetDeleteLine(DeleteLineDoubleStrike)
-    act, err = r.GetXmlBytes()
+    act, err = r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }
@@ -143,7 +143,7 @@ func TestRPr_GetXmlBytes(t *testing.T) {
     }
 
     r.SetSize(30)
-    act, err = r.GetXmlBytes()
+    act, err = r.GetDefaultXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }

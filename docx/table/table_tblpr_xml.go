@@ -17,10 +17,9 @@ func (t *TblPr) GetStyleXmlBytes() ([]byte, error) {
     return buffer.Bytes(), nil
 }
 
-func (t *TblPr) GetXmlBytes() ([]byte, error) {
+// GetInnerXmlBytes 获取内联样式
+func (t *TblPr) GetInnerXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
-
-    buffer.WriteString(template.TblPrStart)
 
     if nil != t.horizontalAlignment {
         buffer.WriteByte('<')
@@ -69,6 +68,15 @@ func (t *TblPr) GetXmlBytes() ([]byte, error) {
         buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TblPrType, "dxa"))
         buffer.WriteString("/>")
     }
+
+    return buffer.Bytes(), nil
+}
+
+// GetExtraXmlBytes 获取外部样式
+func (t *TblPr) GetExtraXmlBytes() ([]byte, error) {
+    buffer := new(bytes.Buffer)
+
+    buffer.WriteString(template.TblPrStart)
 
     if nil != t.borderManager {
         body, err := t.borderManager.GetXmlBytes()

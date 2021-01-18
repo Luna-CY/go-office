@@ -16,6 +16,13 @@ func (p *Paragraph) GetXmlBytes() ([]byte, error) {
         }
 
         buffer.Write(body)
+
+        body, err = p.ppr.GetInnerXmlBytes()
+        if nil != err {
+            return nil, err
+        }
+
+        buffer.Write(body)
     }
 
     if nil != p.rpr {
