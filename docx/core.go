@@ -37,7 +37,7 @@ func (c *Core) GetXmlBytes() ([]byte, error) {
     buffer.WriteString(template.CoreCreateUserEnd)
 
     buffer.WriteString(template.CoreCreateTimeStart)
-    buffer.WriteString(c.CreateTime.Format("2006-01-02T13:04:05Z"))
+    buffer.WriteString(c.CreateTime.Format("2006-01-02T15:04:05Z"))
     buffer.WriteString(template.CoreCreateTimeEnd)
 
     buffer.WriteString(template.CoreModifyUserStart)
@@ -45,7 +45,7 @@ func (c *Core) GetXmlBytes() ([]byte, error) {
     buffer.WriteString(template.CoreModifyUserEnd)
 
     buffer.WriteString(template.CoreModifyTimeStart)
-    buffer.WriteString(c.LastModifyTime.Format("2006-01-02T13:04:05Z"))
+    buffer.WriteString(c.LastModifyTime.Format("2006-01-02T15:04:05Z"))
     buffer.WriteString(template.CoreModifyTimeEnd)
 
     buffer.WriteString(template.CoreVersionStart)
