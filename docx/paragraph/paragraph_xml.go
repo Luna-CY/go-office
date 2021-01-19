@@ -2,6 +2,7 @@ package paragraph
 
 import (
     "bytes"
+    "fmt"
     "github.com/Luna-CY/go-office/docx/template"
 )
 
@@ -9,32 +10,19 @@ func (p *Paragraph) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
     buffer.WriteString(template.ParagraphStart)
 
-    if nil != p.ppr {
-        body, err := p.ppr.GetStyleXmlBytes()
-        if nil != err {
-            return nil, err
-        }
-
-        buffer.Write(body)
-
-        body, err = p.ppr.GetInnerXmlBytes()
-        if nil != err {
-            return nil, err
-        }
-
-        buffer.Write(body)
+    body, err := p.GetProperties().GetInnerXmlBytes()
+    if nil != err {
+        return nil, err
     }
 
-    if nil != p.rpr {
-        buffer.WriteString(template.RunRPrStart)
-        body, err := p.rpr.GetStyleXmlBytes()
-        if nil != err {
-            return nil, err
-        }
+    buffer.Write(body)
 
-        buffer.Write(body)
-        buffer.WriteString(template.RunRPrEnd)
+    body, err = p.GetRunProperties().GetInnerXmlBytes()
+    if nil != err {
+        return nil, err
     }
+
+    buffer.Write(body)
 
     for _, r := range p.GetRuns() {
         body, err := r.GetXmlBytes()
@@ -46,6 +34,11 @@ func (p *Paragraph) GetXmlBytes() ([]byte, error) {
     }
 
     buffer.WriteString(template.ParagraphEnd)
+
+    empty := fmt.Sprintf(`%v%v`, template.ParagraphStart, template.ParagraphEnd)
+    if buffer.String() == empty {
+        return []byte(template.ParagraphSingle), nil
+    }
 
     return buffer.Bytes(), nil
 }

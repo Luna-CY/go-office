@@ -6,20 +6,18 @@ import (
     "github.com/Luna-CY/go-office/docx/template"
 )
 
-func (r *RPr) GetStyleXmlBytes() ([]byte, error) {
-    buffer := new(bytes.Buffer)
-
-    buffer.WriteByte('<')
-    buffer.WriteString(template.RunRPrStyleTag)
-    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.RunRPrVal, r.GetId()))
-    buffer.WriteString("/>")
-
-    return buffer.Bytes(), nil
-}
-
 // GetInnerXmlBytes 获取内联样式
 func (r *RPr) GetInnerXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
+
+    buffer.WriteString(template.RunRPrStart)
+
+    if nil != r.background {
+        buffer.WriteByte('<')
+        buffer.WriteString(template.RunRPrStyleTag)
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.RunRPrVal, r.GetId()))
+        buffer.WriteString("/>")
+    }
 
     if r.bold {
         buffer.WriteString(template.RunRPrBold)
@@ -79,6 +77,13 @@ func (r *RPr) GetInnerXmlBytes() ([]byte, error) {
         buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.RunRPrSizeTag, template.RunRPrVal, *r.size))
     }
 
+    buffer.WriteString(template.RunRPrEnd)
+
+    empty := fmt.Sprintf(`%v%v`, template.RunRPrStart, template.RunRPrEnd)
+    if buffer.String() == empty {
+        return []byte{}, nil
+    }
+
     return buffer.Bytes(), nil
 }
 
@@ -98,6 +103,11 @@ func (r *RPr) GetExtraXmlBytes() ([]byte, error) {
     }
 
     buffer.WriteString(template.RunRPrEnd)
+
+    empty := fmt.Sprintf(`%v%v`, template.RunRPrStart, template.RunRPrEnd)
+    if buffer.String() == empty {
+        return []byte{}, nil
+    }
 
     return buffer.Bytes(), nil
 }

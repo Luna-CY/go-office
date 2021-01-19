@@ -7,24 +7,18 @@ import (
     "strings"
 )
 
-func (p *PPr) GetStyleXmlBytes() ([]byte, error) {
+// GetInnerXmlBytes 获取内联样式
+func (p *PPr) GetInnerXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
     buffer.WriteString(template.ParagraphPPrStart)
 
-    buffer.WriteByte('<')
-    buffer.WriteString(template.ParagraphPPrStyleTag)
-    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrStyleVal, p.GetId()))
-    buffer.WriteString("/>")
-
-    buffer.WriteString(template.ParagraphPPrEnd)
-
-    return buffer.Bytes(), nil
-}
-
-// GetInnerXmlBytes 获取内联样式
-func (p *PPr) GetInnerXmlBytes() ([]byte, error) {
-    buffer := new(bytes.Buffer)
+    if nil != p.horizontalAlignment || nil != p.identity || nil != p.spacing || nil != p.background || nil != p.borderManager {
+        buffer.WriteByte('<')
+        buffer.WriteString(template.ParagraphPPrStyleTag)
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrStyleVal, p.GetId()))
+        buffer.WriteString("/>")
+    }
 
     if nil != p.sect {
         body, err := p.sect.GetXmlBytes()
@@ -41,6 +35,13 @@ func (p *PPr) GetInnerXmlBytes() ([]byte, error) {
 
     if p.keepNext {
         buffer.WriteString(template.ParagraphPPrKeepNext)
+    }
+
+    buffer.WriteString(template.ParagraphPPrEnd)
+
+    empty := fmt.Sprintf(`%v%v`, template.ParagraphPPrStart, template.ParagraphPPrEnd)
+    if buffer.String() == empty {
+        return []byte{}, nil
     }
 
     return buffer.Bytes(), nil
@@ -93,6 +94,11 @@ func (p *PPr) GetExtraXmlBytes() ([]byte, error) {
     }
 
     buffer.WriteString(template.ParagraphPPrEnd)
+
+    empty := fmt.Sprintf(`%v%v`, template.ParagraphPPrStart, template.ParagraphPPrEnd)
+    if buffer.String() == empty {
+        return []byte{}, nil
+    }
 
     return buffer.Bytes(), nil
 }

@@ -3,6 +3,7 @@ package template
 const (
     ParagraphStart = `<w:p>`
     ParagraphEnd   = `</w:p>`
+    ParagraphSingle   = `<w:p/>`
 
     ParagraphPPrStart = `<w:pPr>`
     ParagraphPPrEnd   = `</w:pPr>`

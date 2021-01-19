@@ -190,11 +190,17 @@ func (s *Style) GetXmlBytes() ([]byte, error) {
     buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.StyleStyleStyleId, s.styleId))
     buffer.WriteByte('>')
 
+    isEmpty := true
+
     if nil != s.pPr {
         buffer.WriteString(fmt.Sprintf(`<%v %v="%v"/>`, template.StyleStyleNameTag, template.StyleStyleVal, s.styleId))
         body, err := s.pPr.GetExtraXmlBytes()
         if nil != err {
             return nil, err
+        }
+
+        if 0 < len(body) {
+            isEmpty = false
         }
 
         buffer.Write(body)
@@ -207,6 +213,10 @@ func (s *Style) GetXmlBytes() ([]byte, error) {
             return nil, err
         }
 
+        if 0 < len(body) {
+            isEmpty = false
+        }
+
         buffer.Write(body)
     }
 
@@ -217,12 +227,20 @@ func (s *Style) GetXmlBytes() ([]byte, error) {
             return nil, err
         }
 
+        if 0 < len(body) {
+            isEmpty = false
+        }
+
         buffer.Write(body)
     }
 
     buffer.Write([]byte{'<', '/'})
     buffer.WriteString(template.StyleStyleTag)
     buffer.WriteByte('>')
+
+    if isEmpty {
+        return []byte{}, nil
+    }
 
     return buffer.Bytes(), nil
 }

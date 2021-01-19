@@ -106,11 +106,10 @@ func TestStyleConfig_addParagraphStyle(t *testing.T) {
     }
 
     ppr := new(paragraph.PPr)
-    ppr.SetKeepNext(true)
-
+    ppr.GetBackground().SetBackgroundColor("FF0000")
     style.addParagraphStyle("TEST ID 2", ppr)
 
-    exp = fmt.Sprintf(`%v%v<w:style w:type="paragraph" w:styleId="TEST ID 2"><w:name w:val="TEST ID 2"/><w:pPr><w:keepNext/></w:pPr></w:style>%v`, template.Xml, template.StyleXmlStart, template.StyleXmlEnd)
+    exp = fmt.Sprintf(`%v%v<w:style w:type="paragraph" w:styleId="TEST ID 2"><w:name w:val="TEST ID 2"/><w:pPr><w:shd w:fill="FF0000" w:color="auto"/></w:pPr></w:style>%v`, template.Xml, template.StyleXmlStart, template.StyleXmlEnd)
     act, err = style.GetXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
@@ -143,11 +142,11 @@ func TestStyleConfig_addRunStyle(t *testing.T) {
     }
 
     rpr := new(run.RPr)
-    rpr.SetBold(true)
+    rpr.GetBackground().SetBackgroundColor("FF0000")
 
     style.addRunStyle("TEST ID 2", rpr)
 
-    exp = fmt.Sprintf(`%v%v<w:style w:type="character" w:styleId="TEST ID 2"><w:name w:val="TEST ID 2"/><w:rPr><w:b w:val="true"/></w:rPr></w:style>%v`, template.Xml, template.StyleXmlStart, template.StyleXmlEnd)
+    exp = fmt.Sprintf(`%v%v<w:style w:type="character" w:styleId="TEST ID 2"><w:name w:val="TEST ID 2"/><w:rPr><w:shd w:fill="FF0000" w:color="auto"/></w:rPr></w:style>%v`, template.Xml, template.StyleXmlStart, template.StyleXmlEnd)
     act, err = style.GetXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
@@ -184,7 +183,7 @@ func TestStyleConfig_addTableStyle(t *testing.T) {
 
     style.addTableStyle("TEST ID 2", tblPr)
 
-    exp = fmt.Sprintf(`%v%v<w:style w:type="table" w:styleId="TEST ID 2"><w:name w:val="TEST ID 2"/><w:tblPr><w:tblW w:w="10" w:type="dxa"/></w:tblPr></w:style>%v`, template.Xml, template.StyleXmlStart, template.StyleXmlEnd)
+    exp = fmt.Sprintf(`%v%v<w:style w:type="table" w:styleId="TEST ID 2"><w:name w:val="TEST ID 2"/><w:tblPr></w:tblPr></w:style>%v`, template.Xml, template.StyleXmlStart, template.StyleXmlEnd)
     act, err = style.GetXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
@@ -241,7 +240,7 @@ func TestStyle_GetXmlBytes(t *testing.T) {
 
     style.SetTblPr(tblPr)
 
-    exp := `<w:style w:type="table" w:styleId="TEST ID"><w:name w:val="TEST ID"/><w:tblPr><w:tblW w:w="10" w:type="dxa"/></w:tblPr></w:style>`
+    exp := `<w:style w:type="table" w:styleId="TEST ID"><w:name w:val="TEST ID"/><w:tblPr></w:tblPr></w:style>`
     act, err = style.GetXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)

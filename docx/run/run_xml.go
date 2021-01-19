@@ -10,25 +10,12 @@ func (r *Run) GetXmlBytes() ([]byte, error) {
 
     buffer.WriteString(template.RunStart)
 
-    if nil != r.rpr {
-        buffer.WriteString(template.RunRPrStart)
-
-        body, err := r.rpr.GetStyleXmlBytes()
-        if nil != err {
-            return nil, err
-        }
-
-        buffer.Write(body)
-
-        body, err = r.rpr.GetInnerXmlBytes()
-        if nil != err {
-            return nil, err
-        }
-
-        buffer.Write(body)
-
-        buffer.WriteString(template.RunRPrEnd)
+    body, err := r.GetProperties().GetInnerXmlBytes()
+    if nil != err {
+        return nil, err
     }
+
+    buffer.Write(body)
 
     buffer.Write(r.body.Bytes())
     buffer.WriteString(template.RunEnd)

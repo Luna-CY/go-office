@@ -33,7 +33,7 @@ func TestRun_GetXmlBytes(t *testing.T) {
         t.Fatalf("生成XML失败: %v\n", err)
     }
 
-    exp := fmt.Sprintf(`<w:r><w:rPr><w:rStyle w:val="%p"/></w:rPr><w:t>HI</w:t></w:r>`, r.GetProperties())
+    exp := fmt.Sprintf(`<w:r><w:rPr><w:b w:val="true"/></w:rPr><w:t>HI</w:t></w:r>`)
 
     if exp != string(act) {
         t.Fatal("验证失败")
