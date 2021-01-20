@@ -13,7 +13,7 @@ func main() {
     }
 
     // 初始化创建三列
-    t1 := doc.AddTableWithColumns(4)
+    t1 := doc.AddTableWithColumnsAndAutoWidth(6)
     t1.GetProperties().GetCellMargin().SetMargin(300)
     t1.GetProperties().GetBorder().SetBorder(table.BorderStyleSingle, "000000", 10, 0, false)
 

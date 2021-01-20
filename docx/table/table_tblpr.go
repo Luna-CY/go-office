@@ -103,6 +103,13 @@ func (t *TblPr) SetWidth(width int) *TblPr {
     return t
 }
 
+// SetWidthAuto 设为宽度自动
+func (t *TblPr) SetWidthAuto() *TblPr {
+    t.width = nil
+
+    return t
+}
+
 // SetCellSpacing 设置单元格间距
 func (t *TblPr) SetCellSpacing(spacing int) *TblPr {
     t.cellSpacing = &spacing

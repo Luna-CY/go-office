@@ -63,8 +63,6 @@ func (d *Document) AddTable() *table.Table {
     content.ct = DocumentContentTypeTable
 
     content.table = new(table.Table)
-    // 设置默认宽度
-    content.table.GetProperties().SetWidth(TableDefaultWidth)
 
     d.cm.Lock()
     d.contents = append(d.contents, content)
@@ -79,8 +77,24 @@ func (d *Document) AddTableWithColumns(columns int) *table.Table {
     content.ct = DocumentContentTypeTable
 
     content.table = new(table.Table)
-    // 设置默认宽度
-    content.table.GetProperties().SetWidth(TableDefaultWidth)
+
+    for i := 0; i < columns; i++ {
+        content.table.AddCol()
+    }
+
+    d.cm.Lock()
+    d.contents = append(d.contents, content)
+    d.cm.Unlock()
+
+    return content.table
+}
+
+// AddTableWithColumnsAndAutoWidth 添加一个拥有指定列数量的表格，并且自动计算所有列的宽度
+func (d *Document) AddTableWithColumnsAndAutoWidth(columns int) *table.Table {
+    content := new(DocumentContent)
+    content.ct = DocumentContentTypeTable
+
+    content.table = new(table.Table)
 
     for i := 0; i < columns; i++ {
         content.table.AddColWithWidth(TableDefaultWidth / columns)

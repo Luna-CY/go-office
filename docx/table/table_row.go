@@ -36,7 +36,7 @@ func (r *Row) GetCells() []*Cell {
 
 // GetCell 获取指定位置的单元格
 func (r *Row) GetCell(index uint) (*Cell, error) {
-    if index > uint(len(r.cells)) {
+    if index >= uint(len(r.cells)) {
         return nil, errors.New(fmt.Sprintf("索引溢出"))
     }
 
@@ -60,6 +60,16 @@ func (r *Row) AddCellText(cells ...interface{}) error {
         cell.AddParagraph().AddRun().AddText(text)
     }
     return nil
+}
+
+// addCell 添加一个自动宽度的单元格
+func (r *Row) addCell() {
+    cell := new(Cell)
+
+    r.cm.Lock()
+    defer r.cm.Unlock()
+
+    r.cells = append(r.cells, cell)
 }
 
 // addCellWithWidth 添加一个单元格并指定宽度

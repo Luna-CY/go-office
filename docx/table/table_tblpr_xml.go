@@ -48,6 +48,12 @@ func (t *TblPr) GetInnerXmlBytes() ([]byte, error) {
         // type为固定值dxa，点的二十分之一
         buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, *t.width, template.TblPrType, "dxa"))
         buffer.WriteString("/>")
+    } else {
+        buffer.WriteByte('<')
+        buffer.WriteString(template.TblPrWidthTag)
+        // type为固定值dxa，点的二十分之一
+        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TblPrW, 0, template.TblPrType, "auto"))
+        buffer.WriteString("/>")
     }
 
     if nil != t.cellSpacing {

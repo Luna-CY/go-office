@@ -62,7 +62,11 @@ func (t *TcPr) GetXmlBytes() ([]byte, error) {
     if nil != t.width {
         buffer.WriteByte('<')
         buffer.WriteString(template.TableCellTcPrCellWidth)
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"/>`, template.TableCellTcPrVal, *t.width, template.TableCellTcPrType, "dxa"))
+        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"/>`, template.TableCellTcPrW, *t.width, template.TableCellTcPrType, "dxa"))
+    } else {
+        buffer.WriteByte('<')
+        buffer.WriteString(template.TableCellTcPrCellWidth)
+        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"/>`, template.TableCellTcPrW, 0, template.TableCellTcPrType, "auto"))
     }
 
     buffer.WriteString(template.TableCellTcPrEnd)
