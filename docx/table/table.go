@@ -30,18 +30,18 @@ func (t *Table) GetProperties() *TblPr {
 }
 
 // AddCol 添加一列
-func (t *Table) AddCol() {
-    t.addCol()
+func (t *Table) AddCol() *GridCol {
+    return t.addCol()
 }
 
 // AddColWithWidth 添加一列并设置列宽
-func (t *Table) AddColWithWidth(width int) {
-    t.addColWithWidth(width)
+func (t *Table) AddColWithWidth(width int) *GridCol {
+    return t.addColWithWidth(width)
 }
 
 // AddColWithIndexAndWidth 添加一列并指定位置及宽度
-func (t *Table) AddColWithIndexAndWidth(index int, width int) {
-    t.addColWithIndexAndWidth(index, width)
+func (t *Table) AddColWithIndexAndWidth(index int, width int) *GridCol {
+    return t.addColWithIndexAndWidth(index, width)
 }
 
 // GetCol 获取指定列结构
@@ -102,10 +102,20 @@ func (t *Table) AddRowWithIndex(index uint) *Row {
     before := t.rows[:index]
     after := t.rows[index:]
 
+    i := 0
     t.rows = make([]*Row, len(t.rows)+1)
-    t.rows = append(t.rows, before...)
-    t.rows[index] = r
-    t.rows = append(t.rows, after...)
+    for _, row := range before {
+        t.rows[i] = row
+        i += 1
+    }
+
+    t.rows[i] = r
+    i += 1
+
+    for _, row := range after {
+        t.rows[i] = row
+        i += 1
+    }
 
     return r
 }
@@ -130,7 +140,7 @@ func (t *Table) GetRows() []*Row {
 }
 
 // addColWithWidth 添加一个自动宽度的单元格列
-func (t *Table) addCol() {
+func (t *Table) addCol() *GridCol {
     col := new(GridCol)
 
     t.gm.Lock()
@@ -140,10 +150,12 @@ func (t *Table) addCol() {
     for _, r := range t.GetRows() {
         r.addCell()
     }
+
+    return col
 }
 
 // addColWithWidth 添加单元格列并设置宽度
-func (t *Table) addColWithWidth(width int) {
+func (t *Table) addColWithWidth(width int) *GridCol {
     col := new(GridCol)
     col.SetWidth(width)
 
@@ -154,9 +166,12 @@ func (t *Table) addColWithWidth(width int) {
     for _, r := range t.GetRows() {
         r.addCellWithWidth(width)
     }
+
+    return col
 }
 
-func (t *Table) addColWithIndexAndWidth(index int, width int) {
+// addColWithIndexAndWidth 在指定位置添加列并设置宽度
+func (t *Table) addColWithIndexAndWidth(index int, width int) *GridCol {
     if index >= len(t.gridCols) {
         index = len(t.gridCols)
     }
@@ -173,20 +188,32 @@ func (t *Table) addColWithIndexAndWidth(index int, width int) {
             r.addCellWithIndexAndWidth(index, width)
         }
 
-        return
+        return col
     }
 
     t.gm.Lock()
     before := t.gridCols[:index]
     after := t.gridCols[index:]
 
+    i := 0
     t.gridCols = make([]*GridCol, len(t.gridCols)+1)
-    t.gridCols = append(t.gridCols, before...)
-    t.gridCols[index] = col
-    t.gridCols = append(t.gridCols, after...)
+    for _, b := range before {
+        t.gridCols[i] = b
+        i += 1
+    }
+
+    t.gridCols[i] = col
+    i += 1
+
+    for _, a := range after {
+        t.gridCols[i] = a
+        i += 1
+    }
     t.gm.Unlock()
 
     for _, r := range t.rows {
         r.addCellWithIndexAndWidth(index, width)
     }
+
+    return col
 }

@@ -42,7 +42,7 @@ func (t *TblPr) GetInnerXmlBytes() ([]byte, error) {
         buffer.WriteString("/>")
     }
 
-    if nil != t.width {
+    if nil != t.width && 0 != *t.width {
         buffer.WriteByte('<')
         buffer.WriteString(template.TblPrWidthTag)
         // type为固定值dxa，点的二十分之一

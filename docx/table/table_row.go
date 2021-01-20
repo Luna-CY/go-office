@@ -100,8 +100,18 @@ func (r *Row) addCellWithIndexAndWidth(index int, width int) {
     before := r.cells[:index]
     after := r.cells[index:]
 
+    i := 0
     r.cells = make([]*Cell, len(r.cells)+1)
-    r.cells = append(r.cells, before...)
-    r.cells[index] = cell
-    r.cells = append(r.cells, after...)
+    for _, c := range before {
+        r.cells[i] = c
+        i += 1
+    }
+
+    r.cells[i] = cell
+    i += 1
+
+    for _, c := range after {
+        r.cells[i] = c
+        i += 1
+    }
 }
