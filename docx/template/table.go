@@ -1,7 +1,8 @@
 package template
 
 const (
-    TableTag          = `w:tbl`
+    TableTagStart     = `<w:tbl>`
+    TableTagEnd       = `</w:tbl>`
     TableGridTag      = `w:tblGrid`
     TableGridColTag   = `w:gridCol`
     TableGridColWidth = `w:w`
@@ -34,10 +35,8 @@ const (
     TblPrWidthTag               = `w:tblW`
     TblPrCellMarginStart        = `<w:tblCellMar>`
     TblPrCellMarginTopTag       = `w:top`
-    TblPrCellMarginStartTag     = `w:start`
     TblPrCellMarginLeftTag      = `w:left`
     TblPrCellMarginBottomTag    = `w:bottom`
-    TblPrCellMarginEndTag       = `w:end`
     TblPrCellMarginRightTag     = `w:right`
     TblPrCellMarginEnd          = `</w:tblCellMar>`
     TblPrCellSpacingTag         = `w:tblCellSpacing`
@@ -56,7 +55,8 @@ const (
     TableRowTrPrHeightTag              = `w:trHeight`
     TableRowTrPrHeightRule             = `w:hRule`
 
-    TableCellTag                     = `w:tc`
+    TableCellTagStart                = `<w:tc>`
+    TableCellTagEnd                  = `</w:tc>`
     TableCellTcPrStart               = `<w:tcPr>`
     TableCellTcPrEnd                 = `</w:tcPr>`
     TableCellTcPrVal                 = `w:val`

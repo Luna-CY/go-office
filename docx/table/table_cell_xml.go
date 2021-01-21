@@ -8,18 +8,14 @@ import (
 func (c *Cell) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
-    buffer.WriteByte('<')
-    buffer.WriteString(template.TableCellTag)
-    buffer.WriteByte('>')
+    buffer.WriteString(template.TableCellTagStart)
 
-    if nil != c.pr {
-        body, err := c.pr.GetXmlBytes()
-        if nil != err {
-            return nil, err
-        }
-
-        buffer.Write(body)
+    body, err := c.GetProperties().GetXmlBytes()
+    if nil != err {
+        return nil, err
     }
+
+    buffer.Write(body)
 
     // 如果是空的内容列表就添加一个默认的空段落
     if 0 == len(c.GetContents()) {
@@ -46,9 +42,7 @@ func (c *Cell) GetXmlBytes() ([]byte, error) {
         }
     }
 
-    buffer.Write([]byte{'<', '/'})
-    buffer.WriteString(template.TableCellTag)
-    buffer.WriteByte('>')
+    buffer.WriteString(template.TableCellTagEnd)
 
     return buffer.Bytes(), nil
 }

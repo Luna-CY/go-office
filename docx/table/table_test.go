@@ -144,4 +144,88 @@ func TestTable_AddRowWithIndex(t *testing.T) {
     if fmt.Sprintf("%p", r) != fmt.Sprintf("%p", tab.rows[2]) {
         t.Fatal("验证失败")
     }
+
+    r = tab.AddRowWithIndex(5)
+    if nil == r {
+        t.Fatal("验证失败")
+    }
+    if 4 != len(tab.rows) {
+        t.Fatal("验证失败")
+    }
+    if fmt.Sprintf("%p", r) != fmt.Sprintf("%p", tab.rows[3]) {
+        t.Fatal("验证失败")
+    }
+}
+
+func TestTable_GetProperties(t *testing.T) {
+    tab := Table{}
+    if nil == tab.GetProperties() {
+        t.Fatal("验证失败")
+    }
+}
+
+func TestTable_GetCols(t *testing.T) {
+    tab := Table{}
+    tab.addCol()
+
+    if 1 != len(tab.GetCols()) {
+        t.Fatal("验证失败")
+    }
+}
+
+func TestTable_GetCol(t *testing.T) {
+    tab := Table{}
+    tab.addCol()
+
+    col, err := tab.GetCol(0)
+    if nil != err {
+        t.Fatal("验证失败")
+    }
+
+    if nil == col {
+        t.Fatal("验证失败")
+    }
+
+    col, err = tab.GetCol(10)
+    if nil == err {
+        t.Fatal("验证失败")
+    }
+
+    if nil != col {
+        t.Fatal("验证失败")
+    }
+}
+
+func TestTable_GetRows(t *testing.T) {
+    tab := Table{}
+    tab.addCol()
+    tab.AddRow()
+
+    if 1 != len(tab.GetRows()) {
+        t.Fatal("验证失败")
+    }
+}
+
+func TestTable_GetRow(t *testing.T) {
+    tab := Table{}
+    tab.addCol()
+    tab.AddRow()
+
+    row, err := tab.GetRow(0)
+    if nil != err {
+        t.Fatal("验证失败")
+    }
+
+    if nil == row {
+        t.Fatal("验证失败")
+    }
+
+    row, err = tab.GetRow(10)
+    if nil == err {
+        t.Fatal("验证失败")
+    }
+
+    if nil != row {
+        t.Fatal("验证失败")
+    }
 }

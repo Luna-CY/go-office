@@ -6,30 +6,20 @@ import (
 )
 
 func (t *Table) GetXmlBytes() ([]byte, error) {
+    if 0 == len(t.GetCols()) || 0 == len(t.GetRows()) {
+        return []byte{}, nil
+    }
+
     buffer := new(bytes.Buffer)
 
-    buffer.WriteByte('<')
-    buffer.WriteString(template.TableTag)
-    buffer.WriteByte('>')
+    buffer.WriteString(template.TableTagStart)
 
     // w:tblPr
-    if nil != t.tblPr {
-        buffer.WriteString(template.TblPrStart)
-
-        body, err := t.tblPr.GetStyleXmlBytes()
-        if nil != err {
-            return nil, err
-        }
-        buffer.Write(body)
-
-        body, err = t.tblPr.GetInnerXmlBytes()
-        if nil != err {
-            return nil, err
-        }
-        buffer.Write(body)
-
-        buffer.WriteString(template.TblPrEnd)
+    body, err := t.GetProperties().GetInnerXmlBytes()
+    if nil != err {
+        return nil, err
     }
+    buffer.Write(body)
 
     // w:tblGrid
     buffer.WriteByte('<')
@@ -59,9 +49,7 @@ func (t *Table) GetXmlBytes() ([]byte, error) {
         buffer.Write(body)
     }
 
-    buffer.Write([]byte{'<', '/'})
-    buffer.WriteString(template.TableTag)
-    buffer.WriteByte('>')
+    buffer.WriteString(template.TableTagEnd)
 
     return buffer.Bytes(), nil
 }

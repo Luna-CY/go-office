@@ -6,20 +6,18 @@ import (
     "github.com/Luna-CY/go-office/docx/template"
 )
 
-func (t *TblPr) GetStyleXmlBytes() ([]byte, error) {
-    buffer := new(bytes.Buffer)
-
-    buffer.WriteByte('<')
-    buffer.WriteString(template.TblPrStyleTag)
-    buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TblPrVal, t.GetId()))
-    buffer.WriteString("/>")
-
-    return buffer.Bytes(), nil
-}
-
 // GetInnerXmlBytes 获取内联样式
 func (t *TblPr) GetInnerXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
+
+    buffer.WriteString(template.TblPrStart)
+
+    if nil != t.borderManager || nil != t.cellMargin {
+        buffer.WriteByte('<')
+        buffer.WriteString(template.TblPrStyleTag)
+        buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TblPrVal, t.GetId()))
+        buffer.WriteString("/>")
+    }
 
     if nil != t.horizontalAlignment {
         buffer.WriteByte('<')
@@ -74,6 +72,8 @@ func (t *TblPr) GetInnerXmlBytes() ([]byte, error) {
         buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.TblPrType, "dxa"))
         buffer.WriteString("/>")
     }
+
+    buffer.WriteString(template.TblPrEnd)
 
     return buffer.Bytes(), nil
 }
