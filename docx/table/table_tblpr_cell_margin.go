@@ -51,6 +51,10 @@ func (c *CellMargin) SetGroup(topAndBottom int, LeftAndRight int) *CellMargin {
 
 // GetTop
 func (c *CellMargin) GetTop() int {
+    if nil == c.top {
+        return 0
+    }
+
     return *c.top
 }
 
@@ -64,6 +68,10 @@ func (c *CellMargin) SetTop(top int) *CellMargin {
 
 // GetRight
 func (c *CellMargin) GetRight() int {
+    if nil == c.right {
+        return 0
+    }
+
     return *c.right
 }
 
@@ -77,6 +85,10 @@ func (c *CellMargin) SetRight(right int) *CellMargin {
 
 // GetBottom
 func (c *CellMargin) GetBottom() int {
+    if nil == c.bottom {
+        return 0
+    }
+
     return *c.bottom
 }
 
@@ -90,6 +102,10 @@ func (c *CellMargin) SetBottom(bottom int) *CellMargin {
 
 // GetLeft
 func (c *CellMargin) GetLeft() int {
+    if nil == c.left {
+        return 0
+    }
+
     return *c.left
 }
 

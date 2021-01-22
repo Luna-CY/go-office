@@ -1,33 +1,12 @@
-package paragraph
+package table
 
 import (
     "testing"
 )
 
-func TestBorderManager_SetBetween(t *testing.T) {
-    bm := BorderManager{}
-    if true == bm.isSet {
-        t.Fatal("验证失败")
-    }
-    if nil != bm.between {
-        t.Fatal("验证失败")
-    }
-
-    bm.SetBetween("", "", 0, 0, false)
-    if false == bm.isSet {
-        t.Fatal("验证失败")
-    }
-    if nil == bm.between {
-        t.Fatal("验证失败")
-    }
-}
-
 func TestBorderManager_SetBorder(t *testing.T) {
     bm := BorderManager{}
     if true == bm.isSet {
-        t.Fatal("验证失败")
-    }
-    if nil != bm.between {
         t.Fatal("验证失败")
     }
     if nil != bm.top {
@@ -42,12 +21,15 @@ func TestBorderManager_SetBorder(t *testing.T) {
     if nil != bm.left {
         t.Fatal("验证失败")
     }
+    if nil != bm.insideH {
+        t.Fatal("验证失败")
+    }
+    if nil != bm.insideV {
+        t.Fatal("验证失败")
+    }
 
     bm.SetBorder("", "", 0, 0, false)
     if false == bm.isSet {
-        t.Fatal("验证失败")
-    }
-    if nil == bm.between {
         t.Fatal("验证失败")
     }
     if nil == bm.top {
@@ -60,6 +42,12 @@ func TestBorderManager_SetBorder(t *testing.T) {
         t.Fatal("验证失败")
     }
     if nil == bm.left {
+        t.Fatal("验证失败")
+    }
+    if nil == bm.insideH {
+        t.Fatal("验证失败")
+    }
+    if nil == bm.insideV {
         t.Fatal("验证失败")
     }
 }
@@ -136,6 +124,42 @@ func TestBorderManager_SetTop(t *testing.T) {
     }
 }
 
+func TestBorderManager_SetInsideHorizontal(t *testing.T) {
+    bm := BorderManager{}
+    if true == bm.isSet {
+        t.Fatal("验证失败")
+    }
+    if nil != bm.top {
+        t.Fatal("验证失败")
+    }
+
+    bm.SetInsideHorizontal("", "", 0, 0, false)
+    if false == bm.isSet {
+        t.Fatal("验证失败")
+    }
+    if nil == bm.insideH {
+        t.Fatal("验证失败")
+    }
+}
+
+func TestBorderManager_SetInsideVertical(t *testing.T) {
+    bm := BorderManager{}
+    if true == bm.isSet {
+        t.Fatal("验证失败")
+    }
+    if nil != bm.top {
+        t.Fatal("验证失败")
+    }
+
+    bm.SetInsideVertical("", "", 0, 0, false)
+    if false == bm.isSet {
+        t.Fatal("验证失败")
+    }
+    if nil == bm.insideV {
+        t.Fatal("验证失败")
+    }
+}
+
 func TestBorderManager_getBorderBody(t *testing.T) {
     bm := BorderManager{}
     bm.SetTop("", "", 0, 0, false)
@@ -169,7 +193,7 @@ func TestBorderManager_GetXmlBytes(t *testing.T) {
         t.Fatalf("生成XML失败: %v\n", err)
     }
 
-    exp := `<w:pBdr><w:top w:val="" w:sz="0" w:color="" w:space="0" w:shadow="false"/><w:right w:val="" w:sz="0" w:color="" w:space="0" w:shadow="false"/><w:bottom w:val="" w:sz="0" w:color="" w:space="0" w:shadow="false"/><w:left w:val="" w:sz="0" w:color="" w:space="0" w:shadow="false"/><w:top w:val="" w:sz="0" w:color="" w:space="0" w:shadow="false"/></w:pBdr>`
+    exp := `<w:tblBorders><w:top w:val="" w:sz="0" w:color="" w:space="0" w:shadow="false"/><w:right w:val="" w:sz="0" w:color="" w:space="0" w:shadow="false"/><w:bottom w:val="" w:sz="0" w:color="" w:space="0" w:shadow="false"/><w:left w:val="" w:sz="0" w:color="" w:space="0" w:shadow="false"/><w:insideH w:val="" w:sz="0" w:color="" w:space="0" w:shadow="false"/><w:insideV w:val="" w:sz="0" w:color="" w:space="0" w:shadow="false"/></w:tblBorders>`
     if exp != string(act) {
         t.Fatal("验证失败")
     }
