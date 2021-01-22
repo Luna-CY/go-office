@@ -6,8 +6,8 @@ import (
     "github.com/Luna-CY/go-office/docx/template"
 )
 
-// CellMargin 单元格边距管理器
-type CellMargin struct {
+// Margin 单元格边距管理器
+type Margin struct {
     // isSet 是否设置了单元格边距
     isSet bool
 
@@ -25,7 +25,7 @@ type CellMargin struct {
 }
 
 // SetMargin 设置全部边距
-func (c *CellMargin) SetMargin(margin int) *CellMargin {
+func (c *Margin) SetMargin(margin int) *Margin {
     c.isSet = true
 
     c.top = &margin
@@ -37,7 +37,7 @@ func (c *CellMargin) SetMargin(margin int) *CellMargin {
 }
 
 // SetGroup 分组设置边距
-func (c *CellMargin) SetGroup(topAndBottom int, leftAndRight int) *CellMargin {
+func (c *Margin) SetGroup(topAndBottom int, leftAndRight int) *Margin {
     c.isSet = true
 
     c.top = &topAndBottom
@@ -50,12 +50,16 @@ func (c *CellMargin) SetGroup(topAndBottom int, leftAndRight int) *CellMargin {
 }
 
 // GetTop
-func (c *CellMargin) GetTop() int {
+func (c *Margin) GetTop() int {
+    if nil == c.top {
+        return 0
+    }
+
     return *c.top
 }
 
 // SetTop 设置上边距
-func (c *CellMargin) SetTop(top int) *CellMargin {
+func (c *Margin) SetTop(top int) *Margin {
     c.isSet = true
     c.top = &top
 
@@ -63,12 +67,16 @@ func (c *CellMargin) SetTop(top int) *CellMargin {
 }
 
 // GetRight
-func (c *CellMargin) GetRight() int {
+func (c *Margin) GetRight() int {
+    if nil == c.right {
+        return 0
+    }
+
     return *c.right
 }
 
 // SetRight 设置右边距
-func (c *CellMargin) SetRight(right int) *CellMargin {
+func (c *Margin) SetRight(right int) *Margin {
     c.isSet = true
     c.right = &right
 
@@ -76,12 +84,16 @@ func (c *CellMargin) SetRight(right int) *CellMargin {
 }
 
 // GetBottom
-func (c *CellMargin) GetBottom() int {
+func (c *Margin) GetBottom() int {
+    if nil == c.bottom {
+        return 0
+    }
+
     return *c.bottom
 }
 
 // SetBottom 设置下边距
-func (c *CellMargin) SetBottom(bottom int) *CellMargin {
+func (c *Margin) SetBottom(bottom int) *Margin {
     c.isSet = true
     c.bottom = &bottom
 
@@ -89,19 +101,23 @@ func (c *CellMargin) SetBottom(bottom int) *CellMargin {
 }
 
 // GetLeft
-func (c *CellMargin) GetLeft() int {
+func (c *Margin) GetLeft() int {
+    if nil == c.left {
+        return 0
+    }
+
     return *c.left
 }
 
 // SetLeft 设置左边距
-func (c *CellMargin) SetLeft(left int) *CellMargin {
+func (c *Margin) SetLeft(left int) *Margin {
     c.isSet = true
     c.left = &left
 
     return c
 }
 
-func (c *CellMargin) GetXmlBytes() ([]byte, error) {
+func (c *Margin) GetXmlBytes() ([]byte, error) {
     if !c.isSet {
         return []byte{}, nil
     }

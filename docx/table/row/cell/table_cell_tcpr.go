@@ -21,7 +21,7 @@ type TcPr struct {
     border *BorderManager
 
     // margin 单元格的边距管理
-    margin *CellMargin
+    margin *Margin
 
     // width 单元格宽度
     // 仅支持以点的二十分之一为单位
@@ -29,9 +29,9 @@ type TcPr struct {
 }
 
 // GetMargin 获取边距配置
-func (t *TcPr) GetMargin() *CellMargin {
+func (t *TcPr) GetMargin() *Margin {
     if nil == t.margin {
-        t.margin = new(CellMargin)
+        t.margin = new(Margin)
         t.margin.isSet = false
     }
 
