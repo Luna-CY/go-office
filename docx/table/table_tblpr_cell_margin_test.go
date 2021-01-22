@@ -230,10 +230,20 @@ func TestCellMargin_SetGroup(t *testing.T) {
 
 func TestCellMargin_GetXmlBytes(t *testing.T) {
     m := CellMargin{}
+
+    act, err := m.GetXmlBytes()
+    if nil != err {
+        t.Fatalf("生成XML失败: %v\n", err)
+    }
+
+    if `` != string(act) {
+        t.Fatal("验证失败")
+    }
+
     m.SetMargin(10)
 
     exp := `<w:tblCellMar><w:top w:w="10" w:type="dxa"/><w:right w:w="10" w:type="dxa"/><w:bottom w:w="10" w:type="dxa"/><w:left w:w="10" w:type="dxa"/></w:tblCellMar>`
-    act, err := m.GetXmlBytes()
+    act, err = m.GetXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
     }

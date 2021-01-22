@@ -43,6 +43,7 @@ func (t *TrPr) GetXmlBytes() ([]byte, error) {
         buffer.WriteByte('<')
         buffer.WriteString(template.TableRowTrPrHeightTag)
         buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"`, template.TableRowTrPrVal, *t.height, template.TableRowTrPrHeightRule, rule))
+        buffer.WriteString("/>")
     }
 
     buffer.WriteString(template.TableRowTrPrEnd)
