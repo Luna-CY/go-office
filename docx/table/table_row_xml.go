@@ -8,18 +8,14 @@ import (
 func (r *Row) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
-    buffer.WriteByte('<')
-    buffer.WriteString(template.TableRowTag)
-    buffer.WriteByte('>')
+    buffer.WriteString(template.TableRowTagStart)
 
-    if nil != r.pr {
-        body, err := r.pr.GetXmlBytes()
-        if nil != err {
-            return nil, err
-        }
-
-        buffer.Write(body)
+    body, err := r.GetProperties().GetXmlBytes()
+    if nil != err {
+        return nil, err
     }
+
+    buffer.Write(body)
 
     for _, cell := range r.GetCells() {
         body, err := cell.GetXmlBytes()
@@ -30,9 +26,7 @@ func (r *Row) GetXmlBytes() ([]byte, error) {
         buffer.Write(body)
     }
 
-    buffer.Write([]byte{'<', '/'})
-    buffer.WriteString(template.TableRowTag)
-    buffer.WriteByte('>')
+    buffer.WriteString(template.TableRowTagEnd)
 
     return buffer.Bytes(), nil
 }

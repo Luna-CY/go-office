@@ -42,7 +42,8 @@ const (
     TblPrCellSpacingTag         = `w:tblCellSpacing`
     TblPrLayoutTag              = `w:tblLayout`
 
-    TableRowTag                        = `w:tr`
+    TableRowTagStart                   = `<w:tr>`
+    TableRowTagEnd                     = `</w:tr>`
     TableRowTrPrStart                  = `<w:trPr>`
     TableRowTrPrEnd                    = `</w:trPr>`
     TableRowTrPrVal                    = `w:val`

@@ -86,6 +86,15 @@ func (t *TcPr) SetGridSpan(span int) *TcPr {
     return t
 }
 
+// GetWidth 获取单元格宽度
+func (t *TcPr) GetWidth() int {
+    if nil == t.width {
+        return 0
+    }
+
+    return *t.width
+}
+
 // SetWidth 设置单元格宽度
 func (t *TcPr) SetWidth(width int) *TcPr {
     t.width = &width

@@ -51,11 +51,11 @@ func (r *Row) AddCellText(cells ...interface{}) error {
     r.cm.RLock()
     defer r.cm.RUnlock()
 
-    for i, text := range cells {
-        if i >= len(r.cells) {
-            return errors.New(fmt.Sprintf("索引溢出: 单元格数量为 %v 当前访问为 %v", len(r.cells), i))
-        }
+    if len(cells) > len(r.cells) {
+        return errors.New(fmt.Sprintf("索引溢出: 单元格数量为 %v 当前设置数量为 %v", len(r.cells), len(cells)))
+    }
 
+    for i, text := range cells {
         cell := r.cells[i]
         cell.AddParagraph().AddRun().AddText(text)
     }
@@ -91,7 +91,7 @@ func (r *Row) addCellWithIndexAndWidth(index int, width int) {
     r.cm.Lock()
     defer r.cm.Unlock()
 
-    if index == len(r.cells) {
+    if index >= len(r.cells) {
         r.cells = append(r.cells, cell)
 
         return

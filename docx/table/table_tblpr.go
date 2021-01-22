@@ -117,6 +117,13 @@ func (t *TblPr) SetCellSpacing(spacing int) *TblPr {
     return t
 }
 
+// SetLayout 设置布局模式
+func (t *TblPr) SetLayout(layout LayoutType) *TblPr {
+    t.layout = &layout
+
+    return t
+}
+
 type HorizontalAlignmentType string
 
 const (
