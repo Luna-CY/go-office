@@ -32,12 +32,11 @@ func (c *ContentTypes) GetXmlBytes() ([]byte, error) {
     buffer.WriteString(`<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>`)
     buffer.WriteString(`<Default Extension="xml" ContentType="application/xml"/>`)
 
+    c.fm.RLock()
     for _, ct := range c.files {
-        buffer.WriteByte('<')
-        buffer.WriteString(template.ContentTypesOverrideTag)
-
-        buffer.WriteString(fmt.Sprintf(` %v="%v" %v="%v"/>`, template.ContentTypesOverridePartName, ct.path, template.ContentTypesOverrideContentType, ct.typeType))
+        buffer.WriteString(fmt.Sprintf(`<%v %v="%v" %v="%v"/>`, template.ContentTypesOverrideTag, template.ContentTypesOverridePartName, ct.path, template.ContentTypesOverrideContentType, ct.typeType))
     }
+    c.fm.RUnlock()
 
     buffer.WriteString(template.ContentTypesEnd)
 
@@ -57,8 +56,9 @@ type contentType struct {
 type ContentTypeType string
 
 const (
-    ContentTypeTypeMain  = ContentTypeType("application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml")
-    ContentTypeTypeStyle = ContentTypeType("application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml")
-    ContentTypeTypeCore  = ContentTypeType("application/vnd.openxmlformats-package.core-properties+xml")
-    ContentTypeTypeApp   = ContentTypeType("application/vnd.openxmlformats-officedocument.extended-properties+xml")
+    ContentTypeTypeMain   = ContentTypeType("application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml")
+    ContentTypeTypeStyle  = ContentTypeType("application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml")
+    ContentTypeTypeCore   = ContentTypeType("application/vnd.openxmlformats-package.core-properties+xml")
+    ContentTypeTypeApp    = ContentTypeType("application/vnd.openxmlformats-officedocument.extended-properties+xml")
+    ContentTypeTypeHeader = ContentTypeType("application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml")
 )

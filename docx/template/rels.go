@@ -5,7 +5,10 @@ const Rel = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 
 const (
     RelationshipXmlStart = `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">`
-    RelationshipXmlEnd = `</Relationships>`
+    RelationshipXmlEnd   = `</Relationships>`
 
-    RelationshipStyle = `<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>`
+    RelationshipTag    = `Relationship`
+    RelationshipId     = `Id`
+    RelationshipType   = `Type`
+    RelationshipTarget = `Target`
 )

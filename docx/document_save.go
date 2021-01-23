@@ -39,6 +39,8 @@ func (d *Document) Save(path string) error {
     d.contentTypes.AddContentType("/word/document.xml", ContentTypeTypeMain)
     d.contentTypes.AddContentType("/word/styles.xml", ContentTypeTypeStyle)
 
+    d.relationship.AddRelationship("styles.xml", RelationshipTypeStyle)
+
     return d.save(path)
 }
 
@@ -53,31 +55,35 @@ func (d *Document) save(path string) error {
     word := zip.NewWriter(file)
     word.RegisterCompressor(zip.Store, nil)
 
-    if err := d.addContentTypesXml(word); nil != err {
+    if err := d.saveContentTypesXml(word); nil != err {
         return err
     }
 
-    if err := d.addRelXml(word); nil != err {
+    if err := d.saveRelXml(word); nil != err {
         return err
     }
 
-    if err := d.addAppXml(word); nil != err {
+    if err := d.saveAppXml(word); nil != err {
         return err
     }
 
-    if err := d.addCoreXml(word); nil != err {
+    if err := d.saveCoreXml(word); nil != err {
         return err
     }
 
-    if err := d.addDocumentXml(word); nil != err {
+    if err := d.saveDocumentXml(word); nil != err {
         return err
     }
 
-    if err := d.addWordRelXml(word); nil != err {
+    if err := d.saveWordRelXml(word); nil != err {
         return err
     }
 
-    if err := d.addStylesXml(word); nil != err {
+    if err := d.saveStylesXml(word); nil != err {
+        return err
+    }
+
+    if err := d.saveHeaders(word); nil != err {
         return err
     }
 
@@ -88,8 +94,8 @@ func (d *Document) save(path string) error {
     return nil
 }
 
-// addContentTypesXml 添加[Content_Types].xml文件
-func (d *Document) addContentTypesXml(word *zip.Writer) error {
+// saveContentTypesXml 添加[Content_Types].xml文件
+func (d *Document) saveContentTypesXml(word *zip.Writer) error {
     ct, err := word.Create("[Content_Types].xml")
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
@@ -112,7 +118,8 @@ func (d *Document) addContentTypesXml(word *zip.Writer) error {
     return nil
 }
 
-func (d *Document) addRelXml(word *zip.Writer) error {
+// saveRelXml 保存全局关系表
+func (d *Document) saveRelXml(word *zip.Writer) error {
     ct, err := word.Create("_rels/.rels")
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
@@ -130,7 +137,8 @@ func (d *Document) addRelXml(word *zip.Writer) error {
     return nil
 }
 
-func (d *Document) addAppXml(word *zip.Writer) error {
+// saveAppXml 保存app.xml
+func (d *Document) saveAppXml(word *zip.Writer) error {
     ct, err := word.Create("docProps/app.xml")
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
@@ -153,7 +161,8 @@ func (d *Document) addAppXml(word *zip.Writer) error {
     return nil
 }
 
-func (d *Document) addCoreXml(word *zip.Writer) error {
+// saveCoreXml 保存core.xml
+func (d *Document) saveCoreXml(word *zip.Writer) error {
     ct, err := word.Create("docProps/core.xml")
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
@@ -176,7 +185,8 @@ func (d *Document) addCoreXml(word *zip.Writer) error {
     return nil
 }
 
-func (d *Document) addDocumentXml(word *zip.Writer) error {
+// saveDocumentXml 保存主文档
+func (d *Document) saveDocumentXml(word *zip.Writer) error {
     buffer := new(bytes.Buffer)
 
     buffer.WriteString(template.Xml)
@@ -236,32 +246,32 @@ func (d *Document) addDocumentXml(word *zip.Writer) error {
     return nil
 }
 
-func (d *Document) addWordRelXml(word *zip.Writer) error {
-    buffer := new(bytes.Buffer)
-
-    buffer.WriteString(template.Xml)
-    buffer.WriteString(template.RelationshipXmlStart)
-    buffer.WriteString(template.RelationshipStyle)
-    buffer.WriteString(template.RelationshipXmlEnd)
+// saveWordRelXml 保存关联定义
+func (d *Document) saveWordRelXml(word *zip.Writer) error {
+    body, err := d.relationship.GetXmlBytes()
+    if nil != err {
+        return err
+    }
 
     ct, err := word.Create("word/_rels/document.xml.rels")
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    n, err := ct.Write(buffer.Bytes())
+    n, err := ct.Write(body)
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    if n != buffer.Len() {
-        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", buffer.Len(), n))
+    if n != len(body) {
+        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", len(body), n))
     }
 
     return nil
 }
 
-func (d *Document) addStylesXml(word *zip.Writer) error {
+// saveStylesXml 保存样式表
+func (d *Document) saveStylesXml(word *zip.Writer) error {
     body, err := d.styles.GetXmlBytes()
     if nil != err {
         return err
@@ -279,6 +289,32 @@ func (d *Document) addStylesXml(word *zip.Writer) error {
 
     if n != len(body) {
         return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", len(body), n))
+    }
+
+    return nil
+}
+
+// saveHeaders 保存页头
+func (d *Document) saveHeaders(word *zip.Writer) error {
+    for _, hdr := range d.headers {
+        body, err := hdr.GetXmlBytes()
+        if nil != err {
+            return err
+        }
+
+        ct, err := word.Create(fmt.Sprintf("word/%v", hdr.GetFileName()))
+        if nil != err {
+            return errors.New(fmt.Sprintf("保存文档失败: %v", err))
+        }
+
+        n, err := ct.Write(body)
+        if nil != err {
+            return errors.New(fmt.Sprintf("保存文档失败: %v", err))
+        }
+
+        if n != len(body) {
+            return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", len(body), n))
+        }
     }
 
     return nil

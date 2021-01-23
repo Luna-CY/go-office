@@ -1,6 +1,7 @@
 package docx
 
 import (
+    "github.com/Luna-CY/go-office/docx/header"
     "github.com/Luna-CY/go-office/docx/section"
     "sync"
 )
@@ -27,11 +28,18 @@ type Document struct {
     // contents 文档的内容列表
     contents []*DocumentContent
 
+    hm sync.RWMutex
+    // headers 表头列表
+    headers []*header.Header
+
     // section 文档的节属性配置
     section section.Section
 
     // contentTypes [Content_Types].xml
     contentTypes ContentTypes
+
+    // relationship document.xml.rels
+    relationship Relationships
 }
 
 func (d *Document) GetProperties() *Styles {

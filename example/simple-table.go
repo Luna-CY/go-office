@@ -12,6 +12,9 @@ func main() {
         log.Fatal(err)
     }
 
+    hdr1 := doc.NewHeader()
+    hdr1.AddParagraph().AddRun().AddText("hi")
+
     // 初始化创建三列
     t1 := doc.AddTableWithColumns(6)
     t1.GetProperties().GetCellMargin().SetMargin(300)
