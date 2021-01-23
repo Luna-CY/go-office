@@ -10,7 +10,7 @@ import (
 )
 
 func TestStyleConfig_GetDefaultParagraphProperties(t *testing.T) {
-    style := StyleConfig{}
+    style := Styles{}
 
     if nil == style.GetDefaultParagraphProperties() {
         t.Fatal("验证失败")
@@ -39,7 +39,7 @@ func TestStyleConfig_GetDefaultParagraphProperties(t *testing.T) {
 }
 
 func TestStyleConfig_GetDefaultRunProperties(t *testing.T) {
-    style := StyleConfig{}
+    style := Styles{}
 
     if nil == style.GetDefaultRunProperties() {
         t.Fatal("验证失败")
@@ -68,7 +68,7 @@ func TestStyleConfig_GetDefaultRunProperties(t *testing.T) {
 }
 
 func TestStyleConfig_GetXmlBytes(t *testing.T) {
-    style := StyleConfig{}
+    style := Styles{}
     if 0 != len(style.styleList) {
         t.Fatal("验证失败")
     }
@@ -85,7 +85,7 @@ func TestStyleConfig_GetXmlBytes(t *testing.T) {
 }
 
 func TestStyleConfig_addParagraphStyle(t *testing.T) {
-    style := StyleConfig{}
+    style := Styles{}
     if 0 != len(style.styleList) {
         t.Fatal("验证失败")
     }
@@ -121,7 +121,7 @@ func TestStyleConfig_addParagraphStyle(t *testing.T) {
 }
 
 func TestStyleConfig_addRunStyle(t *testing.T) {
-    style := StyleConfig{}
+    style := Styles{}
     if 0 != len(style.styleList) {
         t.Fatal("验证失败")
     }
@@ -158,7 +158,7 @@ func TestStyleConfig_addRunStyle(t *testing.T) {
 }
 
 func TestStyleConfig_addTableStyle(t *testing.T) {
-    style := StyleConfig{}
+    style := Styles{}
     if 0 != len(style.styleList) {
         t.Fatal("验证失败")
     }
@@ -179,11 +179,11 @@ func TestStyleConfig_addTableStyle(t *testing.T) {
     }
 
     tblPr := new(table.TblPr)
-    tblPr.SetWidth(10)
+    tblPr.GetBorder().SetTop(table.BorderStyleSingle, "FF0000", 30, 10, false)
 
     style.addTableStyle("TEST ID 2", tblPr)
 
-    exp = fmt.Sprintf(`%v%v<w:style w:type="table" w:styleId="TEST ID 2"><w:name w:val="TEST ID 2"/><w:tblPr></w:tblPr></w:style>%v`, template.Xml, template.StyleXmlStart, template.StyleXmlEnd)
+    exp = fmt.Sprintf(`%v%v<w:style w:type="table" w:styleId="TEST ID 2"><w:name w:val="TEST ID 2"/><w:tblPr><w:tblBorders><w:top w:val="single" w:sz="30" w:color="FF0000" w:space="10" w:shadow="false"/></w:tblBorders></w:tblPr></w:style>%v`, template.Xml, template.StyleXmlStart, template.StyleXmlEnd)
     act, err = style.GetXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)
@@ -236,11 +236,11 @@ func TestStyle_GetXmlBytes(t *testing.T) {
     }
 
     tblPr := new(table.TblPr)
-    tblPr.SetWidth(10)
+    tblPr.GetBorder().SetTop(table.BorderStyleSingle, "FF0000", 30, 10, false)
 
     style.SetTblPr(tblPr)
 
-    exp := `<w:style w:type="table" w:styleId="TEST ID"><w:name w:val="TEST ID"/><w:tblPr></w:tblPr></w:style>`
+    exp := `<w:style w:type="table" w:styleId="TEST ID"><w:name w:val="TEST ID"/><w:tblPr><w:tblBorders><w:top w:val="single" w:sz="30" w:color="FF0000" w:space="10" w:shadow="false"/></w:tblBorders></w:tblPr></w:style>`
     act, err = style.GetXmlBytes()
     if nil != err {
         t.Fatalf("生成XML失败: %v\n", err)

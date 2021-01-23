@@ -19,21 +19,31 @@ func (d *Document) Save(path string) error {
         if DocumentContentTypeParagraph == content.ct {
             p := content.paragraph
 
-            d.style.addParagraphStyle(p.GetProperties().GetId(), p.GetProperties())
-            d.style.addRunStyle(p.GetRunProperties().GetId(), p.GetRunProperties())
+            d.styles.addParagraphStyle(p.GetProperties().GetId(), p.GetProperties())
+            d.styles.addRunStyle(p.GetRunProperties().GetId(), p.GetRunProperties())
 
             for _, r := range p.GetRuns() {
-                d.style.addRunStyle(r.GetProperties().GetId(), r.GetProperties())
+                d.styles.addRunStyle(r.GetProperties().GetId(), r.GetProperties())
             }
         }
 
         if DocumentContentTypeTable == content.ct {
             t := content.table
 
-            d.style.addTableStyle(t.GetProperties().GetId(), t.GetProperties())
+            d.styles.addTableStyle(t.GetProperties().GetId(), t.GetProperties())
         }
     }
 
+    d.contentTypes.AddContentType("/docProps/app.xml", ContentTypeTypeApp)
+    d.contentTypes.AddContentType("/docProps/core.xml", ContentTypeTypeCore)
+    d.contentTypes.AddContentType("/word/document.xml", ContentTypeTypeMain)
+    d.contentTypes.AddContentType("/word/styles.xml", ContentTypeTypeStyle)
+
+    return d.save(path)
+}
+
+// save 保存文件
+func (d *Document) save(path string) error {
     file, err := os.Create(path)
     if nil != err {
         return errors.New(fmt.Sprintf("创建文件失败: %v %v", path, err))
@@ -85,13 +95,18 @@ func (d *Document) addContentTypesXml(word *zip.Writer) error {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    n, err := ct.Write([]byte(template.ContentTypes))
+    body, err := d.contentTypes.GetXmlBytes()
+    if nil != err {
+        return err
+    }
+
+    n, err := ct.Write(body)
     if nil != err {
         return errors.New(fmt.Sprintf("保存文档失败: %v", err))
     }
 
-    if n != len(template.ContentTypes) {
-        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", len(template.ContentTypes), n))
+    if n != len(body) {
+        return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", len(body), n))
     }
 
     return nil
@@ -247,7 +262,7 @@ func (d *Document) addWordRelXml(word *zip.Writer) error {
 }
 
 func (d *Document) addStylesXml(word *zip.Writer) error {
-    body, err := d.style.GetXmlBytes()
+    body, err := d.styles.GetXmlBytes()
     if nil != err {
         return err
     }

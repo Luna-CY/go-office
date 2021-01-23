@@ -40,5 +40,8 @@ func New() (*Document, error) {
     doc.GetSection().GetPageMargin().SetHeader(851).SetFooter(992)
     doc.GetSection().GetCols().SetSpace(425)
 
+    // 默认样式
+    doc.GetProperties().GetDefaultRunProperties().SetSize(21)
+
     return doc, nil
 }

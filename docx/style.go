@@ -10,8 +10,8 @@ import (
     "sync"
 )
 
-// StyleConfig 样式配置结构
-type StyleConfig struct {
+// Styles 样式配置结构
+type Styles struct {
     // pPrDefault 段落的默认样式
     pPrDefault *paragraph.PPr
 
@@ -22,7 +22,7 @@ type StyleConfig struct {
     styleList []*Style
 }
 
-func (s *StyleConfig) GetDefaultParagraphProperties() *paragraph.PPr {
+func (s *Styles) GetDefaultParagraphProperties() *paragraph.PPr {
     if nil == s.pPrDefault {
         s.pPrDefault = new(paragraph.PPr)
     }
@@ -30,7 +30,7 @@ func (s *StyleConfig) GetDefaultParagraphProperties() *paragraph.PPr {
     return s.pPrDefault
 }
 
-func (s *StyleConfig) GetDefaultRunProperties() *run.RPr {
+func (s *Styles) GetDefaultRunProperties() *run.RPr {
     if nil == s.rPrDefault {
         s.rPrDefault = new(run.RPr)
     }
@@ -39,7 +39,7 @@ func (s *StyleConfig) GetDefaultRunProperties() *run.RPr {
 }
 
 // addParagraphStyle 添加一个段落的样式结构
-func (s *StyleConfig) addParagraphStyle(styleId string, pPr *paragraph.PPr) {
+func (s *Styles) addParagraphStyle(styleId string, pPr *paragraph.PPr) {
     style := &Style{styleId: styleId, styleType: StyleTypeParagraph, pPr: pPr}
 
     s.sm.Lock()
@@ -49,7 +49,7 @@ func (s *StyleConfig) addParagraphStyle(styleId string, pPr *paragraph.PPr) {
 }
 
 // addRunStyle 添加一个文本的样式结构
-func (s *StyleConfig) addRunStyle(styleId string, rPr *run.RPr) {
+func (s *Styles) addRunStyle(styleId string, rPr *run.RPr) {
     style := &Style{styleId: styleId, styleType: StyleTypeCharacter, rPr: rPr}
 
     s.sm.Lock()
@@ -59,7 +59,7 @@ func (s *StyleConfig) addRunStyle(styleId string, rPr *run.RPr) {
 }
 
 // addTableStyle 添加一个表格样式结构
-func (s *StyleConfig) addTableStyle(styleId string, tblPr *table.TblPr) {
+func (s *Styles) addTableStyle(styleId string, tblPr *table.TblPr) {
     style := &Style{styleId: styleId, styleType: StyleTypeTable, tblPr: tblPr}
 
     s.sm.Lock()
@@ -68,7 +68,7 @@ func (s *StyleConfig) addTableStyle(styleId string, tblPr *table.TblPr) {
     s.styleList = append(s.styleList, style)
 }
 
-func (s *StyleConfig) GetXmlBytes() ([]byte, error) {
+func (s *Styles) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
     buffer.WriteString(template.Xml)
