@@ -2,12 +2,10 @@ package section
 
 import (
     "bytes"
-    "fmt"
-    "github.com/Luna-CY/go-office/docx/template"
 )
 
 // Section 节属性配置结构
-// TODO: 未支持Header/Footer/VAlign/Type/TitlePg/PaperSrc/FormPort等配置
+// TODO: 未支持VAlign/Type/TitlePg/PaperSrc/FormPort等配置
 type Section struct {
     // cols 分栏设置
     cols *Cols
@@ -101,8 +99,6 @@ func (s *Section) GetPageSize() *PageSize {
 func (s *Section) GetXmlBytes() ([]byte, error) {
     buffer := new(bytes.Buffer)
 
-    buffer.WriteString(template.SectionStart)
-
     if nil != s.cols {
         body, err := s.cols.GetXmlBytes()
         if nil != err {
@@ -158,13 +154,6 @@ func (s *Section) GetXmlBytes() ([]byte, error) {
     }
 
     buffer.WriteString(`<w:docGrid w:type="lines" w:linePitch="312"/>`)
-
-    buffer.WriteString(template.SectionEnd)
-
-    empty := fmt.Sprintf(`%v%v`, template.SectionStart, template.SectionEnd)
-    if empty == buffer.String() {
-        return []byte{}, nil
-    }
 
     return buffer.Bytes(), nil
 }

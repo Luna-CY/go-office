@@ -220,11 +220,21 @@ func (d *Document) saveDocumentXml(word *zip.Writer) error {
         }
     }
 
+    buffer.WriteString(template.SectionStart)
+
     sectionBody, err := d.GetSection().GetXmlBytes()
     if nil != err {
         return err
     }
     buffer.Write(sectionBody)
+
+    if nil != d.useHeaders {
+        for typeType, hdr := range d.useHeaders {
+            buffer.WriteString(fmt.Sprintf(`<%v %v="%v" %v="%v"/>`, template.SectionHeaderTag, template.SectionHeaderId, hdr.GetRId(), template.SectionHeaderType, typeType))
+        }
+    }
+
+    buffer.WriteString(template.SectionEnd)
 
     buffer.WriteString(template.DocumentBodyEnd)
     buffer.WriteString(template.DocumentEnd)

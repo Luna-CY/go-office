@@ -15,13 +15,16 @@ type Relationships struct {
 }
 
 // AddRelationship 添加一个关联定义
-func (r *Relationships) AddRelationship(target string, relationshipType RelationshipType) *Relationships {
+func (r *Relationships) AddRelationship(target string, relationshipType RelationshipType) string {
     r.rm.Lock()
     defer r.rm.Unlock()
 
-    r.relationships = append(r.relationships, Relationship{target: target, typeType: relationshipType})
+    relationship := Relationship{target: target, typeType: relationshipType}
+    relationship.id = fmt.Sprintf("rID%d", len(r.relationships)+1)
 
-    return r
+    r.relationships = append(r.relationships, relationship)
+
+    return relationship.id
 }
 
 func (r *Relationships) GetXmlBytes() ([]byte, error) {
@@ -31,8 +34,7 @@ func (r *Relationships) GetXmlBytes() ([]byte, error) {
     buffer.WriteString(template.RelationshipXmlStart)
 
     r.rm.RLock()
-    for i, rel := range r.relationships {
-        rel.id = fmt.Sprintf("rId%d", i+1)
+    for _, rel := range r.relationships {
         buffer.WriteString(fmt.Sprintf(`<%v %v="%v" %v="%v" %v="%v"/>`, template.RelationshipTag, template.RelationshipId, rel.id, template.RelationshipType, rel.typeType, template.RelationshipTarget, rel.target))
     }
     r.rm.RUnlock()

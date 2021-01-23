@@ -40,6 +40,10 @@ type Document struct {
 
     // relationship document.xml.rels
     relationship Relationships
+
+    uhm sync.RWMutex
+    // headers 页头配置
+    useHeaders map[HeaderType]*header.Header
 }
 
 func (d *Document) GetProperties() *Styles {
@@ -61,4 +65,18 @@ func (d *Document) GetSection() *section.Section {
 // GetBackground 获取背景配置结构指针
 func (d *Document) GetBackground() *Background {
     return &d.background
+}
+
+// UseHeader 使用指定的页头
+func (d *Document) UseHeader(headerType HeaderType, hdr *header.Header) *Document {
+    d.uhm.Lock()
+    defer d.uhm.Unlock()
+
+    if nil == d.useHeaders {
+        d.useHeaders = make(map[HeaderType]*header.Header)
+    }
+
+    d.useHeaders[headerType] = hdr
+
+    return d
 }

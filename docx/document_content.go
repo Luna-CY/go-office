@@ -79,8 +79,10 @@ func (d *Document) NewHeader() *header.Header {
     defer d.hm.Unlock()
 
     d.headers = append(d.headers, hdr)
+
     d.contentTypes.AddContentType(fmt.Sprintf("word/%v", fileName), ContentTypeTypeHeader)
-    d.relationship.AddRelationship(fileName, RelationshipTypeHeader)
+    rId := d.relationship.AddRelationship(fileName, RelationshipTypeHeader)
+    hdr.SetRId(rId)
 
     return hdr
 }

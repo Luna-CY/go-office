@@ -15,9 +15,24 @@ type Header struct {
     // fileName 该header的文件名
     fileName string
 
+    // rId 关联的ID
+    rId string
+
     cm sync.RWMutex
     // contents 文档的内容列表
     contents []*DocumentContent
+}
+
+// SetRId 设置此页头的rId
+func (h *Header) SetRId(rId string) *Header {
+    h.rId = rId
+
+    return h
+}
+
+// GetRId 获取该页头的rId
+func (h *Header) GetRId() string {
+    return h.rId
 }
 
 // GetFileName 获取文件名称

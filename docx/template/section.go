@@ -48,4 +48,8 @@ const (
     SectionPageSizeWidth  = `w:w`
     SectionPageSizeHeight = `w:h`
     SectionPageSizeOrient = `w:orient`
+
+    SectionHeaderTag  = `w:headerReference`
+    SectionHeaderId   = `r:id`
+    SectionHeaderType = `w:type`
 )
