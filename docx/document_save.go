@@ -5,6 +5,8 @@ import (
     "bytes"
     "errors"
     "fmt"
+    "github.com/Luna-CY/go-office/docx/footer"
+    "github.com/Luna-CY/go-office/docx/header"
     "github.com/Luna-CY/go-office/docx/template"
     "os"
 )
@@ -31,6 +33,48 @@ func (d *Document) Save(path string) error {
             t := content.table
 
             d.styles.addTableStyle(t.GetProperties().GetId(), t.GetProperties())
+        }
+    }
+
+    for _, hdr := range d.GetHeaders() {
+        for _, content := range hdr.GetContents() {
+            if header.DocumentContentTypeParagraph == content.GetContentType() {
+                p := content.GetParagraph()
+
+                d.styles.addParagraphStyle(p.GetProperties().GetId(), p.GetProperties())
+                d.styles.addRunStyle(p.GetRunProperties().GetId(), p.GetRunProperties())
+
+                for _, r := range p.GetRuns() {
+                    d.styles.addRunStyle(r.GetProperties().GetId(), r.GetProperties())
+                }
+            }
+
+            if header.DocumentContentTypeTable == content.GetContentType() {
+                t := content.GetTable()
+
+                d.styles.addTableStyle(t.GetProperties().GetId(), t.GetProperties())
+            }
+        }
+    }
+
+    for _, ftr := range d.GetFooters() {
+        for _, content := range ftr.GetContents() {
+            if footer.DocumentContentTypeParagraph == content.GetContentType() {
+                p := content.GetParagraph()
+
+                d.styles.addParagraphStyle(p.GetProperties().GetId(), p.GetProperties())
+                d.styles.addRunStyle(p.GetRunProperties().GetId(), p.GetRunProperties())
+
+                for _, r := range p.GetRuns() {
+                    d.styles.addRunStyle(r.GetProperties().GetId(), r.GetProperties())
+                }
+            }
+
+            if footer.DocumentContentTypeTable == content.GetContentType() {
+                t := content.GetTable()
+
+                d.styles.addTableStyle(t.GetProperties().GetId(), t.GetProperties())
+            }
         }
     }
 
@@ -84,6 +128,10 @@ func (d *Document) save(path string) error {
     }
 
     if err := d.saveHeaders(word); nil != err {
+        return err
+    }
+
+    if err := d.saveFooters(word); nil != err {
         return err
     }
 
@@ -234,6 +282,12 @@ func (d *Document) saveDocumentXml(word *zip.Writer) error {
         }
     }
 
+    if nil != d.useFooters {
+        for typeType, ftr := range d.useFooters {
+            buffer.WriteString(fmt.Sprintf(`<%v %v="%v" %v="%v"/>`, template.SectionFooterTag, template.SectionFooterId, ftr.GetRId(), template.SectionFooterType, typeType))
+        }
+    }
+
     buffer.WriteString(template.SectionEnd)
 
     buffer.WriteString(template.DocumentBodyEnd)
@@ -313,6 +367,32 @@ func (d *Document) saveHeaders(word *zip.Writer) error {
         }
 
         ct, err := word.Create(fmt.Sprintf("word/%v", hdr.GetFileName()))
+        if nil != err {
+            return errors.New(fmt.Sprintf("保存文档失败: %v", err))
+        }
+
+        n, err := ct.Write(body)
+        if nil != err {
+            return errors.New(fmt.Sprintf("保存文档失败: %v", err))
+        }
+
+        if n != len(body) {
+            return errors.New(fmt.Sprintf("保存文档失败: 应写长度 %v 实写长度 %v", len(body), n))
+        }
+    }
+
+    return nil
+}
+
+// saveFooters 保存页脚
+func (d *Document) saveFooters(word *zip.Writer) error {
+    for _, ftr := range d.footers {
+        body, err := ftr.GetXmlBytes()
+        if nil != err {
+            return err
+        }
+
+        ct, err := word.Create(fmt.Sprintf("word/%v", ftr.GetFileName()))
         if nil != err {
             return errors.New(fmt.Sprintf("保存文档失败: %v", err))
         }

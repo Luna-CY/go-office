@@ -2,6 +2,7 @@ package main
 
 import (
     "github.com/Luna-CY/go-office/docx"
+    "github.com/Luna-CY/go-office/docx/paragraph"
     "github.com/Luna-CY/go-office/docx/table"
     "log"
 )
@@ -13,9 +14,16 @@ func main() {
     }
 
     hdr1 := doc.NewHeader()
-    hdr1.AddParagraph().AddRun().AddText("hi")
-
+    hp1 := hdr1.AddParagraph()
+    hp1.GetProperties().SetHorizontalAlignment(paragraph.HorizontalAlignmentCenter)
+    hp1.AddRun().AddText("this is header")
     doc.UseHeader(docx.HeaderTypeDefault, hdr1)
+
+    ftr1 := doc.NewFooter()
+    fp1 := ftr1.AddParagraph()
+    fp1.GetProperties().SetHorizontalAlignment(paragraph.HorizontalAlignmentCenter)
+    fp1.AddRun().AddText("this is footer")
+    doc.UseFooter(docx.FooterTypeDefault, ftr1)
 
     // 初始化创建三列
     t1 := doc.AddTableWithColumns(6)

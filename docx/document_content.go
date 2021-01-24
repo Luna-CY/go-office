@@ -2,6 +2,7 @@ package docx
 
 import (
     "fmt"
+    "github.com/Luna-CY/go-office/docx/footer"
     "github.com/Luna-CY/go-office/docx/header"
     "github.com/Luna-CY/go-office/docx/paragraph"
     "github.com/Luna-CY/go-office/docx/table"
@@ -70,7 +71,7 @@ func (d *Document) AddTableWithColumnsAndAutoWidth(columns int) *table.Table {
     return content.table
 }
 
-// NewHeader 新建一个Header
+// NewHeader 新建一个页头
 func (d *Document) NewHeader() *header.Header {
     hdr := new(header.Header)
     fileName := hdr.GenerateFileName()
@@ -80,11 +81,28 @@ func (d *Document) NewHeader() *header.Header {
 
     d.headers = append(d.headers, hdr)
 
-    d.contentTypes.AddContentType(fmt.Sprintf("word/%v", fileName), ContentTypeTypeHeader)
+    d.contentTypes.AddContentType(fmt.Sprintf("/word/%v", fileName), ContentTypeTypeHeader)
     rId := d.relationship.AddRelationship(fileName, RelationshipTypeHeader)
     hdr.SetRId(rId)
 
     return hdr
+}
+
+// NewFooter 新建一个页脚
+func (d *Document) NewFooter() *footer.Footer {
+    ftr := new(footer.Footer)
+    fileName := ftr.GenerateFileName()
+
+    d.fm.Lock()
+    defer d.fm.Unlock()
+
+    d.footers = append(d.footers, ftr)
+
+    d.contentTypes.AddContentType(fmt.Sprintf("/word/%v", fileName), ContentTypeTypeFooter)
+    rId := d.relationship.AddRelationship(fileName, RelationshipTypeFooter)
+    ftr.SetRId(rId)
+
+    return ftr
 }
 
 // DocumentContent 文档内容

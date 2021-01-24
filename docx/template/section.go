@@ -52,4 +52,8 @@ const (
     SectionHeaderTag  = `w:headerReference`
     SectionHeaderId   = `r:id`
     SectionHeaderType = `w:type`
+
+    SectionFooterTag  = `w:footerReference`
+    SectionFooterId   = `r:id`
+    SectionFooterType = `w:type`
 )

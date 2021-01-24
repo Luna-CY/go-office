@@ -1,4 +1,4 @@
-package header
+package footer
 
 import (
     "fmt"
@@ -10,8 +10,8 @@ import (
 // TableDefaultWidth 表格默认宽度
 const TableDefaultWidth = 8800
 
-// Header 页头定义
-type Header struct {
+// Footer 页脚定义
+type Footer struct {
     // fileName 该header的文件名
     fileName string
 
@@ -23,73 +23,73 @@ type Header struct {
     contents []*DocumentContent
 }
 
-// SetRId 设置此页头的rId
-func (h *Header) SetRId(rId string) *Header {
-    h.rId = rId
+// SetRId 设置此页脚的rId
+func (f *Footer) SetRId(rId string) *Footer {
+    f.rId = rId
 
-    return h
+    return f
 }
 
-// GetRId 获取该页头的rId
-func (h *Header) GetRId() string {
-    return h.rId
+// GetRId 获取该页脚的rId
+func (f *Footer) GetRId() string {
+    return f.rId
 }
 
 // GetFileName 获取文件名称
-func (h *Header) GetFileName() string {
-    if "" == h.fileName {
-        return h.GenerateFileName()
+func (f *Footer) GetFileName() string {
+    if "" == f.fileName {
+        return f.GenerateFileName()
     }
 
-    return h.fileName
+    return f.fileName
 }
 
 // GenerateFileName 生成文件名
-func (h *Header) GenerateFileName() string {
-    h.cm.RLock()
-    defer h.cm.RUnlock()
+func (f *Footer) GenerateFileName() string {
+    f.cm.RLock()
+    defer f.cm.RUnlock()
 
-    h.fileName = fmt.Sprintf("header%d.xml", len(h.contents)+1)
+    f.fileName = fmt.Sprintf("footer%d.xml", len(f.contents)+1)
 
-    return h.fileName
+    return f.fileName
 }
 
-func (h *Header) GetContents() []*DocumentContent {
-    h.cm.RLock()
-    defer h.cm.RUnlock()
+func (f *Footer) GetContents() []*DocumentContent {
+    f.cm.RLock()
+    defer f.cm.RUnlock()
 
-    return h.contents
+    return f.contents
 }
 
 // AddParagraph 添加一个段落
-func (h *Header) AddParagraph() *paragraph.Paragraph {
+func (f *Footer) AddParagraph() *paragraph.Paragraph {
     content := new(DocumentContent)
     content.ct = DocumentContentTypeParagraph
 
     content.paragraph = new(paragraph.Paragraph)
-    h.cm.Lock()
-    h.contents = append(h.contents, content)
-    h.cm.Unlock()
+    f.cm.Lock()
+    f.contents = append(f.contents, content)
+    f.cm.Unlock()
 
     return content.paragraph
 }
 
 // AddTable 添加一个表格
-func (h *Header) AddTable() *table.Table {
+func (f *Footer) AddTable() *table.Table {
     content := new(DocumentContent)
     content.ct = DocumentContentTypeTable
 
     content.table = new(table.Table)
 
-    h.cm.Lock()
-    h.contents = append(h.contents, content)
-    h.cm.Unlock()
+    f.cm.Lock()
+    f.contents = append(f.contents, content)
+    f.cm.Unlock()
 
     return content.table
 }
 
 // AddTableWithColumns 添加一个拥有指定列数量的表格
-func (h *Header) AddTableWithColumns(columns int) *table.Table {
+func (f *Footer) AddTableWithColumns(columns int) *table.Table {
     content := new(DocumentContent)
     content.ct = DocumentContentTypeTable
 
@@ -99,15 +99,15 @@ func (h *Header) AddTableWithColumns(columns int) *table.Table {
         content.table.AddCol()
     }
 
-    h.cm.Lock()
-    h.contents = append(h.contents, content)
-    h.cm.Unlock()
+    f.cm.Lock()
+    f.contents = append(f.contents, content)
+    f.cm.Unlock()
 
     return content.table
 }
 
 // AddTableWithColumnsAndAutoWidth 添加一个拥有指定列数量的表格，并且自动计算所有列的宽度
-func (h *Header) AddTableWithColumnsAndAutoWidth(columns int) *table.Table {
+func (f *Footer) AddTableWithColumnsAndAutoWidth(columns int) *table.Table {
     content := new(DocumentContent)
     content.ct = DocumentContentTypeTable
 
@@ -117,9 +117,9 @@ func (h *Header) AddTableWithColumnsAndAutoWidth(columns int) *table.Table {
         content.table.AddColWithWidth(TableDefaultWidth / columns)
     }
 
-    h.cm.Lock()
-    h.contents = append(h.contents, content)
-    h.cm.Unlock()
+    f.cm.Lock()
+    f.contents = append(f.contents, content)
+    f.cm.Unlock()
 
     return content.table
 }

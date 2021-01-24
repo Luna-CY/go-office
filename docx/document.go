@@ -1,6 +1,7 @@
 package docx
 
 import (
+    "github.com/Luna-CY/go-office/docx/footer"
     "github.com/Luna-CY/go-office/docx/header"
     "github.com/Luna-CY/go-office/docx/section"
     "sync"
@@ -29,7 +30,7 @@ type Document struct {
     contents []*DocumentContent
 
     hm sync.RWMutex
-    // headers 表头列表
+    // headers 页头列表
     headers []*header.Header
 
     // section 文档的节属性配置
@@ -44,6 +45,14 @@ type Document struct {
     uhm sync.RWMutex
     // headers 页头配置
     useHeaders map[HeaderType]*header.Header
+
+    fm sync.RWMutex
+    // footers 页脚列表
+    footers []*footer.Footer
+
+    ufm sync.RWMutex
+    // useFooters 页脚配置
+    useFooters map[FooterType]*footer.Footer
 }
 
 func (d *Document) GetProperties() *Styles {
@@ -55,6 +64,20 @@ func (d *Document) GetContents() []*DocumentContent {
     defer d.cm.RUnlock()
 
     return d.contents
+}
+
+func (d *Document) GetHeaders() []*header.Header {
+    d.hm.RLock()
+    defer d.hm.RUnlock()
+
+    return d.headers
+}
+
+func (d *Document) GetFooters() []*footer.Footer {
+    d.fm.RLock()
+    defer d.fm.RUnlock()
+
+    return d.footers
 }
 
 // GetSection 获取节属性配置结构指针
@@ -77,6 +100,20 @@ func (d *Document) UseHeader(headerType HeaderType, hdr *header.Header) *Documen
     }
 
     d.useHeaders[headerType] = hdr
+
+    return d
+}
+
+// UseFooter 使用指定的页脚
+func (d *Document) UseFooter(footerType FooterType, ftr *footer.Footer) *Document {
+    d.ufm.Lock()
+    defer d.ufm.Unlock()
+
+    if nil == d.useFooters {
+        d.useFooters = make(map[FooterType]*footer.Footer)
+    }
+
+    d.useFooters[footerType] = ftr
 
     return d
 }

@@ -61,4 +61,5 @@ const (
     ContentTypeTypeCore   = ContentTypeType("application/vnd.openxmlformats-package.core-properties+xml")
     ContentTypeTypeApp    = ContentTypeType("application/vnd.openxmlformats-officedocument.extended-properties+xml")
     ContentTypeTypeHeader = ContentTypeType("application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml")
+    ContentTypeTypeFooter = ContentTypeType("application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml")
 )

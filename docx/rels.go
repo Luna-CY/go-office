@@ -20,7 +20,7 @@ func (r *Relationships) AddRelationship(target string, relationshipType Relation
     defer r.rm.Unlock()
 
     relationship := Relationship{target: target, typeType: relationshipType}
-    relationship.id = fmt.Sprintf("rID%d", len(r.relationships)+1)
+    relationship.id = fmt.Sprintf("rId%d", len(r.relationships)+1)
 
     r.relationships = append(r.relationships, relationship)
 
@@ -63,4 +63,5 @@ const (
     RelationshipTypeSetting   = RelationshipType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings")
     RelationshipTypeFontTable = RelationshipType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable")
     RelationshipTypeHeader    = RelationshipType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/header")
+    RelationshipTypeFooter    = RelationshipType("http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer")
 )
