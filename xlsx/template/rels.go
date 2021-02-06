@@ -5,7 +5,7 @@ const (
     RelationshipsEnd   = `</Relationships>`
 
     RelationshipTag    = `Relationship`
-    RelationshipId     = `Id`
+    RelationshipId     = `id`
     RelationshipType   = `Type`
     RelationshipTarget = `Target`
 )

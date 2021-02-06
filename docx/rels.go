@@ -46,7 +46,7 @@ func (r *Relationships) GetXmlBytes() ([]byte, error) {
 
 // Relationship 关联定义
 type Relationship struct {
-    // id Id
+    // id id
     id string
 
     // target 目标路径
