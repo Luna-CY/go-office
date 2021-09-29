@@ -55,6 +55,14 @@ type Document struct {
 	useFooters map[FooterType]*footer.Footer
 }
 
+// SetDocumentUser 设置文档的创建与修改用户
+func (d *Document) SetDocumentUser(username string) *Document {
+	d.core.CreateUser = username
+	d.core.LastModifyUser = username
+
+	return d
+}
+
 func (d *Document) GetProperties() *Styles {
 	return &d.styles
 }

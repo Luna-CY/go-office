@@ -25,7 +25,7 @@ type Core struct {
 	Version int
 }
 
-// GetBody 获取core.xml文件的内容
+// GetXmlBytes GetBody 获取core.xml文件的内容
 func (c *Core) GetXmlBytes() ([]byte, error) {
 	buffer := new(bytes.Buffer)
 

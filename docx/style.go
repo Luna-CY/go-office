@@ -75,39 +75,31 @@ func (s *Styles) GetXmlBytes() ([]byte, error) {
 	buffer.WriteString(template.StyleXmlStart)
 
 	// 输出全局默认样式docDefaults
-	if nil != s.pPrDefault || nil != s.rPrDefault {
-		buffer.WriteString(template.StyleDocDefaultStart)
+	buffer.WriteString(template.StyleDocDefaultStart)
 
-		// 段落默认样式
-		if nil != s.pPrDefault {
-			body, err := s.pPrDefault.GetDefaultXmlBytes()
-			if nil != err {
-				return nil, err
-			}
-
-			if 0 < len(body) {
-				buffer.WriteString(template.StyleDefaultParagraphStart)
-				buffer.Write(body)
-				buffer.WriteString(template.StyleDefaultParagraphEnd)
-			}
-		}
-
-		// 文本默认样式
-		if nil != s.rPrDefault {
-			body, err := s.rPrDefault.GetDefaultXmlBytes()
-			if nil != err {
-				return nil, err
-			}
-
-			if 0 < len(body) {
-				buffer.WriteString(template.StyleDefaultRunStart)
-				buffer.Write(body)
-				buffer.WriteString(template.StyleDefaultRunEnd)
-			}
-		}
-
-		buffer.WriteString(template.StyleDocDefaultEnd)
+	// 段落默认样式
+	dppr, err := s.GetDefaultParagraphProperties().GetDefaultXmlBytes()
+	if nil != err {
+		return nil, err
 	}
+
+	buffer.WriteString(template.StyleDefaultParagraphStart)
+	buffer.Write(dppr)
+	buffer.WriteString(template.StyleDefaultParagraphEnd)
+
+	// 文本默认样式
+	rppr, err := s.GetDefaultRunProperties().GetDefaultXmlBytes()
+	if nil != err {
+		return nil, err
+	}
+
+	buffer.WriteString(template.StyleDefaultRunStart)
+	buffer.Write(rppr)
+	buffer.WriteString(template.StyleDefaultRunEnd)
+
+	buffer.WriteString(template.StyleDocDefaultEnd)
+
+	buffer.WriteString(`<w:latentStyles w:defLockedState="0" w:defUIPriority="99" w:defSemiHidden="0" w:defUnhideWhenUsed="0" w:defQFormat="0" w:count="376">`)
 
 	for _, style := range s.styleList {
 		body, err := style.GetXmlBytes()

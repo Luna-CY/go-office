@@ -116,6 +116,7 @@ func (r *RPr) GetDefaultXmlBytes() ([]byte, error) {
 	buffer := new(bytes.Buffer)
 
 	buffer.WriteString(template.RunRPrStart)
+	buffer.WriteString(`<w:lang w:val="en-US" w:eastAsia="zh-CN" w:bidi="ar-SA"/>`)
 
 	if r.bold {
 		buffer.WriteString(template.RunRPrBold)
