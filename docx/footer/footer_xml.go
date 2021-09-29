@@ -1,39 +1,39 @@
 package footer
 
 import (
-    "bytes"
-    "github.com/Luna-CY/go-office/docx/template"
+	"bytes"
+	"github.com/Luna-CY/go-office/docx/template"
 )
 
 func (f *Footer) GetXmlBytes() ([]byte, error) {
-    buffer := new(bytes.Buffer)
+	buffer := new(bytes.Buffer)
 
-    buffer.WriteString(template.Xml)
-    buffer.WriteString(template.FooterStart)
+	buffer.WriteString(template.Xml)
+	buffer.WriteString(template.FooterStart)
 
-    f.cm.RLock()
-    for _, content := range f.contents {
-        if DocumentContentTypeParagraph == content.ct {
-            body, err := content.paragraph.GetXmlBytes()
-            if nil != err {
-                return nil, err
-            }
+	f.cm.RLock()
+	for _, content := range f.contents {
+		if DocumentContentTypeParagraph == content.ct {
+			body, err := content.paragraph.GetXmlBytes()
+			if nil != err {
+				return nil, err
+			}
 
-            buffer.Write(body)
-        }
+			buffer.Write(body)
+		}
 
-        if DocumentContentTypeTable == content.ct {
-            body, err := content.table.GetXmlBytes()
-            if nil != err {
-                return nil, err
-            }
+		if DocumentContentTypeTable == content.ct {
+			body, err := content.table.GetXmlBytes()
+			if nil != err {
+				return nil, err
+			}
 
-            buffer.Write(body)
-        }
-    }
-    f.cm.RUnlock()
+			buffer.Write(body)
+		}
+	}
+	f.cm.RUnlock()
 
-    buffer.WriteString(template.FooterEnd)
+	buffer.WriteString(template.FooterEnd)
 
-    return buffer.Bytes(), nil
+	return buffer.Bytes(), nil
 }

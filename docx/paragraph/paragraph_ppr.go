@@ -1,127 +1,127 @@
 package paragraph
 
 import (
-    "fmt"
-    "github.com/Luna-CY/go-office/docx/section"
+	"fmt"
+	"github.com/Luna-CY/go-office/docx/section"
 )
 
 // PPr 段落的样式属性定义
 type PPr struct {
-    // horizontalAlignment 水平对齐方式
-    horizontalAlignment *HorizontalAlignmentType
+	// horizontalAlignment 水平对齐方式
+	horizontalAlignment *HorizontalAlignmentType
 
-    // borderManager 边框管理器
-    borderManager *BorderManager
+	// borderManager 边框管理器
+	borderManager *BorderManager
 
-    // keepLines 该段落是否尽可能的在一个页面上显示
-    keepLines bool
+	// keepLines 该段落是否尽可能的在一个页面上显示
+	keepLines bool
 
-    // keepNext 该段落与下一个段落是否尽可能的在一个页面上显示
-    keepNext bool
+	// keepNext 该段落与下一个段落是否尽可能的在一个页面上显示
+	keepNext bool
 
-    // identity 缩进配置结构
-    identity *Identity
+	// identity 缩进配置结构
+	identity *Identity
 
-    // background 背景配置结构
-    background *Background
+	// background 背景配置结构
+	background *Background
 
-    // spacing 段落间距配置
-    spacing *Spacing
+	// spacing 段落间距配置
+	spacing *Spacing
 
-    // sect 段落内的章节属性配置
-    sect *section.Section
+	// sect 段落内的章节属性配置
+	sect *section.Section
 }
 
 // GetId 获取ID
 func (p *PPr) GetId() string {
-    return fmt.Sprintf("%p", p)
+	return fmt.Sprintf("%p", p)
 }
 
 // GetBorder 获取边框管理器
 func (p *PPr) GetBorder() *BorderManager {
-    if nil == p.borderManager {
-        p.borderManager = new(BorderManager)
-        p.borderManager.isSet = false
-    }
+	if nil == p.borderManager {
+		p.borderManager = new(BorderManager)
+		p.borderManager.isSet = false
+	}
 
-    return p.borderManager
+	return p.borderManager
 }
 
 // GetIdentity 获取缩进配置结构指针
 func (p *PPr) GetIdentity() *Identity {
-    if nil == p.identity {
-        p.identity = new(Identity)
-        p.identity.isSet = false
-    }
+	if nil == p.identity {
+		p.identity = new(Identity)
+		p.identity.isSet = false
+	}
 
-    return p.identity
+	return p.identity
 }
 
 // GetBackground 获取背景配置结构指针
 func (p *PPr) GetBackground() *Background {
-    if nil == p.background {
-        p.background = new(Background)
-        p.background.isSet = false
-    }
+	if nil == p.background {
+		p.background = new(Background)
+		p.background.isSet = false
+	}
 
-    return p.background
+	return p.background
 }
 
 // GetSpacing 获取段落间距配置结构指针
 func (p *PPr) GetSpacing() *Spacing {
-    if nil == p.spacing {
-        p.spacing = new(Spacing)
-        p.spacing.isSet = false
-    }
+	if nil == p.spacing {
+		p.spacing = new(Spacing)
+		p.spacing.isSet = false
+	}
 
-    return p.spacing
+	return p.spacing
 }
 
 // GetSection 获取节属性配置
 func (p *PPr) GetSection() *section.Section {
-    if nil == p.sect {
-        p.sect = new(section.Section)
-    }
+	if nil == p.sect {
+		p.sect = new(section.Section)
+	}
 
-    return p.sect
+	return p.sect
 }
 
 // SetKeepLines
 func (p *PPr) SetKeepLines(keepLines bool) *PPr {
-    p.keepLines = keepLines
+	p.keepLines = keepLines
 
-    return p
+	return p
 }
 
 // SetKeepNext
 func (p *PPr) SetKeepNext(keepNext bool) *PPr {
-    p.keepNext = keepNext
+	p.keepNext = keepNext
 
-    return p
+	return p
 }
 
 // SetHorizontalAlignment 设置水平对齐方式
 func (p *PPr) SetHorizontalAlignment(alignment HorizontalAlignmentType) *PPr {
-    p.horizontalAlignment = &alignment
+	p.horizontalAlignment = &alignment
 
-    return p
+	return p
 }
 
 type HorizontalAlignmentType string
 
 const (
-    // HorizontalAlignmentStart 左对齐
-    HorizontalAlignmentStart = HorizontalAlignmentType("start")
+	// HorizontalAlignmentStart 左对齐
+	HorizontalAlignmentStart = HorizontalAlignmentType("start")
 
-    // HorizontalAlignmentEnd 右对齐
-    HorizontalAlignmentEnd = HorizontalAlignmentType("end")
+	// HorizontalAlignmentEnd 右对齐
+	HorizontalAlignmentEnd = HorizontalAlignmentType("end")
 
-    // HorizontalAlignmentCenter 居中对齐
-    HorizontalAlignmentCenter = HorizontalAlignmentType("center")
+	// HorizontalAlignmentCenter 居中对齐
+	HorizontalAlignmentCenter = HorizontalAlignmentType("center")
 
-    // HorizontalAlignmentBoth 左右对齐，不改变字符间距
-    HorizontalAlignmentBoth = HorizontalAlignmentType("both")
+	// HorizontalAlignmentBoth 左右对齐，不改变字符间距
+	HorizontalAlignmentBoth = HorizontalAlignmentType("both")
 
-    // HorizontalAlignmentDistribute 左右对齐，改变字符间距
-    HorizontalAlignmentDistribute = HorizontalAlignmentType("distribute")
+	// HorizontalAlignmentDistribute 左右对齐，改变字符间距
+	HorizontalAlignmentDistribute = HorizontalAlignmentType("distribute")
 )

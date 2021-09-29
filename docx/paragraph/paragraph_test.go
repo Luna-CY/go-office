@@ -1,48 +1,48 @@
 package paragraph
 
 import (
-    "github.com/Luna-CY/go-office/docx/run"
-    "testing"
+	"github.com/Luna-CY/go-office/docx/run"
+	"testing"
 )
 
 func TestParagraph_GetProperties(t *testing.T) {
-    p := Paragraph{}
+	p := Paragraph{}
 
-    if nil == p.GetProperties() {
-        t.Fatal("验证失败")
-    }
+	if nil == p.GetProperties() {
+		t.Fatal("验证失败")
+	}
 }
 
 func TestParagraph_GetRunProperties(t *testing.T) {
-    p := Paragraph{}
+	p := Paragraph{}
 
-    if nil == p.GetRunProperties() {
-        t.Fatal("验证失败")
-    }
+	if nil == p.GetRunProperties() {
+		t.Fatal("验证失败")
+	}
 }
 
 func TestParagraph_GetRuns(t *testing.T) {
-    p := Paragraph{}
+	p := Paragraph{}
 
-    if 0 != len(p.GetRuns()) {
-        t.Fatal("验证失败")
-    }
+	if 0 != len(p.GetRuns()) {
+		t.Fatal("验证失败")
+	}
 }
 
 func TestParagraph_AddRun(t *testing.T) {
-    p := Paragraph{}
-    p.AddRun()
+	p := Paragraph{}
+	p.AddRun()
 
-    if 1 != len(p.GetRuns()) {
-        t.Fatal("验证失败")
-    }
+	if 1 != len(p.GetRuns()) {
+		t.Fatal("验证失败")
+	}
 }
 
 func TestParagraph_AddBreakLine(t *testing.T) {
-    p := Paragraph{}
-    p.AddBreakLine(run.BreakLineTypeDefault, run.BreakLineClearTypeAll)
+	p := Paragraph{}
+	p.AddBreakLine(run.BreakLineTypeDefault, run.BreakLineClearTypeAll)
 
-    if 1 != len(p.GetRuns()) {
-        t.Fatal("验证失败")
-    }
+	if 1 != len(p.GetRuns()) {
+		t.Fatal("验证失败")
+	}
 }
