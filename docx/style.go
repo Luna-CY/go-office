@@ -99,8 +99,6 @@ func (s *Styles) GetXmlBytes() ([]byte, error) {
 
 	buffer.WriteString(template.StyleDocDefaultEnd)
 
-	buffer.WriteString(`<w:latentStyles w:defLockedState="0" w:defUIPriority="99" w:defSemiHidden="0" w:defUnhideWhenUsed="0" w:defQFormat="0" w:count="376">`)
-
 	for _, style := range s.styleList {
 		body, err := style.GetXmlBytes()
 		if nil != err {

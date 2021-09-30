@@ -20,7 +20,7 @@ type Background struct {
 
 	// mask 前景色蒙版的值
 	// 参考文档 http://officeopenxml.com/WPshading.php
-	mask *MaskValue
+	mask string
 }
 
 // GetBackgroundColor 获取背景色
@@ -57,10 +57,10 @@ func (b *Background) SetColor(color string) *Background {
 	return b
 }
 
-// SetMask
-func (b *Background) SetMask(val MaskValue) *Background {
+// SetMask 设置背景模式
+func (b *Background) SetMask(val string) *Background {
 	b.isSet = true
-	b.mask = &val
+	b.mask = val
 
 	return b
 }
@@ -86,18 +86,13 @@ func (b *Background) GetXmlBytes() ([]byte, error) {
 		buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrBackgroundColor, *b.color))
 	}
 
-	if nil != b.mask {
-		buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrBackgroundVal, *b.mask))
+	if "" == b.mask {
+		b.mask = "clear"
 	}
+
+	buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.ParagraphPPrBackgroundVal, b.mask))
 
 	buffer.WriteString("/>")
 
 	return buffer.Bytes(), nil
 }
-
-type MaskValue string
-
-const (
-	MaskValueClear = MaskValue("clear")
-	MaskValueNil   = MaskValue("nil")
-)

@@ -86,7 +86,7 @@ func (b *Background) GetXmlBytes() ([]byte, error) {
 	}
 
 	if "" == b.mask {
-		b.mask = "clean"
+		b.mask = "clear"
 	}
 
 	buffer.WriteString(fmt.Sprintf(` %v="%v"`, template.RunRPrVal, b.mask))

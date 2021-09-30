@@ -15,6 +15,9 @@ func main() {
 	doc.GetProperties().GetDefaultRunProperties().SetSize(32)
 	doc.GetProperties().GetDefaultParagraphProperties().GetSpacing().SetSpace(360)
 
+	footer1 := doc.NewFooter()
+	doc.UseFooter(docx.FooterTypeDefault, footer1)
+
 	p1 := doc.AddParagraph()
 	p1.GetProperties().SetHorizontalAlignment(paragraph.HorizontalAlignmentCenter)
 
@@ -33,6 +36,32 @@ func main() {
 	p3 := doc.AddParagraph()
 	p3r1 := p3.AddRun()
 	p3r1.AddText("第三段，没有样式")
+
+	// 足够的段落可以分页
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
+	doc.AddParagraph()
 
 	if err := doc.Save("example.docx"); nil != err {
 		log.Fatal(err)

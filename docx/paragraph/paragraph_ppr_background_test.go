@@ -90,7 +90,7 @@ func TestBackground_SetMask(t *testing.T) {
 		t.Fatal("验证失败")
 	}
 
-	if nil != b.mask {
+	if "" != b.mask {
 		t.Fatal("验证失败")
 	}
 
@@ -99,11 +99,11 @@ func TestBackground_SetMask(t *testing.T) {
 		t.Fatal("验证失败")
 	}
 
-	if nil == b.mask {
+	if "" == b.mask {
 		t.Fatal("验证失败")
 	}
 
-	if "FF0000" != *b.mask {
+	if "FF0000" != b.mask {
 		t.Fatal("验证失败")
 	}
 }
