@@ -8,8 +8,8 @@ import (
 
 // Workbook 工作簿xlsx
 type Workbook struct {
-	// meta 元数据结构定义
-	meta SheetMeta
+	// metaFile 元数据结构定义
+	metaFile WorkBookMetaFile
 
 	sm sync.RWMutex
 	// sheets 数据表组

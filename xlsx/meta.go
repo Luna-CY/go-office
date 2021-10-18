@@ -1,34 +1,35 @@
 package xlsx
 
-// SheetMeta 数据表元数据结构
-type SheetMeta struct {
-	// contentTypes /[Content_Types].xml
-	contentTypes []ContentType
+import "encoding/xml"
 
-	// relationships /_rels/.rels
-	relationships []Relationship
+// WorkBookMetaFile 工作簿元信息文件结构
+type WorkBookMetaFile struct {
+	// contentType [Content_Types].xml
+	contentType *ContentType
 
-	// wbRelationships /xl/_rels/workbook.xml.rels
-	wbRelationships []Relationship
-}
+	// rootRelationship /_rels/.rels
+	rootRelationship *RootRelationship
 
-// ContentType ContentType结构定义
-type ContentType struct {
-	// PartName 单元名称
-	PartName string
+	// docPropsApp /docProps/app.xml
+	docPropsApp *DocPropsApp
 
-	// ContentType Type类型
-	ContentType string
+	// docPropsCore /docProps/core.xml
+	docPropsCore *DocPropsCore
+
+	// WorkbookRelationship /xl/_rels/workbook.xml.rels
+	WorkbookRelationship *WorkbookRelationship
 }
 
 // Relationship 关联结构定义
 type Relationship struct {
+	XMLName xml.Name `xml:"Relationship"`
+
 	// Id 关联的id
-	Id string
+	Id string `xml:"Id,attr"`
 
 	// Type 关联类型
-	Type string
+	Type string `xml:"Type,attr"`
 
 	// Target 目标位置
-	Target string
+	Target string `xml:"Target,attr"`
 }
