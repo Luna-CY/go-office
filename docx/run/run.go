@@ -44,6 +44,13 @@ func (r *Run) AddBreakLine(breakLineType BreakLineType, breakLineClearType Break
 	r.body.WriteString(content)
 }
 
+// AddRawXml 添加原始XML字符串
+// 如果不熟悉docx文档格式不要使用此方法
+func (r *Run) AddRawXml(xml string) *Run {
+	r.body.WriteString(xml)
+	return r
+}
+
 // addText 添加文本内容
 func (r *Run) addText(text interface{}, space bool) {
 	r.body.WriteByte('<')

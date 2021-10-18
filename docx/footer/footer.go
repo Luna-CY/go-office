@@ -124,6 +124,19 @@ func (f *Footer) AddTableWithColumnsAndAutoWidth(columns int) *table.Table {
 	return content.table
 }
 
+// AddPageNum 添加页码
+// 页码属于行元素，将独占一行，可以设置水平位置
+func (f *Footer) AddPageNum(align paragraph.HorizontalAlignmentType) *Footer {
+	p := f.AddParagraph()
+	p.GetProperties().SetHorizontalAlignment(align)
+
+	p.AddRun().AddRawXml(`<w:fldChar w:fldCharType="begin"/>`)
+	p.AddRun().AddRawXml(`<w:instrText xml:space="preserve"> PAGE </w:instrText>`)
+	p.AddRun().AddRawXml(`<w:fldChar w:fldCharType="end"/>`)
+
+	return f
+}
+
 // DocumentContent 文档内容
 type DocumentContent struct {
 	// ct 内容类型

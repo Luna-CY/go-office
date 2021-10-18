@@ -15,7 +15,7 @@ func main() {
 	doc.GetProperties().GetDefaultRunProperties().SetSize(32)
 	doc.GetProperties().GetDefaultParagraphProperties().GetSpacing().SetSpace(360)
 
-	footer1 := doc.NewFooter()
+	footer1 := doc.NewFooter().AddPageNum(paragraph.HorizontalAlignmentCenter)
 	doc.UseFooter(docx.FooterTypeDefault, footer1)
 
 	p1 := doc.AddParagraph()
