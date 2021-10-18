@@ -1,10 +1,10 @@
 package docx
 
 import (
-    "github.com/Luna-CY/go-office/docx/paragraph"
-    "github.com/Luna-CY/go-office/docx/section"
-    "github.com/Luna-CY/go-office/docx/table"
-    "sync"
+	"github.com/Luna-CY/go-office/docx/footer"
+	"github.com/Luna-CY/go-office/docx/header"
+	"github.com/Luna-CY/go-office/docx/section"
+	"sync"
 )
 
 // TableDefaultWidth 表格默认宽度
@@ -13,125 +13,115 @@ const TableDefaultWidth = 8800
 // Document 文档结构定义
 // 该结构统一对.docx格式文档进行操作
 type Document struct {
-    // core core.xml
-    core Core
+	// core core.xml
+	core Core
 
-    // app app.xml
-    app App
+	// app app.xml
+	app App
 
-    // style style.xml
-    style StyleConfig
+	// styles styles.xml
+	styles Styles
 
-    // background 文档的背景配置
-    background Background
+	// background 文档的背景配置
+	background Background
 
-    cm sync.RWMutex
-    // contents 文档的内容列表
-    contents []*DocumentContent
+	cm sync.RWMutex
+	// contents 文档的内容列表
+	contents []*DocumentContent
 
-    // section 文档的节属性配置
-    section section.Section
+	hm sync.RWMutex
+	// headers 页头列表
+	headers []*header.Header
+
+	// section 文档的节属性配置
+	section section.Section
+
+	// contentTypes [Content_Types].xml
+	contentTypes ContentTypes
+
+	// relationship document.xml.rels
+	relationship Relationships
+
+	uhm sync.RWMutex
+	// headers 页头配置
+	useHeaders map[HeaderType]*header.Header
+
+	fm sync.RWMutex
+	// footers 页脚列表
+	footers []*footer.Footer
+
+	ufm sync.RWMutex
+	// useFooters 页脚配置
+	useFooters map[FooterType]*footer.Footer
 }
 
-func (d *Document) GetProperties() *StyleConfig {
-    return &d.style
+// SetDocumentUser 设置文档的创建与修改用户
+func (d *Document) SetDocumentUser(username string) *Document {
+	d.core.CreateUser = username
+	d.core.LastModifyUser = username
+
+	return d
+}
+
+func (d *Document) GetProperties() *Styles {
+	return &d.styles
 }
 
 func (d *Document) GetContents() []*DocumentContent {
-    d.cm.RLock()
-    defer d.cm.RUnlock()
+	d.cm.RLock()
+	defer d.cm.RUnlock()
 
-    return d.contents
+	return d.contents
 }
 
-// AddParagraph 添加一个段落
-func (d *Document) AddParagraph() *paragraph.Paragraph {
-    content := new(DocumentContent)
-    content.ct = DocumentContentTypeParagraph
+func (d *Document) GetHeaders() []*header.Header {
+	d.hm.RLock()
+	defer d.hm.RUnlock()
 
-    content.paragraph = new(paragraph.Paragraph)
-    d.cm.Lock()
-    d.contents = append(d.contents, content)
-    d.cm.Unlock()
-
-    return content.paragraph
+	return d.headers
 }
 
-// AddTable 添加一个表格
-func (d *Document) AddTable() *table.Table {
-    content := new(DocumentContent)
-    content.ct = DocumentContentTypeTable
+func (d *Document) GetFooters() []*footer.Footer {
+	d.fm.RLock()
+	defer d.fm.RUnlock()
 
-    content.table = new(table.Table)
-
-    d.cm.Lock()
-    d.contents = append(d.contents, content)
-    d.cm.Unlock()
-
-    return content.table
-}
-
-// AddTableWithColumns 添加一个拥有指定列数量的表格
-func (d *Document) AddTableWithColumns(columns int) *table.Table {
-    content := new(DocumentContent)
-    content.ct = DocumentContentTypeTable
-
-    content.table = new(table.Table)
-
-    for i := 0; i < columns; i++ {
-        content.table.AddCol()
-    }
-
-    d.cm.Lock()
-    d.contents = append(d.contents, content)
-    d.cm.Unlock()
-
-    return content.table
-}
-
-// AddTableWithColumnsAndAutoWidth 添加一个拥有指定列数量的表格，并且自动计算所有列的宽度
-func (d *Document) AddTableWithColumnsAndAutoWidth(columns int) *table.Table {
-    content := new(DocumentContent)
-    content.ct = DocumentContentTypeTable
-
-    content.table = new(table.Table)
-
-    for i := 0; i < columns; i++ {
-        content.table.AddColWithWidth(TableDefaultWidth / columns)
-    }
-
-    d.cm.Lock()
-    d.contents = append(d.contents, content)
-    d.cm.Unlock()
-
-    return content.table
+	return d.footers
 }
 
 // GetSection 获取节属性配置结构指针
 func (d *Document) GetSection() *section.Section {
-    return &d.section
+	return &d.section
 }
 
 // GetBackground 获取背景配置结构指针
 func (d *Document) GetBackground() *Background {
-    return &d.background
+	return &d.background
 }
 
-// DocumentContent 文档内容
-type DocumentContent struct {
-    // ct 内容类型
-    ct DocumentContentType
+// UseHeader 使用指定的页头
+func (d *Document) UseHeader(headerType HeaderType, hdr *header.Header) *Document {
+	d.uhm.Lock()
+	defer d.uhm.Unlock()
 
-    // paragraph 段落
-    paragraph *paragraph.Paragraph
+	if nil == d.useHeaders {
+		d.useHeaders = make(map[HeaderType]*header.Header)
+	}
 
-    // table 表格
-    table *table.Table
+	d.useHeaders[headerType] = hdr
+
+	return d
 }
 
-type DocumentContentType string
+// UseFooter 使用指定的页脚
+func (d *Document) UseFooter(footerType FooterType, ftr *footer.Footer) *Document {
+	d.ufm.Lock()
+	defer d.ufm.Unlock()
 
-const (
-    DocumentContentTypeParagraph = DocumentContentType("paragraph")
-    DocumentContentTypeTable     = DocumentContentType("table")
-)
+	if nil == d.useFooters {
+		d.useFooters = make(map[FooterType]*footer.Footer)
+	}
+
+	d.useFooters[footerType] = ftr
+
+	return d
+}

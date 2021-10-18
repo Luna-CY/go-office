@@ -1,41 +1,41 @@
 package run
 
 import (
-    "fmt"
-    "testing"
+	"fmt"
+	"testing"
 )
 
 func TestRun_GetXmlBytes(t *testing.T) {
-    r := Run{}
+	r := Run{}
 
-    act, err := r.GetXmlBytes()
-    if nil != err {
-        t.Fatalf("生成XML失败: %v\n", err)
-    }
+	act, err := r.GetXmlBytes()
+	if nil != err {
+		t.Fatalf("生成XML失败: %v\n", err)
+	}
 
-    if "<w:r></w:r>" != string(act) {
-        t.Fatal("验证失败")
-    }
+	if "<w:r></w:r>" != string(act) {
+		t.Fatal("验证失败")
+	}
 
-    r.AddText("HI")
-    act, err = r.GetXmlBytes()
-    if nil != err {
-        t.Fatalf("生成XML失败: %v\n", err)
-    }
+	r.AddText("HI")
+	act, err = r.GetXmlBytes()
+	if nil != err {
+		t.Fatalf("生成XML失败: %v\n", err)
+	}
 
-    if "<w:r><w:t>HI</w:t></w:r>" != string(act) {
-        t.Fatal("验证失败")
-    }
+	if "<w:r><w:t>HI</w:t></w:r>" != string(act) {
+		t.Fatal("验证失败")
+	}
 
-    r.GetProperties().SetBold(true)
-    act, err = r.GetXmlBytes()
-    if nil != err {
-        t.Fatalf("生成XML失败: %v\n", err)
-    }
+	r.GetProperties().SetBold(true)
+	act, err = r.GetXmlBytes()
+	if nil != err {
+		t.Fatalf("生成XML失败: %v\n", err)
+	}
 
-    exp := fmt.Sprintf(`<w:r><w:rPr><w:b w:val="true"/></w:rPr><w:t>HI</w:t></w:r>`)
+	exp := fmt.Sprintf(`<w:r><w:rPr><w:b w:val="true"/></w:rPr><w:t>HI</w:t></w:r>`)
 
-    if exp != string(act) {
-        t.Fatal("验证失败")
-    }
+	if exp != string(act) {
+		t.Fatal("验证失败")
+	}
 }
