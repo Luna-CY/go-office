@@ -1,4 +1,4 @@
-package xlsx
+package workbook
 
 import (
 	"bytes"
@@ -8,14 +8,14 @@ import (
 	"sync"
 )
 
-func NewRootRelationship() *RootRelationship {
-	rrs := new(RootRelationship)
-	rrs.RootNamespace = "http://schemas.openxmlformats.org/package/2006/relationships"
+func NewBookRelationship() *BookRelationship {
+	wrs := new(BookRelationship)
+	wrs.RootNamespace = "http://schemas.openxmlformats.org/package/2006/relationships"
 
-	return rrs
+	return wrs
 }
 
-type RootRelationship struct {
+type BookRelationship struct {
 	XMLName xml.Name `xml:"Relationships"`
 
 	RootNamespace string `xml:"xmlns,attr"`
@@ -27,37 +27,37 @@ type RootRelationship struct {
 	nextRId int
 }
 
-func (r *RootRelationship) NextRId() string {
-	r.nm.Lock()
-	defer r.nm.Unlock()
+func (w *BookRelationship) NextRId() string {
+	w.nm.Lock()
+	defer w.nm.Unlock()
 
-	r.nextRId += 1
+	w.nextRId += 1
 
-	return fmt.Sprintf("rId%v", r.nextRId)
+	return fmt.Sprintf("rId%v", w.nextRId)
 }
 
-func (r *RootRelationship) AddRelationship(rel Relationship) *RootRelationship {
-	r.rm.Lock()
-	defer r.rm.Unlock()
+func (w *BookRelationship) AddRelationship(rel Relationship) *BookRelationship {
+	w.rm.Lock()
+	defer w.rm.Unlock()
 
-	r.Relationships = append(r.Relationships, rel)
+	w.Relationships = append(w.Relationships, rel)
 
-	return r
+	return w
 }
 
-func (r *RootRelationship) Filepath() string {
-	return "_rels/.rels"
+func (w *BookRelationship) Filepath() string {
+	return "xl/_rels/workbook.xml.rels"
 }
 
-func (r *RootRelationship) Marshal() ([]byte, error) {
-	r.rm.Lock()
-	defer r.rm.Unlock()
+func (w *BookRelationship) Marshal() ([]byte, error) {
+	w.rm.Lock()
+	defer w.rm.Unlock()
 
 	buffer := &bytes.Buffer{}
 	buffer.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>`)
 
 	ec := xml.NewEncoder(buffer)
-	if err := ec.Encode(r); nil != err {
+	if err := ec.Encode(w); nil != err {
 		return nil, errors.New(fmt.Sprintf("序列化XML结构失败: %v", err))
 	}
 

@@ -1,9 +1,9 @@
-package xlsx
+package cell
 
 // Cell 单元格结构定义
 type Cell struct {
-	// id 单元格ID
-	id string
+	// Id 单元格ID
+	Id string
 
 	// content 单元格内容
 	content interface{}

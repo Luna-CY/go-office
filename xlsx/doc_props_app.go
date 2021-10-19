@@ -7,9 +7,14 @@ import (
 	"fmt"
 )
 
+const (
+	AppRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties"
+	AppContentType      = "application/vnd.openxmlformats-officedocument.extended-properties+xml"
+)
+
 func NewDocPropsApp() *DocPropsApp {
 	dpa := new(DocPropsApp)
-	dpa.RootNameSpace = "http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
+	dpa.RootNamespace = "http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
 	dpa.Application = "Golang Office Library"
 	dpa.DocSecurity = 0
 	dpa.AppVersion = "0.2.0"
@@ -20,19 +25,20 @@ func NewDocPropsApp() *DocPropsApp {
 type DocPropsApp struct {
 	XMLName xml.Name `xml:"Properties"`
 
-	RootNameSpace string `xml:"xmlns,attr"`
+	RootNamespace string `xml:"xmlns,attr"`
 
 	Application string `xml:"Application"`
 	DocSecurity int    `xml:"DocSecurity"`
 	AppVersion  string `xml:"AppVersion"`
 }
 
-func (d *DocPropsApp) FilePath() string {
-	return "/docProps/app.xml"
+func (d *DocPropsApp) Filepath() string {
+	return "docProps/app.xml"
 }
 
 func (d *DocPropsApp) Marshal() ([]byte, error) {
 	buffer := &bytes.Buffer{}
+	buffer.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>`)
 
 	ec := xml.NewEncoder(buffer)
 	if err := ec.Encode(d); nil != err {

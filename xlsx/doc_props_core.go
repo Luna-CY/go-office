@@ -8,12 +8,17 @@ import (
 	"time"
 )
 
+const (
+	CoreRelationshipType = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"
+	CoreContentType      = "application/vnd.openxmlformats-package.core-properties+xml"
+)
+
 func NewDocPropsCore() *DocPropsCore {
 	dpc := new(DocPropsCore)
-	dpc.CpNameSpace = "http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
-	dpc.DcNameSpace = "http://purl.org/dc/elements/1.1/"
-	dpc.DctNameSpace = "http://purl.org/dc/terms/"
-	dpc.XsiNameSpace = "http://www.w3.org/2001/XMLSchema-instance"
+	dpc.CpNamespace = "http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+	dpc.DcNamespace = "http://purl.org/dc/elements/1.1/"
+	dpc.DctNamespace = "http://purl.org/dc/terms/"
+	dpc.XsiNamespace = "http://www.w3.org/2001/XMLSchema-instance"
 
 	return dpc
 }
@@ -21,10 +26,10 @@ func NewDocPropsCore() *DocPropsCore {
 type DocPropsCore struct {
 	XMLName xml.Name `xml:"cp:coreProperties"`
 
-	CpNameSpace  string `xml:"xmlns:cp,attr"`
-	DcNameSpace  string `xml:"xmlns:dc,attr"`
-	DctNameSpace string `xml:"xmlns:dcterms,attr"`
-	XsiNameSpace string `xml:"xmlns:xsi,attr"`
+	CpNamespace  string `xml:"xmlns:cp,attr"`
+	DcNamespace  string `xml:"xmlns:dc,attr"`
+	DctNamespace string `xml:"xmlns:dcterms,attr"`
+	XsiNamespace string `xml:"xmlns:xsi,attr"`
 
 	Creator    string `xml:"dc:creator"`
 	LastModify string `xml:"cp:lastModifiedBy"`
@@ -46,12 +51,13 @@ func (d *DocPropsCore) SetTime(t time.Time) *DocPropsCore {
 	return d
 }
 
-func (d *DocPropsCore) FilePath() string {
-	return "/docProps/core.xml"
+func (d *DocPropsCore) Filepath() string {
+	return "docProps/core.xml"
 }
 
 func (d *DocPropsCore) Marshal() ([]byte, error) {
 	buffer := &bytes.Buffer{}
+	buffer.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>`)
 
 	ec := xml.NewEncoder(buffer)
 	if err := ec.Encode(d); nil != err {
