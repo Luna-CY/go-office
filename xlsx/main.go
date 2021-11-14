@@ -112,7 +112,7 @@ func (d *Document) save(path string) error {
 	book.RegisterCompressor(zip.Store, nil)
 	defer book.Close()
 
-	files := []Xml{d.contentType, d.rootRelationship, d.docPropsCore, d.docPropsApp, d.workbookRelationship, d.workbook}
+	files := []XmlFile{d.contentType, d.rootRelationship, d.docPropsCore, d.docPropsApp, d.workbookRelationship, d.workbook}
 	for _, f := range d.workbook.Sheets.GetSheets() {
 		files = append(files, f)
 	}
@@ -136,12 +136,15 @@ func (d *Document) save(path string) error {
 	return nil
 }
 
-// Xml xml文件结构接口
-type Xml interface {
+type XmlEntry interface {
+	// Marshal 序列化文件的xml内容
+	Marshal() ([]byte, error)
+}
+
+// XmlFile xml文件结构接口
+type XmlFile interface {
+	XmlEntry
 
 	// Filepath 返回文件路径
 	Filepath() string
-
-	// Marshal 序列化文件的xml内容
-	Marshal() ([]byte, error)
 }

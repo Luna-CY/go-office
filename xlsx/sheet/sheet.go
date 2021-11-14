@@ -5,8 +5,6 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"github.com/Luna-CY/go-office/xlsx/sheet/row"
-	"sync"
 )
 
 const (
@@ -44,10 +42,6 @@ type Sheet struct {
 	Views  *Views
 	Format *FormatProperty
 	Data   *Data
-
-	rm sync.RWMutex
-	// rows 行
-	rows []*row.Row
 }
 
 func (s *Sheet) Id() string {
@@ -60,12 +54,6 @@ func (s *Sheet) SetId(id string) {
 
 func (s *Sheet) RelationshipId() string {
 	return s.relationshipId
-}
-
-func (s *Sheet) SetRelationshipId(relationshipId string) *Sheet {
-	s.relationshipId = relationshipId
-
-	return s
 }
 
 func (s *Sheet) Name() string {

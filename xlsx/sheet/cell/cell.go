@@ -1,7 +1,11 @@
 package cell
 
+import "encoding/xml"
+
 // Cell 单元格结构定义
 type Cell struct {
+	Name xml.Name `xml:"c"`
+
 	// Id 单元格ID
 	Id string
 
