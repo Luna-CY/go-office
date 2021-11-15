@@ -42,6 +42,7 @@ type Sheet struct {
 	Views  *Views
 	Format *FormatProperty
 	Data   *Data
+	Cols   *Cols
 }
 
 func (s *Sheet) Id() string {
