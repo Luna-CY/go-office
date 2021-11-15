@@ -1,6 +1,7 @@
 package cell
 
 import (
+	"bytes"
 	"encoding/xml"
 	"fmt"
 	"strconv"
@@ -21,7 +22,7 @@ func newBaseCell(row int64, col int64) *Cell {
 	c.x = row
 	c.y = col
 
-	c.Reference = "" // TODO col做26进制转换
+	c.Reference = fmt.Sprintf("%v%v", ten2col(col), row)
 
 	return c
 }
@@ -79,4 +80,27 @@ type Cell struct {
 
 	Formula *Formula
 	Value   string `xml:"v"`
+}
+
+func ten2col(col int64) string {
+	builder := new(bytes.Buffer)
+
+	for col > 0 {
+		m := col % 26
+		if 0 == m {
+			m = 26
+		}
+
+		builder.WriteByte(byte(m + 64))
+		col = (col - m) / 26
+	}
+
+	bs := builder.Bytes()
+	for i, j := 0, builder.Len()-1; i < j; {
+		bs[j], bs[i] = bs[i], bs[j]
+		i++
+		j--
+	}
+
+	return string(bs)
 }
