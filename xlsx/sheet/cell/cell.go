@@ -16,7 +16,7 @@ const (
 	STCellTypeString    = "s"
 )
 
-func newBaseCell(row int64, col int64) *Cell {
+func newBaseCell(row uint64, col uint64) *Cell {
 	c := new(Cell)
 
 	c.x = row
@@ -27,7 +27,7 @@ func newBaseCell(row int64, col int64) *Cell {
 	return c
 }
 
-func NewCellWithTextForInline(row int64, col int64, text string) *Cell {
+func NewCellWithTextForInline(row uint64, col uint64, text string) *Cell {
 	c := newBaseCell(row, col)
 	c.Type = STCellTypeInlineStr
 	c.Value = text
@@ -35,7 +35,7 @@ func NewCellWithTextForInline(row int64, col int64, text string) *Cell {
 	return c
 }
 
-func NewCellWithText(row int64, col int64, text string) *Cell {
+func NewCellWithText(row uint64, col uint64, text string) *Cell {
 	c := newBaseCell(row, col)
 	c.Type = STCellTypeString
 	c.Value = text
@@ -43,7 +43,7 @@ func NewCellWithText(row int64, col int64, text string) *Cell {
 	return c
 }
 
-func NewCellWithBoolean(row int64, col int64, value bool) *Cell {
+func NewCellWithBoolean(row uint64, col uint64, value bool) *Cell {
 	c := newBaseCell(row, col)
 	c.Type = STCellTypeBoolean
 	c.Value = fmt.Sprintf("%v", value)
@@ -51,7 +51,7 @@ func NewCellWithBoolean(row int64, col int64, value bool) *Cell {
 	return c
 }
 
-func NewCellWithDate(row int64, col int64, date time.Time) *Cell {
+func NewCellWithDate(row uint64, col uint64, date time.Time) *Cell {
 	c := newBaseCell(row, col)
 	c.Type = STCellTypeDate
 	c.Value = date.Format(time.RFC3339)
@@ -59,7 +59,7 @@ func NewCellWithDate(row int64, col int64, date time.Time) *Cell {
 	return c
 }
 
-func NewCellWithNumber(row int64, col int64, number int64) *Cell {
+func NewCellWithNumber(row uint64, col uint64, number int64) *Cell {
 	c := newBaseCell(row, col)
 	c.Type = STCellTypeNumber
 	c.Value = strconv.FormatInt(number, 10)
@@ -75,14 +75,14 @@ type Cell struct {
 	Style     uint   `xml:"s,attr"`
 	Type      string `xml:"t,attr"`
 
-	x int64
-	y int64
+	x uint64
+	y uint64
 
 	Formula *Formula
 	Value   string `xml:"v"`
 }
 
-func ten2col(col int64) string {
+func ten2col(col uint64) string {
 	builder := new(bytes.Buffer)
 
 	for col > 0 {

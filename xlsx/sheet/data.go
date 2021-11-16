@@ -2,37 +2,33 @@ package sheet
 
 import (
 	"encoding/xml"
-	"github.com/Luna-CY/go-office/xlsx/sheet/row"
-	"strconv"
+	"fmt"
+	"github.com/Luna-CY/go-office/xlsx/sheet/cell"
 	"sync"
 )
 
 type Data struct {
 	XMLName xml.Name `xml:"sheetData"`
 
-	rm   sync.RWMutex
-	Rows []*row.Row
+	dm   sync.RWMutex
+	data map[uint64]map[uint64]*cell.Cell
 }
 
-func (d *Data) GetRowNextId() string {
-	d.rm.RLock()
-	defer d.rm.RUnlock()
+func (d *Data) SetCell(row, col uint64, value interface{}) *Data {
+	d.dm.Lock()
+	defer d.dm.Unlock()
 
-	return strconv.Itoa(len(d.Rows) + 1)
-}
+	r, ok := d.data[row]
+	if !ok {
+		d.data[row] = map[uint64]*cell.Cell{}
+		r = d.data[row]
+	}
 
-func (d *Data) NewRow() *row.Row {
-	r := new(row.Row)
-	d.AddRow(r)
-
-	return r
-}
-
-func (d *Data) AddRow(r *row.Row) *Data {
-	d.rm.Lock()
-	defer d.rm.Unlock()
-
-	d.Rows = append(d.Rows, r)
+	r[col] = cell.NewCellWithTextForInline(row, col, fmt.Sprintf("%v", value))
 
 	return d
+}
+
+func (d *Data) Marshal() ([]byte, error) {
+	return nil, nil
 }

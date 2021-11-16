@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"github.com/Luna-CY/go-office/xlsx/sheet/cell"
 )
 
 const (
@@ -25,6 +26,7 @@ func NewSheet(id, name, rId string) *Sheet {
 
 	s.Format = new(FormatProperty)
 	s.Data = new(Data)
+	s.Data.data = map[uint64]map[uint64]*cell.Cell{}
 
 	return s
 }
@@ -47,10 +49,6 @@ type Sheet struct {
 
 func (s *Sheet) Id() string {
 	return s.id
-}
-
-func (s *Sheet) SetId(id string) {
-	s.id = id
 }
 
 func (s *Sheet) RelationshipId() string {
