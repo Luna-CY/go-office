@@ -23,7 +23,7 @@ func NewWorkbook() *Workbook {
 	wb.Views = new(BookViews)
 	wb.Sheets = new(Sheets)
 
-	wb.AddView(BookView{XWindow: 100, YWindow: 100, WindowWidth: 1000, WindowHeight: 1000})
+	wb.AddView(BookView{XWindow: 1000, YWindow: 1000, WindowWidth: 10000, WindowHeight: 10000})
 
 	return wb
 }
