@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"github.com/Luna-CY/go-office/xlsx/sheet/cell"
+	"github.com/Luna-CY/go-office/xlsx1/sheet/cell"
 )
 
 const (

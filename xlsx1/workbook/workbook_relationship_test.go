@@ -1,7 +1,7 @@
 package workbook
 
 import (
-	"github.com/Luna-CY/go-office/xlsx"
+	"github.com/Luna-CY/go-office/xlsx1"
 	"testing"
 )
 
@@ -15,7 +15,7 @@ func TestWorkbookRelationship_FilePath(t *testing.T) {
 
 func TestWorkbookRelationship_Marshal(t *testing.T) {
 	wrs := BookRelationship{}
-	wrs.Relationships = append(wrs.Relationships, xlsx.Relationship{Id: "rId1", Type: "test-type", Target: "test-target"})
+	wrs.Relationships = append(wrs.Relationships, xlsx1.Relationship{Id: "rId1", Type: "test-type", Target: "test-target"})
 
 	content, err := wrs.Marshal()
 	if nil != err {

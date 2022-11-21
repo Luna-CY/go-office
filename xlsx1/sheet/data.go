@@ -3,8 +3,8 @@ package sheet
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/Luna-CY/go-office/xlsx/sheet/cell"
-	"github.com/Luna-CY/go-office/xlsx/sheet/row"
+	"github.com/Luna-CY/go-office/xlsx1/sheet/cell"
+	"github.com/Luna-CY/go-office/xlsx1/sheet/row"
 	"sync"
 )
 

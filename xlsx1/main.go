@@ -1,11 +1,11 @@
-package xlsx
+package xlsx1
 
 import (
 	"archive/zip"
 	"errors"
 	"fmt"
-	"github.com/Luna-CY/go-office/xlsx/sheet"
-	"github.com/Luna-CY/go-office/xlsx/workbook"
+	"github.com/Luna-CY/go-office/xlsx1/sheet"
+	"github.com/Luna-CY/go-office/xlsx1/workbook"
 	"os"
 	"os/user"
 	"path/filepath"

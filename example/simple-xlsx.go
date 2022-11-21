@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/Luna-CY/go-office/xlsx"
+	"github.com/Luna-CY/go-office/xlsx1"
 	"log"
 )
 
 func main() {
-	document, err := xlsx.New()
+	document, err := xlsx1.New()
 	if nil != err {
 		log.Fatalf("无法创建表格: %v\n", err)
 	}
